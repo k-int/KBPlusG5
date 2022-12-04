@@ -1,0 +1,12 @@
+create user 'k-int' identified by 'k-int';
+create user 'kint' identified by 'kint';
+drop database if exists kbplus700test;
+create database kbplus700test default charset utf8 default collate utf8_general_ci;
+grant all on kbplus700test.* to 'k-int';
+grant all on kbplus700test.* to 'kint';
+create database kbplus700dev default charset utf8 default collate utf8_general_ci;
+grant all on kbplus700dev.* to 'k-int';
+grant all on kbplus700dev.* to 'kint';
+create database kbplus700prod default charset utf8 default collate utf8_general_ci;
+grant all on kbplus700prod.* to 'k-int';
+grant all on kbplus700prod.* to 'kint';
