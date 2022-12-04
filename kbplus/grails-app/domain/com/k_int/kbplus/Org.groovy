@@ -5,9 +5,9 @@ import org.apache.commons.logging.LogFactory
 import groovy.util.logging.*
 import groovy.transform.EqualsAndHashCode
 import javax.persistence.Transient
+import groovy.util.logging.Slf4j
 
-
-@Log4j
+@Slf4j
 @EqualsAndHashCode(includes=['id','name'])
 class Org {
 

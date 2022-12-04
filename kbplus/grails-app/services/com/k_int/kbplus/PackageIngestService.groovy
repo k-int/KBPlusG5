@@ -5,7 +5,6 @@ import org.hibernate.ScrollMode
 import java.nio.charset.Charset
 import java.util.GregorianCalendar
 import org.mozilla.universalchardet.UniversalDetector;
-import org.apache.log4j.*
 import au.com.bytecode.opencsv.CSVReader
 import java.text.SimpleDateFormat
 import org.springframework.dao.DataIntegrityViolationException
@@ -15,14 +14,10 @@ import groovy.xml.MarkupBuilder
 import com.k_int.kbplus.auth.*;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.log4j.*
 import au.com.bytecode.opencsv.CSVReader
 import java.text.SimpleDateFormat
-// import grails.plugin.springsecurity.SpringSecurityUtils
 import org.mozilla.universalchardet.UniversalDetector;
 import org.apache.commons.io.input.BOMInputStream
-
-
 import groovy.util.logging.Slf4j
 
 @Slf4j

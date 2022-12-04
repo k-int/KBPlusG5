@@ -4,10 +4,9 @@ import com.k_int.kbplus.RefdataValue
 import com.k_int.kbplus.abstract_domain.CustomProperty
 import javax.persistence.Transient
 import javax.validation.UnexpectedTypeException
-import groovy.util.logging.Log4j
+import groovy.util.logging.Slf4j
 
-
-@Log4j
+@Slf4j
 class PropertyDefinition {
 
     @Transient

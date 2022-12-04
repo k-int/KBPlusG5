@@ -8,10 +8,10 @@ import javax.persistence.Transient
  
 import org.apache.commons.logging.*
 import java.text.Normalizer
-import groovy.util.logging.*
 import org.apache.commons.logging.LogFactory
+import groovy.util.logging.Slf4j
 
-@Log4j
+@Slf4j
 class TitleInstance {
 
   @Transient

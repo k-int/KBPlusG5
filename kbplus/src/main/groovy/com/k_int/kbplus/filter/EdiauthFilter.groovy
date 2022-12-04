@@ -2,10 +2,9 @@ package com.k_int.kbplus.filter
 
 import com.k_int.kbplus.auth.*
 import com.k_int.kbplus.*
-import groovy.util.logging.Log4j
+import groovy.util.logging.Slf4j
 
-
-@Log4j
+@Slf4j
 public class EdiauthFilter extends org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter {
 
   private java.util.HashMap map = null;

@@ -5,7 +5,7 @@ import javax.persistence.Transient
 import com.k_int.kbplus.auth.Role
 import com.k_int.kbplus.onixpl.OnixPLHelperService
 import com.k_int.kbplus.onixpl.OnixPLService
-import groovy.util.logging.Log4j
+import groovy.util.logging.Slf4j
 
 /**
  * An OnixplLicense has many OnixplUsageTerms and OnixplLicenseTexts.
@@ -14,7 +14,7 @@ import groovy.util.logging.Log4j
  * LicenseTexts, but is a convenient way to access the whole license text.
  */
 
-@Log4j
+@Slf4j
 class OnixplLicense {
 
   Date lastmod;

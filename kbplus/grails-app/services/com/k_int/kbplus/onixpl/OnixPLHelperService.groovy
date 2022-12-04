@@ -1,6 +1,6 @@
 package com.k_int.kbplus.onixpl
 
-import grails.transaction.Transactional
+import grails.gorm.transactions.Transactional
 import groovy.util.slurpersupport.GPathResult
 
 import com.k_int.xml.XMLDoc

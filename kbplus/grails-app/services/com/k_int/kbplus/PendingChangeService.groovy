@@ -5,9 +5,9 @@ import grails.converters.*
 import grails.web.databinding.DataBindingUtils
 import org.springframework.transaction.TransactionStatus
 import com.k_int.custprops.PropertyDefinition
-import groovy.util.logging.Log4j
+import groovy.util.logging.Slf4j
 
-@Log4j
+@Slf4j
 class PendingChangeService {
 
   def genericOIDService

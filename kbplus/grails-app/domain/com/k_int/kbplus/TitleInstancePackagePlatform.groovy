@@ -6,9 +6,9 @@ import org.hibernate.proxy.HibernateProxy
 import com.k_int.ClassUtils
 import org.springframework.context.i18n.LocaleContextHolder
 import groovy.time.TimeCategory
-import groovy.util.logging.Log4j
+import groovy.util.logging.Slf4j
 
-@Log4j
+@Slf4j
 class TitleInstancePackagePlatform {
 
   transient def grailsLinkGenerator

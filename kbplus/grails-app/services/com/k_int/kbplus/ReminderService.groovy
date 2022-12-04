@@ -1,7 +1,7 @@
 package com.k_int.kbplus
 
 import com.k_int.kbplus.auth.User
-import grails.transaction.Transactional
+import grails.gorm.transactions.Transactional
 import groovy.text.SimpleTemplateEngine
 import org.apache.commons.lang3.time.DateUtils
 import org.joda.time.LocalDate

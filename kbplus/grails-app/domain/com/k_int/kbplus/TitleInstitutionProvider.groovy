@@ -1,8 +1,8 @@
 package com.k_int.kbplus
 import javax.persistence.Transient
-import groovy.util.logging.Log4j
+import groovy.util.logging.Slf4j
 
-@Log4j
+@Slf4j
 class TitleInstitutionProvider {
   
   static belongsTo = [
