@@ -101,32 +101,50 @@ grails:
 hibernate:
     cache:
         queries: false
-        use_second_level_cache: false
+        use_second_level_cache: true
         use_query_cache: false
+        region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
 dataSource:
     pooled: true
     jmxExport: true
-    driverClassName: org.h2.Driver
-    username: sa
-    password: ''
 
 environments:
     development:
-        dataSource:
-            dbCreate: create-drop
-            url: jdbc:h2:mem:devDb;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
-    test:
+        localauth: true
+        kbplus:
+            bootstrap:
+                accounts:
+                    admin:
+                        name: admin
+                        pass: admin
+                        display: Admin
+                        email: admin@some.domain.com
+                        roles:
+                            - ROLE_USER
+                            - ROLE_EDITOR
+                            - ROLE_ADMIN
+                            - ROLE_API
+                            - ROLE_SYSADMIN
+                    user:
+                        name: user
+                        pass: user
+                        display: User
+                        email: user@some.domain.com
+                        roles:
+                            - ROLE_USER
+                            - ROLE_API
+        eshost: "${elasticsearch.service:eskbplusg3}"
         dataSource:
             dbCreate: update
-            url: jdbc:h2:mem:testDb;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
-    production:
-        dataSource:
-            dbCreate: none
-            url: jdbc:h2:./prodDb;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+            driverClassName: com.mysql.jdbc.Driver
+            dialect: org.hibernate.dialect.MySQL5Dialect
+            username: "${db.username:k-int}"
+            password: "${db.password:k-int}"
+            url: "jdbc:${db.uri:mysql://localhost}/${db.database.name:kbplus700dev}?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8"
             properties:
                 jmxEnabled: true
                 initialSize: 5
-                maxActive: 50
+                maxActive: -1
                 minIdle: 5
                 maxIdle: 25
                 maxWait: 10000
@@ -141,3 +159,83 @@ environments:
                 testOnReturn: false
                 jdbcInterceptors: ConnectionState
                 defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
+
+    test:
+        # escluster: elasticsearch
+        eshost: "${elasticsearch.service:localhost}"
+        localauth: true
+        dataSource:
+            dbCreate: none
+            driverClassName: com.mysql.jdbc.Driver
+            dialect: org.hibernate.dialect.MySQL5Dialect
+            username: "${db.username:k-int}"
+            password: "${db.password:k-int}"
+            url: "jdbc:${db.uri:mysql://127.0.0.1}/${db.database.name:kbplus700test}?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8"
+            logSql: false
+            formatSql: false
+            properties:
+                jmxEnabled: true
+                initialSize: 5
+                maxActive: 50
+                minIdle: 5
+                maxIdle: 25
+                maxWait: 10000
+                maxAge: 60000
+                timeBetweenEvictionRunsMillis: 5000
+                minEvictableIdleTimeMillis: 60000
+                validationQuery: SELECT 1
+                validationQueryTimeout: 3
+                validationInterval: 15000
+                testOnBorrow: true
+                testWhileIdle: true
+                testOnReturn: false
+                jdbcInterceptors: ConnectionState
+                defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
+
+    production:
+        # escluster: kbplusg3
+        eshost: "${elasticsearch.service:eskbplusg3}"
+        dataSource:
+            dbCreate: none
+            driverClassName: com.mysql.jdbc.Driver
+            dialect: org.hibernate.dialect.MySQL5Dialect
+            username: "${db.username:k-int}"
+            password: "${db.password:k-int}"
+            url: "jdbc:${db.uri:mysql://127.0.0.1}/${db.database.name:kbplusLive}?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8"
+            logSql: false
+            # url: "jdbc:mysql://localhost/kbplus700prod?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8"
+            properties:
+                jmxEnabled: true
+                initialSize: 5
+                maxActive: -1
+                minIdle: 5
+                maxIdle: 25
+                maxWait: 10000
+                maxAge: 600000
+                timeBetweenEvictionRunsMillis: 5000
+                minEvictableIdleTimeMillis: 60000
+                validationQuery: SELECT 1
+                validationQueryTimeout: 3
+                validationInterval: 15000
+                testOnBorrow: true
+                testWhileIdle: true
+                testOnReturn: false
+                jdbcInterceptors: ConnectionState
+                defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
+---
+grails:
+    assets:
+        excludes:
+        - "mixins/*.scss"
+---
+# The following settings are highly install specific and should be overridden using config.file.location
+# either by specifying -Dconfig.file.location on the command line for grails run-app or by adding a
+# tomcat/conf/Catalina/localhost/kbplus7.xml context descriptor to the tomcat environment and specifying
+# an environment entry like
+# <Environment name="spring.config.location" value="/home/kbplusstaging/.grails/kbplus7.yaml" type="java.lang.String" />
+# Defaults provided below to get you up and running
+skin: live
+master: true
+docstoreDir: ./docstore
+doDocstoreMigration: false
+configValidation: Application

@@ -1,0 +1,10 @@
+<!--
+
+Example context descriptor for kbplus7
+
+<Context path="/kbplus7" reloadable="false" docBase="/home/ibbo/tomcat_instances/kbplus_tc/assets/kbplus7.war">
+  <Environment name="spring.config.location" value="/home/ibbo/tomcat_instances/kbplus_tc/assets/kbplus7.yaml" type="java.lang.String"/>
+</Context>
+
+-->
+
