@@ -36,7 +36,7 @@ services:
 
   jc_mysql:
     container_name: jc_mysql
-    image: mariadb:latest
+    image: mariadb:10
     restart: 'no'
     environment:
       MYSQL_ROOT_PASSWORD: jc
