@@ -1,0 +1,40 @@
+<g:set var="cfg" value="${[[col:'publication_title', value:{e, ctx -> raw(e.title?.title) } ],
+                           [col:'print_identifier', value:{e, ctx -> e.title?.getIssn() ?: e.title?.getIsbn() } ],
+                           [col:'online_identifier', value:{ e, ctx -> e.title?.getEissn()?: e.title?.getIdentifierValue('eisbn') } ],
+                           [col:'date_first_issue_online', value:{e, ctx -> e.startDate?formatter.format(e.startDate):'' }],
+                           [col:'num_first_vol_online', value:{e, ctx -> e.startVolume }],
+                           [col:'num_first_issue_online', value:{e, ctx -> e.startIssue } ],
+                           [col:'date_last_issue_online', value:{e, ctx -> e.endDate?formatter.format(e.endDate):'' } ],
+                           [col:'num_last_vol_online', value: {e, ctx -> e.endVolume }],
+                           [col:'num_last_issue_online', value:{e, ctx -> e.endIssue }],
+						   [col:'title_url', value:{e, ctx -> raw(e.getCombinedPlatformUrl()) } ],
+						   [col:'first_author', value:''],
+                           [col:'title_id', value:{e, ctx -> e.id }],
+                           [col:'embargo_info', value:{e, ctx -> e.embargo }],
+						   [col:'coverage_depth', value:{e, ctx -> e.coverageDepth } ],
+						   [col:'notes', value:{e, ctx -> raw(e.coverageNote) } ],
+						   [col:'publisher_name', value:{e, ctx -> e.title?.publisher?.name }],
+						   [col:'publication_type', value:{e, ctx -> e.title?.publicationType }],
+						   [col:'date_monograph_published_print', value:{e, ctx -> e.title?.dateMonographPublishedPrint?formatter.format(e.title?.dateMonographPublishedPrint):'' }],
+						   [col:'date_monograph_published_online', value:{e, ctx -> e.title?.dateMonographPublishedOnline?formatter.format(e.title?.dateMonographPublishedOnline):'' }],
+						   [col:'monograph_volume', value:{e, ctx -> e.title?.monographVolume }],
+						   [col:'monograph_edition', value:{e, ctx -> e.title?.monographEdition }],
+						   [col:'first_editor', value:{e, ctx -> e.title?.firstEditor }],
+						   [col:'parent_publication_title_id', value:'' ],
+						   [col:'preceding_publication_title_id', value:'' ],
+						   [col:'access_type', value:{e, ctx -> e.accessType }],
+						   [col:'DOI', value:{e, ctx -> e.title?.getIdentifierValue('doi') }],
+						   [col:'ISSNs', value:{e, ctx -> e.title?.getIssn() }],
+						   [col:'eISSNs', value:{e, ctx -> e.title?.getEissn() }],
+						   [col:'ISBNs', value:{e, ctx -> e.title?.getIsbn() }],
+						   [col:'eISBNs', value:{e, ctx -> e.title?.getIdentifierValue('eisbn') }],
+						   [col:'access_start_date', value:{e, ctx -> e.accessStartDate?formatter.format(e.accessStartDate):'' }],
+						   [col:'access_end_date', value:{e, ctx -> e.accessEndDate?formatter.format(e.accessEndDate):'' }],
+						   [col:'access_status', value:{e, ctx -> e.getAvailabilityStatusAsString() }],
+                           ]}"/><g:set var="tabchar" value="\t"
+/><g:set var="formatter" value="${new java.text.SimpleDateFormat('yyyy-MM-dd')}"
+/><g:encodeAs codec="Raw"><g:each in="${cfg}" var="r">"${r.col}"${tabchar}</g:each>
+<g:each in="${titlesList}" var="tipp"
+><g:each in="${cfg}" var="r"><g:if test="${r.value instanceof groovy.lang.Closure}">"${r.value.call(tipp, ctx)}"${tabchar}</g:if
+><g:else>"${r.value}"${tabchar}</g:else></g:each>
+</g:each></g:encodeAs>

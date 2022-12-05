@@ -1,0 +1,17 @@
+model {
+  com.k_int.kbplus.TitleInstancePackagePlatform tipp
+  java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat('yyyy-MM-dd')
+}
+json {
+  CoverageStatement tmpl.coverageStatement([tipp])
+  TippId tipp.id
+  PublicationType tipp.title?.publicationType
+  DateMonographPublishedPrint tipp.title?.dateMonographPublishedPrint?formatter.format(tipp.title.dateMonographPublishedPrint):''
+  DateMonographPublishedOnline tipp.title?.dateMonographPublishedOnline?formatter.format(tipp.title.dateMonographPublishedOnline):''
+  MonographVolume tipp.title?.monographVolume
+  MonographEdition tipp.title?.monographEdition
+  FirstEditor tipp.title?.firstEditor
+  Title tipp.title?.title
+  TitleIDs tmpl.identifierOccurrence(tipp.title?.ids)
+}
+

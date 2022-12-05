@@ -1,0 +1,2151 @@
+/* GENERAL OVERRIDES
+============================================================================= */
+
+a i {
+	@include transition(opacity 0.3s ease-in-out);
+}
+
+a:hover i {
+	opacity:0.7;
+}
+
+nav i.material-icons {
+	font-size:20px;
+}
+
+i.medium {
+	font-size: 3rem;
+}
+
+th { font-weight: normal; }
+
+/* BUTTON OVERRIDES
+============================================================================= */
+
+.btn {
+    padding:0 15px;
+    font-weight: 400;
+    font-size: 15px;
+	height: 44px;
+    line-height: 44px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+}
+
+.force-default-pointer {
+	cursor: default !important;
+}
+
+.btn i.material-icons {
+	vertical-align: top;
+}
+
+.btn.simple-btn {
+	color: $directive;
+	padding: 0 7px;
+	font-size: 15px;
+    line-height: 32px;
+    height: 32px;
+	box-shadow: none;
+	i {
+		line-height: 28px;
+	}
+}
+
+.btn.no-outline-btn {
+	color: $directive;
+	padding: 0 7px;
+	height: 28px;
+	line-height: 28px;
+	font-size:11px;
+	box-shadow: none;
+	border-bottom: 0px !important;
+	i {
+		line-height: 32px;
+    	font-size: 19px;
+	}
+}
+
+
+.btn.simple-btn i {
+	line-height: 32px;
+	font-size: 19px;
+	width:0.5rem;
+}
+
+.btn.no-outline-btn i {
+	line-height: 28px;
+	font-size: 1rem;
+	width:0.5rem;
+}
+
+
+
+.launch-out {
+	.btn-floating {
+		width: 30px;
+		height: 30px;
+		line-height: 30px;
+		box-shadow:none;
+		background-color: transparent;
+		i {
+			width:30px;
+			line-height: 30px;
+			font-size:1.2rem;
+		}
+		&.bordered {
+			width: 30px;
+			height: 30px;
+			line-height: 30px;
+			border:2px solid #ddd;
+			box-shadow:none;
+			i {
+				width:26px;
+				line-height: 27px;
+				font-size:1.3rem;
+			}
+		}
+	}
+}
+
+// action-container buttons are used for 'view' edit' and 'delete' functionality
+.actions-container, .actions-container-single, .actions-container-triple {
+	a.btn-floating {
+		width: 30px;
+		height: 30px;
+		line-height: 30px;
+		border:2px solid #ddd;
+		box-shadow:none;
+		background-color: transparent;
+		margin-bottom: 5px;
+		i {
+			width:26px;
+			line-height: 27px;
+			font-size:1.3rem;
+			color:$directive;
+			margin-right: 0;
+		}
+	}
+	a.action-btn{
+		display: inline-block;
+		width: 32px;
+		height: 32px;
+		position: relative;
+		overflow: hidden;
+		line-height: 30px;
+		border-radius: 50%;
+		border:2px solid #ddd;
+		box-shadow:none;
+		background-color: transparent;
+		transition: .3s;
+		cursor: pointer;
+		vertical-align: middle;
+		margin-top:2px;
+		i {
+			width:28px;
+			line-height: 27px;
+			font-size:1.5rem;
+			color:$directive;
+			margin-right: 0;
+			text-align:centre;
+		}
+	}
+}
+
+
+a.btn-floating {
+	&.table-action {
+	display: block;
+	width: 30px;
+	height: 30px;
+	margin: 0 auto;
+	line-height: 30px;
+	border:2px solid #ddd;
+	box-shadow:none;
+	background-color: transparent;
+		&:first-child {
+			margin-right: 10px;
+		}
+		i {
+			width:26px;
+			line-height: 27px;
+			font-size:1.3rem;
+			color:$directive;
+		}
+		&.inline{
+			display:inline-block;
+		}
+	}
+}
+
+.collapsible-body {
+a.btn-floating {
+	&.table-action {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	margin: 0 auto;
+	line-height: 30px;
+	border:2px solid #ddd;
+	box-shadow:none;
+	background-color: transparent;
+	margin-bottom: 10px;
+		&:first-child {
+			margin-right: 10px;
+		}
+		i {
+			width:26px;
+			line-height: 27px;
+			font-size:1.3rem;
+			color:$directive;
+		}
+	}
+}
+}
+
+// large floating buttons - used for Core Status and Terms
+.btn-floating {
+	&.btn-large {
+		width: 40px;
+		height: 40px;
+		&.centered {
+	        position:relative;
+	        left:50%;
+	        transform: translate(-50%, 0%);
+    	}
+    	i {
+    		width:2.8rem;
+    		line-height: 42px;
+    	}
+	}
+}
+
+
+.btn-floating.with-core,
+.btn-floating.not-core,
+.btn-floating.was-core {
+   background-color: $bg;
+   i {
+      width: 24px;
+      height: 24px;
+      margin-left: 8px;
+      margin-top: 9px;
+      background-size: 24px 24px;
+      background-repeat: no-repeat;
+   }
+}
+
+.btn-floating.with-core {
+   i {
+      background-image: url(../assets/is-core.svg);
+   }
+}
+
+.btn-floating.not-core {
+   i  {
+      background-image: url(../assets/no-core.svg);
+   }
+}
+
+.btn-floating.was-core {
+   i  {
+      background-image: url(../assets/was-core.svg);
+   }
+}
+
+
+.btn-floating.terms {
+   background-color: $bg;
+   i  {
+      color:$directive;
+   }
+}
+
+/* COLLECTION OVERRIDE
+============================================================================= */
+
+.collection {
+	&.no-border {
+		border:none;
+	}
+}
+
+/* INDICATORS
+============================================================================= */
+
+.indicator {
+	display: inline-block;
+	text-transform: capitalize;
+	vertical-align: middle;
+	text-align: center;
+	letter-spacing: .5px;
+	color: $directive;
+	height: 28px;
+	line-height: 28px;
+	font-size: 15px;
+	box-shadow: none;
+	margin-right: 12px;
+	&:first-child {
+		margin-left: 10px;
+	}
+	&:last-child {
+		margin-right: 0;
+	}
+	i {
+		line-height: 28px;
+	    font-size: 1rem;
+	    width: 0.5rem;
+	    vertical-align: top;
+	}
+}
+
+/* JISC SEARCH SECTION
+============================================================================= */
+
+.search-section {
+	.btn {
+		margin-top: 15px;
+	}
+}
+.search-section.z-depth-1 {
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1), 0 1px 5px 0 rgba(0, 0, 0, 0.1), 0 3px 1px -2px rgba(0, 0, 0, 0.1);
+}
+
+.search-section {
+	ul.checkbox-collection {
+		margin-bottom: 10px;
+		li {
+			display: inline-block;
+			margin-right: 20px;
+			&:first-child {
+				margin-left: 45px;
+				font-size: 0.8rem;
+			}
+			&:last-child {
+				margin-right: 0;
+			}
+		}
+	}
+}
+
+.single-line-checkbox {
+	.radio-container-float.left {
+		margin-left: 0px;
+	}
+	[type="checkbox"] + label:before {
+		top: 1px !important;
+	}
+}
+
+
+/* JISC COLLAPSIBLE
+============================================================================= */
+
+.jisc_collapsible {
+	box-shadow: none;
+	//* == Accordian Header == */
+	.collapsible-header {
+		@include clearfix;
+		min-height:210px;
+		border-bottom: 1px solid #ddd;
+		cursor: inherit;
+		@include transition(all 0.3s ease-in-out);
+
+		&.height-small{
+			min-height:80px;
+		}
+
+		// announcements accordian require a smaller height
+		&.announcements {
+			min-height:170px;
+			.icon-accordian,
+			.full-height-divider  {
+				min-height: 170px;
+			}
+		}
+
+		// medium height accordian require a smaller height
+		&.medium-height {
+			min-height:170px;
+			.icon-accordian,
+			.full-height-divider  {
+				min-height: 170px;
+			}
+		}
+
+		i {
+			&.trigger-accordian {
+				display:block;
+			}
+			&.flag {
+				display: inline-block;
+				float:none;
+				position: relative;
+				top:3px;
+				line-height: 1rem;
+			}
+		}
+
+		.icon-collection {
+			width: 20px;
+			float: left;
+			margin-right: 30px;
+    		/* margin-left: 15px; Comment out for the title posistion*/
+			padding-top: 0px;
+			.icon-accordian {
+				margin: 0;
+				padding: 0;
+				position: static;
+   				min-height: 50px;
+			}
+			[type="checkbox"] + label {
+				padding-left: 22px;
+				margin-left: 1px;
+
+				&.align{
+					margin-left: 4px;
+					margin-top:  20px;
+				}
+			}
+		}
+
+		.icon{
+			position: relative;
+			width: 25px;
+			cursor: s-resize;
+			min-height: 50px;
+			display: block;
+			float: left;
+			margin-right: 55px;
+			margin-left: -5px;
+			padding-top: 0;
+			background-size: 25px 25px;
+			background-position: 0 25px;
+			background-repeat: no-repeat;
+			@include transition(opacity 0.3s ease-in);
+			@media #{$small-and-down} {
+				margin-right: 20px;
+				margin-left: 0px;
+			}
+		}
+
+		.icon-accordian {
+			position: relative;
+			width: 25px;
+			cursor: pointer;
+			min-height: 250px;
+		    display: block;
+		    float: left;
+		    margin-right: 55px;
+		    margin-left: -5px;
+		    padding-top: 0;
+			//background-image: url(../assets/icon-accordian.svg); see _brand for custom theme icons
+			background-size: 25px 25px;
+			background-position: 0 25px;
+			background-repeat: no-repeat;
+			@include transition(opacity 0.3s ease-in);
+			@media #{$small-and-down} {
+			    margin-right: 20px;
+			   	margin-left: 0px;
+			}
+			&:hover {
+				opacity:0.7;
+			}
+		}
+
+		a:hover {
+			opacity:0.7;
+		}
+		&.active  {
+		   background-color: #fafafa;
+		}
+		&.active {
+			border-bottom: 1px solid #ddd;
+			.icon-accordian {
+				//background-image: url(../assets/icon-accordian-close.svg); see _brand for custom theme icons
+				cursor: pointer;
+			}
+		}
+		/* == List accordian: collapsable headers display content using this element == */
+		.collection {
+			padding-bottom: 15px;
+		 	.collection-item {
+				background-color: transparent;
+				padding: 6px 0px;
+				border-bottom:none;
+				font-weight: 300;
+				&.actions {
+					.actions-container {
+						@include clearfix;
+						width:74px;
+						margin:0 auto;
+						a:first-child {
+							margin-right: 10px;
+						}
+						a:only-child {
+							margin-left: 30px;
+						}
+					}
+					.actions-container-single {
+						@include clearfix;
+						width:34px;
+						margin:0 auto;
+						a {
+							margin-right: 10px;
+						}
+						a:last-child {
+							margin-right: 0px;
+						}
+					}
+					.actions-container-triple {
+						@include clearfix;
+						width:122px;
+						margin:0 auto;
+						a {
+							margin-right: 10px;
+						}
+						a:last-child {
+							margin-right: 0px;
+						}
+					}
+				}
+				&.status, &.terms {
+					margin-top: 20px;
+					p {
+					margin-top: 5px;
+					margin-bottom: 0;
+					}
+				}
+				&.first {
+					margin-top: 20px;
+				}
+				.first {
+					margin-top: 14px;
+				}
+				span {
+					font-weight: 400;
+				}
+
+			}
+		}
+		.full-height-divider {
+			min-height:250px;
+			border-left:1px solid #ddd;
+			.label i {
+			width: 18px;
+			height: 30px;
+			}
+		}
+
+		// used for displaying download options on /export/list
+		ul.download-options {
+			margin-left: 10px;
+			li.first {
+				margin-top: 15px;
+			}
+			li {
+				display: block;
+				margin-bottom: 10px;
+				i {
+					//display: inline-block;
+					//float:none;
+					font-size: 1.3rem;
+					margin-right: 0;
+					margin-left: 0.7rem;
+					line-height: 2.5rem;
+					width: 1.3rem;
+					//font-size:inherit;
+				}
+			}
+		}
+
+	}
+
+	//* == Accordian Body == */
+	.collapsible-body {
+		@include clearfix;
+		padding:2rem;
+		border-bottom: 1px solid $divider;
+		border-top:none;
+		background-color: #fafafa;
+		h3 {
+			font-size:15px;
+			font-weight: 300;
+			margin-bottom: 10px;
+		}
+		p {
+			font-weight: 400;
+			margin-bottom: 20px;
+			word-wrap: break-word;
+			span {
+				font-weight: 400;
+			}
+		}
+		ul.content-list{
+			li {
+				margin-bottom: 15px;
+			}
+			a {
+				border-bottom: 1px solid #e85e13;
+				margin-right: 5px;
+			}
+		}
+		.issn-table {
+			padding: 10px 0 18px 0;
+		}
+		table td:not(.highlight) {
+			font-weight: 400;
+		}
+		table span {
+			display: block;
+		}
+		table a {
+			border-bottom: 1px solid #458525;
+		}
+		.host-link-launch {
+			margin-top: 18px;
+			p {
+				width:56px;
+				text-align: center;
+				font-size:15px;
+				padding-top: 5px;
+				margin-bottom: 0;
+
+			}
+		}
+		.cta {
+			margin-top: 28px;
+		}
+		.center-horizontal {
+			padding-left: 40%;
+		}
+
+		&.filtercheck{
+			margin-bottom:35px;
+		}
+	}
+}
+
+.jisc_collapsible {
+	/* == Search Filter: has its own accordian display styles == */
+	&.search-filter {
+		box-shadow: none;
+		border-top:none;
+		border-right:none;
+		border-left:none;
+		-webkit-border-radius: 3px;
+		-moz-border-radius: 3px;
+		border-radius: 3px;
+		.collapsible-header {
+			height:auto;
+			min-height:auto;
+			font-size:15px;
+			cursor: pointer;
+			&.active {
+				background-color: transparent;
+			}
+		}
+		.collapsible-header,
+		.collapsible-body {
+			border-bottom:none;
+			background-color: transparent;
+			padding: 0;
+		}
+		.btn {
+			/*
+			margin-top: 10px;
+			margin-left: 15px;
+			background-color: $grey;
+			&.active {
+				background-color: $green;
+			}
+			*/
+		}
+	}
+	.content-list li span {
+		font-weight: lighter;
+	}
+}
+
+
+
+/* JISC COLLECTIONS - User for Comparison layouts
+============================================================================= */
+
+.jisc-compare-collection {
+	&.collection {
+		&.with-header {
+			.collection-header {
+				height: 100px;
+				padding-left: 30px;
+				h2 {
+					padding-top: 8px;
+				}
+			}
+		}
+		.collection-item{
+			&.fixed-compare-data {
+				height:350px;
+				h3.sub-title {
+					padding-top: 10px;
+				}
+				table {
+					margin-bottom: 15px;
+				}
+				thead {
+					border-bottom: none;
+				}
+				td, th {
+					padding: 5px 0px 10px 0px;
+					font-size:15px;
+				}
+				th {
+					padding: 15px 0px 5px 0px;
+				}
+				td {
+					width:50%;
+				}
+			}
+		}
+	}
+}
+
+table .linkPackages, td{
+	vertical-align: middle;
+	i.whiteOver {
+		color: #FFF;
+		/*padding-top: 3px;*/
+		height:36px;
+	}
+}
+
+.note {
+	font-size: 16px;
+}
+
+/* JISC COMPARE - Compare Licences
+============================================================================= */
+
+.compare-title {
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+.jisc-compare {
+	&.collection {
+		&.with-header {
+			.collection-header {
+				height: auto;
+				padding-left: 30px;
+				h2 {
+					padding-top: 8px;
+					padding-bottom:10px;
+				}
+			}
+		}
+		.collection-item{
+			@include clearfix;
+			&.no-divider {
+				border-bottom: none;
+				padding-bottom:0;
+			}
+			h2 {
+				padding: 15px 0;
+				width:90%;
+			}
+			i {
+				position:relative;
+			}
+			i.compare-icon {
+				font-size:36px;
+				top:0;
+			}
+			ul.options {
+				padding-bottom:15px;
+				position:relative;
+				display:inline-block;
+				li {
+					display: inline-block;
+					margin-right: 20px;
+					font-size: 15px;
+				}
+			}
+		}
+	}
+}
+
+
+/* Graphics with text at the bottom -- needs to be relocated eventually
+============================================================================= */
+
+.properties-container {
+	@include clearfix;
+	padding-top: 20px;
+	&.center-graphic {
+		text-align: center;
+	}
+	.property {
+		margin-bottom: 2.5rem;
+		cursor:pointer;
+	}
+	.circular-image {
+		width: 60px;
+ 		height: 60px;
+		margin: 0 auto 20px auto;
+		position: relative;
+	}
+}
+
+.icon-height {
+	min-height: 130px !important;
+}
+
+
+.ticks-and-crosses {
+	text-align: center;
+	li {
+		float: left;
+		width: 12.5%;
+	}
+	.circular-image {
+		width: 60px;
+	    height: 60px;
+		margin: 20px auto 20px auto;
+		border-radius:0%;
+		border:0px;
+	}
+	.text-content {
+		margin: 0 auto 0px auto;
+		max-width: 100px;
+	}
+
+	.circular-image.tick {
+		background-image: url(/assets/tick.png);
+		background-size: contain;
+	}
+	.circular-image.cross {
+		background-image: url(/assets/cross.png);
+		background-size: contain;
+
+	}
+}
+
+// alternative for licence Properties as used on Subscriptions List accordian drop down - created by Angelo
+ul.licence-properties {
+	margin-top: 10px;
+	margin-bottom: 20px;
+	li {
+		width:30px;
+		display: inline-block;
+		margin-right: 30px;
+		cursor: pointer;
+		&:last-child {
+			margin-right: 0;
+		}
+		i.small {
+			width: 30px;
+		}
+	}
+}
+
+/* JISC CARD
+============================================================================= */
+.no-padding {
+	padding:0;
+}
+.card-form{
+	margin-top:30px;
+}
+.jisc_card {
+	@include clearfix;
+	border-radius: 3px;
+	box-shadow:none;
+
+	&.fullheight{
+		height:auto !important;
+	}
+
+	.card-content {
+		overflow-x:hidden;
+		overflow-y:auto;
+		padding-top: 20px;
+		.card-action a{
+		    @include font-size(15px);
+		    font-weight: 400;
+		}
+		.launch-out {
+			position: absolute;
+			top: 18px;
+			right:20px;
+		}
+
+		h2 {
+			word-break: break-all;
+		}
+
+		hr {
+			border: none;
+		    height: 1px;
+		    border-bottom: 1px solid #e0e0e0;
+		    margin-bottom: 0;
+		    margin-top: 30px;
+		}
+
+		.circular-image {
+			width: 60px;
+			height: 60px;
+			border-radius:100%;
+			//border:1px solid grey;
+
+			.properties-lie {
+				width: 2.5rem;
+				height: 30px;
+			}
+
+		}
+
+		.center-graphic {
+			text-align: center;
+			.circular-image {
+				margin: 0 auto 20px auto;
+			}
+		}
+
+
+
+		.card-detail {
+			//border-bottom:1px solid $white;
+			p {
+				font-size: 15px;
+				font-weight: 400;
+				margin-bottom: 10px;
+				&.meta {
+					margin-bottom: 0;
+					font-weight: 300;
+					span {
+						font-weight:400;
+					}
+				}
+			}
+			p.giga-size {
+				font-size: $giga-size;
+				line-height:45px;
+				font-weight: 400;
+				margin-bottom: 5px;
+			}
+			h3 {
+				border-bottom: 1px solid $white;
+				padding-bottom: 10px;
+			}
+			.secondary-content {
+				color:$directive;
+			}
+			[type="checkbox"] + label.compressed:before, [type="checkbox"]:not(.filled-in) + label.compressed:after {
+				left:18px;
+			}
+			[type="checkbox"] + label.compressed {
+				padding-left: 45px;
+			}
+
+			&.plain-content {
+				margin-top: 20px;
+				ul {
+					padding: 10px 0 0 0;
+					border-top: 1px solid #000;
+					li {
+						margin-bottom: 5px;
+						h2 {
+							font-weight: 300;
+							word-break: break-all;
+						}
+					}
+				}
+			}
+			&.scrollable-content {
+				height: 300px;
+				overflow-y: scroll;
+				p {
+					line-height: 20px;
+				}
+				.actions {
+					.actions-container {
+						@include clearfix;
+						width:100%;
+						margin:0 auto;
+
+						display: flex;
+						flex-wrap: wrap;
+						justify-content: center;
+
+						a.btn-floating {
+							width: 25px;
+							height: 25px;
+							line-height: 25px;
+							border:none;
+							background: $white;
+							margin-right:5px;
+							margin-top:5px;
+
+							i {
+								width:25px;
+								line-height: 25px;
+								color:$directive!important;
+								margin-right: 0;
+							}
+						}
+					}
+				}
+			}
+
+		}
+
+		.card-meta {
+			margin-top: 16px;
+			.btn {
+			    // background-color: $white;
+			    // color: #2c3841;
+			    font-size: 15px;
+				margin-bottom: 13px;
+				white-space:nowrap;
+			}
+		}
+
+		.collection {
+			margin: 0 0 1rem 0;
+			border: none;
+			border-radius: 2px;
+			overflow: hidden;
+			position: relative;
+			.collection-item {
+				background-color: $white;
+				line-height: 1.5rem;
+				padding: 15px 0px;
+				margin: 0;
+				border-bottom: 1px solid #e0e0e0;
+				&.plain {
+					border-bottom: none;
+				}
+				span {
+					font-weight: lighter;
+				}
+				&.last {
+					font-size: 16px;
+				}
+				&.avatar {
+					padding: 15px 0px 15px 50px;
+					i.circle {
+						width: 32px;
+						height: 32px;
+						left: 0px;
+						font-size:16px;
+						line-height:32px;
+					}
+				}
+				ul li {
+					@include font-size(15px);
+				}
+				a{
+					i.date{
+						display: block;
+					}
+				}
+			}
+			&.coloured {
+				.collection-item,
+				.collection-header {
+					background-color: transparent;
+					a {
+
+						&:hover {
+							opacity:(0.7);
+						}
+					}
+					&:hover {
+						background-color: transparent;
+					}
+					&:last-child {
+						border-bottom: none;
+					}
+				}
+				.collection-header {
+					padding-left: 0;
+					font-weight: 400;
+					font-size: 15px;
+				}
+			}
+			&.with-actions {
+				.collection-item {
+					@include clearfix;
+				}
+			}
+		}
+	}
+	// override class to make a card white rather than the section colour
+	&.white {
+		background-color: $white !important;
+	}
+	// varied size options of card heights
+	&.tiny,
+	&.small,
+	&.nsmall,
+	&.medium,
+	&.mlarge,
+	&.large {
+		border-radius: 3px;
+		box-shadow:0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+		.card-title {
+		  @include font-size(18px);
+		  font-weight: 400;
+		  border-bottom: 1px solid #ccc;
+		  padding-bottom: 8px;
+		  margin-bottom: 0;
+		}
+		.card-detail {
+			p {
+				margin-bottom: 0px;
+			}
+			p.list {
+				padding-top: 10px;
+				border-top: 1px solid rgba(160, 160, 160, 0.2);
+			}
+			&.no-card-action {
+				height:160px;
+				overflow: auto;
+				overflow-x: hidden;
+				&.full{
+					height:220px
+				}
+			}
+			&.help-card-content {
+				height:120px;
+				overflow: auto;
+				overflow-x: hidden;
+			}
+			.help-item {
+				margin-top: 10px;
+				p {
+					font-size: 15px;
+				}
+			}
+		}
+	}
+	.pack-detail{
+		border-bottom: none !important;
+		font-weight: 300 !important;
+	}
+
+	.mar-min {
+		margin-top: -5px !important;
+	}
+
+	.mar-search {
+		margin-top: 4px !important;
+	}
+
+	// specific large card overrides
+	&.large {
+		.card-detail {
+			&.no-card-action {
+				height:290px;
+				overflow: auto;
+				overflow-x: hidden;
+			}
+		}
+
+		.launch-out {
+			position: absolute;
+			top: 18px;
+			right:22px;
+		}
+
+	}
+
+	&.xlarge {
+		.card-detail {
+			&.no-card-action {
+				height:440px;
+				overflow: auto;
+				overflow-x: hidden;
+			}
+		}
+	}
+	.col {
+		padding:0;
+	}
+	.input-field {
+		margin-top: 0;
+
+		&.padding{
+			padding:5px;
+
+			label{
+				padding-left:5px;
+			}
+		}
+
+		&.col .top10{
+			top:10px;
+		}
+
+		&.col label {
+			left: 0;
+
+			&.top10{
+				top:-10px;
+			}
+		}
+		#clearSearch {
+			font-size:1.3rem;
+			right:0rem;
+			top:1rem;
+		}
+		input[type=search] {
+			margin-bottom: 0;
+			font-size:0.8rem;
+			padding-left: 2rem;
+			width: calc(100% - 2rem);
+			&:focus {
+				border-bottom:1px solid #9e9e9e;
+			}
+		}
+		input[type=search] + label {
+			left:0rem;
+		}
+	}
+
+}
+
+// card-panel's are smaller more compact cards used for small information displays
+.card-panel {
+	position: relative;
+	padding-top: 20px;
+	.launch-out {
+		position: absolute;
+		top: 16px;
+		right:18px;
+	}
+	p.card-label {
+		@include font-size(16px);
+		color:$grey;
+		margin-bottom: 10px;
+		span.card-response {
+			font-weight:400;
+			color:$directive;
+		}
+	}
+	p.card-title {
+		@include font-size(16px);
+		font-weight: 400;
+		color:$directive;
+		margin-bottom: 10px;
+		padding-right: 25px;
+	}
+	p.card-caption {
+		@include font-size(15px);
+		color:$grey;
+		span {
+			font-weight: 400;
+		}
+	}
+	&.fixed-height-title {
+		min-height:190px;
+		p.card-title {
+			min-height:60px;
+		}
+		p.card-caption {
+			margin-bottom: 0;
+		}
+	}
+	&.xsmall{
+		min-height:200px;
+	}
+}
+
+.card-panel.exports {
+	@include clearfix;
+	p {
+		margin-bottom: 0;
+	}
+	img {
+		padding-top: 10px;
+	}
+	.btn-group {
+		margin-top: 26px;
+	}
+}
+
+.card-center {
+	height: 100%;
+	.center-row {
+		display: flex;
+	    flex-wrap: wrap;
+	    justify-content: center;
+	    width: 100%;
+	    height: 100%;
+	    flex-flow: column;
+	    .row {
+	    	width: 100%;
+	    }
+	}
+}
+
+.row-inset {
+	margin-left: -10px;
+    margin-right: -10px;
+}
+
+// inline-card-panel's are used within a larger parent container
+.internal-card-panel {
+	width:50%;
+	position: relative;
+	float:left;
+	height:125px;
+	padding-top: 20px;
+	padding-left: 24px;
+	border-right:1px solid $divider;
+	border-bottom: 1px solid $divider;
+	.launch-out {
+		position: absolute;
+		top: 16px;
+		right:18px;
+	}
+	p.card-label {
+		@include font-size(16px);
+		color:$grey;
+		margin-bottom: 10px;
+		span.card-response {
+			font-weight:400;
+			color:$directive;
+		}
+	}
+	p.card-title {
+		@include font-size(16px);
+		font-weight: 400;
+		color:$directive;
+		margin-bottom: 10px;
+		border-bottom: none;
+	}
+	p.card-caption {
+		@include font-size(15px);
+		color:$grey;
+		margin-bottom: 5px;
+		span {
+			font-weight: 400;
+		}
+	}
+	.card-content-scrollable {
+		height:50px;
+		overflow:scroll;
+	}
+}
+
+
+/* JISC INLINE BADGE
+============================================================================= */
+
+
+.inline-badge {
+	min-width: 1rem;
+    padding: 4px 6px;
+    margin-left: 14px;
+    text-align: center;
+    font-size: 0.8rem;
+    line-height: 22px;
+    height: 22px;
+    color: #fff;
+    background: grey;
+    border-radius: 3px;
+    box-sizing: border-box;
+    cursor: pointer;
+    &.no-hover { // used for when a badge doesnt inslude a tooltip and therefore no cursor indication
+    	cursor:auto;
+    }
+    i {
+    	font-size:16px;
+    	position:relative;
+    	top:4px;
+    }
+}
+
+.inline-badge-comp {
+	min-width: 1rem;
+    padding: 4px 6px;
+    margin-left: 0px;
+    text-align: center;
+    font-size: 0.8rem;
+    line-height: 22px;
+    height: 22px;
+    color: #fff;
+    background: grey;
+    border-radius: 3px;
+    box-sizing: border-box;
+    cursor: pointer;
+    &.no-hover { // used for when a badge doesnt inslude a tooltip and therefore no cursor indication
+    	cursor:auto;
+    }
+    i {
+    	font-size:16px;
+    	position:relative;
+    	top:4px;
+    }
+}
+
+
+.material-tooltip {
+	border-radius: 4px;
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1), 0 1px 5px 0 rgba(0, 0, 0, 0.1), 0 3px 1px -2px rgba(0, 0, 0, 0.1);
+	max-width: 400px;
+}
+
+.kb-tooltip {
+	background: #F7F6F6;
+	color:#414D57;
+	margin: -10px;
+	padding: 10px 10px;
+	.tooltip-title {
+		font-size: 17px;
+	    border-bottom: 1px solid #458525;
+	    display: block;
+	    margin: 0 -8px 8px -8px;
+	    padding: 0px 8px 8px 8px;
+	    text-align: left;
+
+	}
+	.tooltop-list {
+		margin-top: -8px;
+	}
+	.tooltip-list li {
+		font-size: 15px;
+	    border-bottom: 1px solid #fff;
+	    margin-left: -8px;
+	    margin-right: -8px;
+	    padding: 0px 8px 8px 8px;
+	    text-align: left;
+	}
+}
+
+
+
+/* JISC TABS
+============================================================================= */
+
+.jisc_tabs, .jisc_content_tabs {
+	margin-top: 40px;
+	margin-bottom: 20px;
+	-webkit-border-top-left-radius: 3px;
+	-webkit-border-top-right-radius: 3px;
+	-moz-border-radius-topleft: 3px;
+	-moz-border-radius-topright: 3px;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+	.tab {
+		text-align: left;
+		a {
+			padding-left: 20px;
+			font-size:17px;
+			font-weight:400;
+			text-transform: none;
+			transition: all .25s ease-in-out;
+			  -moz-transition: all .25s ease-in-out;
+			  -webkit-transition: all .25s ease-in-out;
+			&:hover {
+				opacity:0.4;
+			}
+		}
+	}
+}
+
+
+
+.tabs.jisc_content_tabs .tab a:hover,
+.tabs.jisc_content_tabs .tab a.active {
+    background-color: transparent;
+}
+
+.tabs.jisc_tabs .indicator,
+.tabs.jisc_content_tabs .indicator
+{
+  height: 5px;
+}
+
+
+.tab-content, .row-content {
+	@include clearfix;
+	.card.tiny {
+		height:112px;
+	}
+	.card.nsmall {
+		height:240px;
+	}
+	.card.small {
+		height:240px;
+	}
+	.card.medium {
+		height:239px;
+
+		.center-row .row {
+			margin-bottom: 0px;
+		}
+	}
+	.card.mlarge{
+		height:278px;
+	}
+	.card.large {
+		height:375px;
+	}
+	.card.xlarge {
+		height:511px;
+	}
+	.card-panel {
+		height:113px;
+	}
+}
+
+
+
+
+/* JISC TABLE within TABS
+============================================================================= */
+
+.tab-table {
+	background:#fff;
+	padding:15px 25px 25px 25px;
+	border-radius: 3px;
+	tr.active-basket {
+		background: #e9ffde;
+	}
+
+
+
+	.jisc_content_tabs {
+		margin-bottom: 8px;
+		margin-top: 0px;
+		border-bottom:1px solid $divider;
+		background-color:$white;
+		a{
+			color: $grey;
+		}
+		a:hover{
+			color: $directive;
+		}
+	}
+	.indicator{
+	color:$directive;
+	}
+
+	td {
+		//word-wrap: break-word;
+		//word-break: break-all;
+	}
+
+	&.nobreak{
+		td{
+			word-wrap: inherit;
+			word-break: inherit;
+		}
+	}
+
+	td, th {
+		padding: 15px 5px;
+		font-size:15px;
+	}
+	th {
+		font-weight:400;
+		font-size:15px;
+	}
+
+	i {
+		//color:$directive;
+		//line-height:30px;
+		//font-size: 1.4rem;
+	}
+	a.table-action {
+		//padding-right: 8px;
+		display: inline-block;
+		margin-bottom:5px;
+		@include transition(all 0.3s ease-in-out);
+		&:hover {
+			opacity:0.7;
+		}
+	}
+	.rowtitle{
+		text-decoration: underline;
+	}
+	.notes {
+		margin-top: 10px;
+		font-size: 15px;
+		color: #2c3841;
+		width: 100%;
+		text-align: left;
+
+		p{
+			word-break: break-word;
+		}
+
+		span{
+			margin-right:20px;
+		}
+	}
+
+	.ttadd {
+		color:#fff;
+		line-height:inherit;
+		font-size: 1.4rem;
+	}
+
+	[type="checkbox"] + label {transform: translateY(-10px);}
+	[type="checkbox"] + label.four-down-translate {transform: translateY(4px);}
+
+
+	.text-navy.titled {
+		font-size: 18px;
+    	line-height: 33px;
+		font-weight: 400;
+		display: block;
+	}
+	.iconed-status {
+		margin: 16px 0 0 0;
+		i {
+			margin-right: 30px;
+		}
+	}
+	.half {
+		width: 50%;
+	}
+	.status {
+		i {
+			font-size: 35px;
+			margin-right: 50px;
+		}
+	}
+
+}
+
+
+/* JISC TABLE strip version
+============================================================================= */
+
+.table-title {
+	font-size:17px;
+}
+
+.strip-table {
+	background:#fff;
+	padding:15px 25px;
+	border-radius: 3px;
+	p {
+		margin-bottom: 0;
+	}
+
+	.title {
+		font-size: 16px;
+		color: #9B9B9B;
+
+		&.noleft{
+			padding-left:0px;
+		}
+	}
+	.result {
+		font-size: 16px;
+		color: #2c3841;
+	}
+	.section {
+		border-bottom: 1px solid #EFF2F7;
+		padding-bottom: 10px;
+	    padding-top: 10px;
+	}
+	.section:last-child, .section:nth-last-child(2) {
+		border-bottom: 0px;
+	}
+
+	&.noborder{
+		.section{
+			border-bottom: 0px;
+
+		}
+	}
+
+}
+
+.strip-table-alt,
+.strip-table-issue-ents,
+.strip-table-issue-ents-T {
+	background:#fff;
+	padding:15px 0px;
+	border-radius: 3px;
+
+	.title {
+		font-size: 16px;
+		line-height: 29px;
+		color: $grey;
+
+	}
+	.result {
+		font-size: 16px;
+	    line-height: 29px;
+	    font-weight: 400;
+		color: $directive;
+	}
+	.result a:link{
+			text-decoration: underline;
+	}
+	.section {
+		padding: 12px 15px;
+	}
+
+
+}
+
+.card-panel.strip-table-alt {
+	height: 511px;
+}
+
+.card-panel.strip-table-issue-ents {
+	height: 850px;
+}
+
+.card-panel.strip-table-issue-ents-T {
+	height: 680px;
+}
+
+
+
+.action-set {
+	margin:20px 0 0 0;
+	display:flex;
+	flex-wrap:nowrap;
+
+	&.text{
+		a{
+			text-align:center;
+			p{
+				margin-bottom:0px;
+			}
+		}
+	}
+}
+
+.action-set a{
+	margin-right: 60px;
+}
+
+.action-set a:last-child {
+	margin-right: 0px !important;
+}
+
+.action-set span {
+	margin-left: 50px
+}
+
+/* JISC PAGINATION
+============================================================================= */
+#paginator.hidden {display: none;}
+.jscroll-added {margin-top: -16px;}
+
+
+.pagination{
+	font-size: 18px;
+	line-height: 30px;
+	margin-top: 50px;
+
+	a{
+		display: inline-block;
+		width: 30px;
+		height:30px;
+		color: $grey;
+		text-align: center;
+		transition: opacity 0.3s ease-in-out;
+		&:hover{
+			opacity:(0.7);
+			//background-color: #b71a8b;
+		}
+	}
+
+	a:nth-last-child(2) {
+		width:auto;
+		padding:0 7px;
+	}
+
+	span {
+		display: inline-block;
+		height: 30px;
+		width:30px;
+		color: #fff;
+		text-align: center;
+		margin-right: 5px;
+	}
+
+	.prevLink{
+		width: 60px !important;
+	}
+
+	.nextLink{
+		width: 60px !important;
+	}
+	i.pagination-icon {
+		position: relative;
+		top:10px;
+	}
+}
+
+
+/* table flex row
+============================================================================= */
+.flex-row {
+	display: inline-flex;
+	justify-content: space-around;
+	align-items: center;
+	width: 100%;
+	vertical-align: middle;
+
+
+	li {
+		display: flex;
+		align-items: center;
+	}
+
+	.green {
+		background-color: transparent !important;
+		color: #3CB398;
+	}
+	.red {
+		background-color: transparent !important;
+		color: #990100;
+	}
+	.default {
+		color: #43505A;
+	}
+	.info {
+		color: #00557f;
+	}
+	.material-icons {
+		font-size: 35px;
+	}
+}
+
+
+/* checkbox and radio syles
+============================================================================= */
+
+.checkbox-collection, .radio-collection {
+	li label {
+		color: rgb(64, 77, 87);
+	}
+
+	&.space{
+		li{
+			margin-top:5px;
+			margin-bottom:5px;
+		}
+	}
+}
+[type="checkbox"] + label:before, [type="checkbox"]:not(.filled-in) + label:after {
+  border: 2px solid #2c3841;
+}
+[type="radio"] + label:before, [type="radio"]:not(.filled-in) + label:after {
+  border: 2px solid #2c3841;
+}
+
+/* Table utilities
+============================================================================= */
+
+.force-wrap {
+	word-wrap: break-word;
+}
+
+.fixed-table {
+	table-layout: fixed;
+}
+
+.icon-red {
+	color: #97050C !important;
+}
+
+.icon-blue {
+	color:#3F879F !important;
+}
+
+.icon-green {
+	color: #42B298 !important;
+}
+
+.top50{
+	margin-top: 50px;
+}
+.top40{
+	margin-top: 40px;
+}
+
+.top30 {
+	margin-top: 30px;
+}
+.top20 {
+	margin-top: 20px;
+}
+.top10 {
+	margin-top: 10px;
+}
+
+.back-pack {
+	background-color: #00557f !important;
+}
+
+.back-lie {
+	background-color: #990100 !important;
+}
+
+.back-sub {
+	background-color: #458525 !important;
+}
+
+.back-title {
+	background-color: #e85e13 !important;
+}
+
+.back-fin {
+	background-color: #0BA6D3 !important;
+}
+/* Custom fixes that are only used once ever
+============================================================================= */
+
+.custom-fix-1 {
+	margin-left: 30px;transform: translateY(10px);
+}
+
+.icon-offset {
+    margin-top: -15px;
+    margin-left: 45px;
+    font-size: 45px;
+
+
+    &.yes {
+      color: green;
+    }
+
+    &.no {
+      color: red;
+    }
+
+    &.neither {
+      color: purple;
+    }
+}
+
+.icon-offset-small {
+    margin-top: 0px;
+    margin-left: 0px;
+    font-size: 45px;
+
+    &.yes {
+      color: green;
+    }
+
+    &.no {
+      color: red;
+      // margin-top: 6px
+    }
+
+    &.neither {
+      color: purple;
+      // margin-top: 6px
+    }
+}
+
+
+/* For selects in cards */
+
+.allowOverflow {
+	overflow: visible !important;
+}
+
+
+
+/* TABEL MODAL --- FIND NEW LOCATION FOR STYLES
+============================================================================= */
+
+#flexbox{
+
+    display:-webkit-flex;
+    display:flex;
+    display:-ms-flexbox;
+    -ms-flex-flow:row;
+    -webkit-flex-flow: column;
+    -webkit-flex-flow: column-reverse;
+    -webkit-flex-flow: row-reverse;
+    -webkit-flex-flow: row;
+  width:100%;
+  -webkit-flex-wrap:wrap;
+
+
+}
+
+#flexbox > div:nth-child(1){background:yellow;-webkit-flex:4}
+#flexbox > div:nth-child(2){background:cyan;-webkit-flex:2; height:200px;}
+#flexbox > div:nth-child(3){background:red;-webkit-flex:2}
+#flexbox > div:nth-child(4){background:blue;-webkit-flex:1}
+
+
+
+// FLEXBOX layout for a complex modal data display
+
+.flex-parent {
+    display: flex;
+    -webkit-flex-direction: column;
+   	flex-direction: column;
+    align-content: center; // keeps the items all the same height at all times
+    overflow: hidden;
+    color: $directive;
+    border-bottom: 1px solid $divider;
+    @include breakpoint(720px) {
+  		-webkit-flex-direction: row;
+   		flex-direction: row;
+	}
+    span {
+    	color:$grey;
+    }
+	.bdr {
+		@include breakpoint(720px) {
+		border-left: 1px solid $divider;
+		}
+	}
+    .content {
+    	flex: 1;
+	    padding: 1.2rem;
+	    border-bottom: 1px solid $divider;
+	    background-color: $bg;
+	    &:last-child {
+	    	border-bottom: none;
+	    }
+	    @include breakpoint(720px) {
+			border-bottom: none;
+		}
+	    &.title {
+	    	font-size: 16px;
+	    	line-height: 29px;
+	    	font-weight: 400;
+	    }
+	}
+	.controls {
+		padding: 1.2rem;
+	    background-color: $bg;
+	    @include breakpoint(720px) {
+	    	flex:0;
+	  		margin-left: auto; // pushes item to the right
+		}
+    }
+}
+
+
+/* Search result page
+============================================================================= */
+.search-content{
+	.collapsible-header{
+		min-height:170px;
+	}
+}
+
+/* This makes the input submits the same as the a.btn */
+i{
+	input[type="submit"]{
+		padding:0;
+		letter-spacing: .5px;
+	}
+}
+
+
+/* ADMIN TEMPLATES
+============================================================================= */
+
+.admin-form {
+	margin-top: 20px;
+	.input-field.s6:nth-child(odd) {
+		padding-left: 0;
+	}
+	.input-field:nth-child(odd) label {
+		left: 0;
+	}
+}
+
+
+.admin-table-title-section {
+	margin-top: 10px;
+	margin-bottom: 30px;
+}
+
+.admin-table-collection-section {
+	margin-bottom: 50px;
+}
+
+.disabled{
+	i{
+		opacity: 0.5;
+		cursor:none;
+	}
+}
+
+.table-responsive-scroll{
+	&.always{
+		overflow-x:scroll;
+		th{
+			vertical-align: top;
+		}
+	}
+}
+
+
+.mergedatareturn{
+	padding-left:15px;
+	button{
+		margin-top:10px;
+		margin-bottom:10px;
+	}
+}
+
+.noleft{
+	padding-left:0px;
+}
+
+body.admin .btn {
+	min-width:90px;
+}
+
+.input-field input::-ms-clear {
+    display: none;
+}
+
+.mw-180 {
+	min-width: 180px !important;
+}
+
+.mw-500 {
+	min-width: 500px !important;
+}
+
+.mw-100 {
+	min-width: 100px !important;
+}
+
+.mw-130 {
+	min-width: 130px !important;
+}
+
+.red.lighten-1 {
+	background-color: #ED4530 !important;
+}
+
+.card-action{
+	.property{
+		.circular-image{
+			cursor: pointer;
+		}
+	}
+}
+
+.licenceproperties{
+	cursor: pointer;
+}
+
+.actiongroupright{
+	width: 90px;
+	float: right;
+}

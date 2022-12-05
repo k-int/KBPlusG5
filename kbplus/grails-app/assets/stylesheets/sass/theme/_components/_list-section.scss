@@ -1,0 +1,101 @@
+/* LIST SECTION INTERFACE
+============================================================================= */
+
+// used on:
+// Subscriptions / Detail / Titles
+
+//add space around the seach ui
+.list-search-ui {
+	margin-top: 30px;
+}
+
+.list-section {
+	@include clearfix;
+	position: relative;
+	display: block;
+	background:$white;
+	border-radius:3px;
+	border-bottom:1px solid #ddd;
+	.full-height-divider {
+		min-height:240px;
+		border-left:1px solid #ddd;
+		.collection {
+			.collection-item {
+				background-color: transparent;
+				padding: 6px 0px;
+				&.status {
+					margin-top: 20px;
+					p {
+					margin-top: 5px;
+					}	
+				}
+
+				.hostlink{
+					display:block;
+					margin:auto;
+					margin-top:19px;
+
+					i{
+						color:$white;
+					}
+				}
+
+				&.actions {
+					.actions-container {
+						@include clearfix;
+						width:74px;
+						margin:0 auto;
+						a:first-child {
+							margin-right: 10px;
+						}
+					}
+				}
+			}
+		}	
+	}
+
+	.list-title {
+		position: relative;
+	    cursor: pointer;
+	    display: inline-block;
+	    height: 25px;
+	    line-height: 25px;
+	    font-size: 18px;
+	    margin-left: -8px;
+	}
+
+
+	.collection {
+		margin: 0;
+		margin-bottom: 15px;
+		border: none;
+		&.with-header .collection-header {
+		    background-color: #fff;
+		    border-bottom: none;
+		    padding: 20px 10px 10px 10px;
+		    [type="checkbox"] + label {
+		    	color:$directive;
+		    	font-size: 18px;
+		    }
+		}
+	 	.collection-item {
+			background-color: transparent;
+			padding: 6px 0px 6px 44px;
+			border-bottom:none;
+			font-weight: 300;
+			&.first {
+				margin-top: 13px;
+			}
+			.first {
+				margin-top: 10px;
+			}
+			span {
+				font-weight: 400;
+			}
+			.two-in-a-row {
+				margin-left:10px; 
+				display: inline-block;
+			}
+		}	
+	}	
+}

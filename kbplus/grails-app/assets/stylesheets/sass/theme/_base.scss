@@ -1,0 +1,93 @@
+/* BASE
+----------------------------------------------- */
+
+// Set the default body styles like fonts, colour and background here
+body {
+   font-size: 1em;
+   line-height: 1.4;
+   color: $directive;
+   background: $bg;
+}
+
+
+h1, h2, h3, h4, h5, h6, p {
+  margin: 0;
+  padding: 0;
+  font-style: normal;
+}
+
+
+  h1 {
+    @include font-size($h1-size);
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    @include font-size($h2-size);
+  }
+
+  h3 {
+    @include font-size($h3-size);
+  }
+
+  h4 {
+    @include font-size($h4-size);
+  }
+
+  h5 {
+    @include font-size($h5-size);
+  }
+
+  h6 {
+    @include font-size($h6-size);
+  }
+
+
+p {
+  @include font-size(15px);
+  letter-spacing: 0;
+  margin-bottom: 16px;
+}
+
+a {
+  color:$directive;
+  word-wrap: break-word;
+  @include transition(opacity 0.3s ease-in-out);
+}
+
+a:link,
+a:visited {
+  //@include opacity(1);
+  text-decoration: none;
+}
+a:hover,
+a:focus {
+  text-decoration: none;
+  //@include opacity(0.6);
+}
+
+strong {
+  font-weight:600;
+}
+
+
+em {
+  font-style:italic;
+}
+
+
+ul {
+  list-style-position: inside;
+  margin: 0;
+  margin-bottom: 0;
+  padding: 0;
+  li {
+    list-style:none;
+    @include font-size-copy(15px);
+    letter-spacing: 0;
+  }
+}
+
+.colpadnine{
+  padding:0 0.9rem;
+}

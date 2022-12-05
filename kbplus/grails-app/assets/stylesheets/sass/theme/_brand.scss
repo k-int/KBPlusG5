@@ -1,0 +1,748 @@
+/**
+ * Brand stuff
+ */
+
+ /* THEME VARIABLES
+ ============================================================================= */
+
+// FONTS
+//$brand-face: sans-serif;
+$brand-face: 'Stag Sans Web', sans-serif;
+
+// INTERFACE COLOURS
+$kb-plus: #2c3841;
+$directive: #2c3841;
+$directiveLighten: lighten($directive, 20%) !default;
+$directiveDarken: darken($directive, 20%) !default;
+$white: #ffffff;
+$bg: #fafafa;
+$divider: #EFF2F7;
+$input: #ebedee;
+$caption: #535E67;
+$caption2: #9B9B9B;
+
+//System Section Colours
+$live: #2c3841;
+$development: #3c3c9d;
+$test: #b71a8b;
+
+// SECTION COLOURS
+$green: #458525;        // Subscriptions
+$purple: #990100;       // Licences
+$teal: #525e67;         // Packages
+$orange: #e85e13;       // Titles
+$blue: #00557f;         // Admin
+$lightblue: #0BA6D3;         // finance
+
+// SUBLIMENTARY COLOURS
+$navy: $directive;      // dark navy blue
+$putty: $bg;            // light grey/white
+$grey: #555555;
+$red: #ff0000;          // red
+
+
+// SECTION COLOURS HIGHLIGHTS
+$greenLighten: lighten($green, 67%) !default;
+$greenLightenTab: lighten($green, 20%) !default;
+$purpleLighten: lighten($purple, 68%) !default;
+$tealLighten: lighten($teal, 60%) !default;
+$orangeLighten: lighten($orange, 48%) !default;
+$blueLighten: lighten($teal, 60%) !default;
+$lightblueLighten: lighten($lightblue, 53%) !default;
+
+// SECTION COLOURS LOWLIGHTS
+$greenDarken: darken($green, 49%) !default;
+$purpleDarken: darken($purple, 23%) !default;
+$tealDarken: darken($teal, 27%) !default;
+$orangeDarken: darken($orange, 35%) !default;
+$blueDarken: darken($blue, 27%) !default;
+$lightblueDarken: darken($lightblue, 23%) !default;
+
+
+// EASING ANIMATIONS
+$animationEasing: cubic-bezier(0.455, 0.030, 0.515, 0.955) !default;
+
+
+/* Dashboard colour elements */
+.subs {
+  background-color: #DBE0D5;
+}
+
+.lice {
+  background-color: $purpleLighten;
+}
+
+.tile {
+  background-color: #E5DAD6;
+}
+
+.pacs {
+  background-color: #CDD9E1;
+}
+
+
+/* GLOBAL VARIANT - Background Colours
+============================================================================= */
+
+$bg-color: (
+   "navy": $directive,
+   "putty": $putty,
+   "grey": $grey,
+   "white": $white,
+) !default;
+
+@each $bg-color-type, $bg-color in $bg-color {
+   .bg-#{$bg-color-type} {
+      color: $bg-color !important;
+   } // end option
+} // end @each loop
+
+
+
+/* GLOBAL VARIANT - Text Colours
+============================================================================= */
+
+$text-color: (
+   "navy": $directive,
+   "putty": $putty,
+   "grey": $grey,
+   "white": $white,
+   "caption" : $caption,
+   "green": $green,
+   "red": $red,
+   "blue": $blue,
+   "lightblue": $lightblue,
+) !default;
+
+@each $text-color-type, $text-color in $text-color {
+   .text-#{$text-color-type} {
+      color: $text-color !important;
+   } // end option
+} // end @each loop
+
+
+
+
+/* THEME - COLOR VARIANTS
+============================================================================= */
+
+$color: (
+   "subscriptions": $green,
+   "licences": $purple,
+   "packages": $blue,
+   "titles": $orange,
+   "white": $white,
+   "profile":$teal,
+   "home":$blue,
+   "admin":$teal,
+   "system":$teal,
+   "data-manager":$teal,
+   "organisations":$blue,
+   "finance":$lightblue,
+) !default;
+
+@each $color-type, $color in $color {
+   body.#{$color-type} {
+
+      p a {
+         border-bottom:1px solid $color;
+         text-decoration: none !important;
+         &:hover{
+            opacity: 0.7;
+         }
+      }
+      // main masthead color variant
+      .jisc-top-header {
+         background-color: $color;
+      }
+
+      // page titles appear below masthead
+      .page-title {
+         color: $color;
+      }
+
+      .page-subtitle {
+         color: $color;
+         font-size: 15px;
+         font-weight: 600;
+      }
+
+      // help tool tips that appear at the start of a list search response
+      .page-response i.material-icons {
+         color: $white;
+      }
+      .page-response i.material-icons.help-icon {
+         color: $color;;
+      }
+      // custom colour for span's within the list response for search results
+      .list-response {
+         span {
+            color: $color;
+         }
+      }
+
+      // background colour of section buttons
+      .btn {
+         background-color: $color;
+
+         &.simple-btn {
+            background-color: transparent;
+            border:1px solid $color;
+
+            &.spaceleft10{
+               margin-left:10px;
+            }
+         }
+         &.deactive-btn {
+            background-color: transparent;
+            border:1px solid $color;
+            color:$grey;
+         }
+         &.no-outline-btn {
+            background-color: transparent;
+            border:0px solid $color;
+         }
+
+         &.secondary {
+            background-color: transparent;
+            border:1px solid $color;
+            color: $color;
+         }
+      }
+
+      .resetsearch{
+         margin-top: 30px;
+         display: inline-block;
+         border-bottom: 1px solid $color;
+         font-size:15px;
+         &:hover{
+            opacity: 0.7;
+         }
+         &.inputreset{
+            background: transparent;
+            box-shadow: none;
+            border-top: 0px;
+            border-right: 0px;
+            margin-left: 10px;
+            border-left: 0px;
+            min-width:90px;
+         }
+      }
+
+      .actions-container {
+         a.btn-floating i {
+            color: $color;
+         }
+        a.action-btn i {
+          color: $color;
+        }
+      }
+
+      .hostlink {
+         background: $color;
+      }
+
+      a.btn-floating.table-action i {
+         color:$color;
+      }
+
+      .collection-item a i {
+        color:$color;
+      }
+
+      // link states
+      .collapsible-header a:not(.btn-floating),
+      .jisc-compare-collection a:not(.btn-floating),
+      .jisc-compare a:not(.btn-floating),
+      .card.jisc_card .card-detail a:not(.btn-floating):not(.right)
+       {
+         border-bottom:1px solid $color;
+      }
+
+      //background for pagination
+      .pagination li.active {
+         background-color: $color;
+      }
+
+      //background for inline padges that may or may not be tooltipped
+      .inline-badge {
+         background-color: $color;
+      }
+
+      //the icons color
+      .theme-icon {
+         color: $color;
+      }
+
+      .branded-underline {
+         color: $color;
+         text-decoration: underline;
+      }
+
+      //datepicker background
+      .picker__date-display {
+         background-color: $color;
+      }
+
+      //datepicker btn
+      .picker__close, .picker__today, .picker__day.picker__day--today {
+         color: $color;
+      }
+
+      .picker__day--selected, .picker__day--selected:hover, .picker--focused .picker__day--selected {
+         background: $color;
+         color: #fff;
+      }
+
+      //select dropdown text color
+      .dropdown-content li > a, .dropdown-content li > span {
+         color: $color;
+      }
+
+      //checkboxes
+      [type="checkbox"]:checked + label:before {
+         border-right: 2px solid $color;
+         border-bottom: 2px solid $color;
+      }
+      [type="checkbox"]:indeterminate + label:before {
+         border-right: 2px solid $color;
+      }
+      //radio button
+      [type="radio"]:checked + label:after, [type="radio"].with-gap:checked + label:after {
+         background-color: $color;
+      }
+      [type="radio"]:checked + label:after, [type="radio"].with-gap:checked + label:before, [type="radio"].with-gap:checked + label:after {
+         border: 2px solid $color;
+      }
+
+      //form section indications - visual aid to split form sections up
+
+      h3.indicator:after {
+         background-color: $color;
+      }
+
+      // tabs active text colour and underline
+      // ************* this needs finising, each active tab will need a 'sectionLightenTab' colour variable created for it ****************
+      .jisc_tabs {
+         background: transparent;
+         border-bottom: 1px solid $color;
+         .indicator {
+            display: none;
+         }
+         .material-icons {
+            vertical-align: sub;
+         }
+         .tab {
+            margin-right: 10px;
+         }
+         a {
+            border-radius: 4px 4px 0px 0px;
+            color: $color;
+            border: 1px solid $color;
+         }
+         a:hover {
+            color: #fff;
+            opacity: 0.8;
+            background: $color;
+         }
+         .active, .active:hover {
+            background: $color;
+            color: #fff;
+         }
+         .active:hover {
+            opacity: 0.8;
+         }
+
+         &.scrolloverflow{
+            height:71px;
+         }
+      }
+
+      .jisc_content_tabs {
+         a.active {
+            color:$color;
+         }
+         .indicator {
+            background-color: $color;
+         }
+      }
+
+      // title of heading above a table not using Tabs
+      .table-title {
+         color: $color;
+      }
+
+      td{
+         a{
+            border-bottom: 1px solid $color;
+
+            &:hover{
+               opacity:0.7;
+            }
+         }
+      }
+
+      //for the modal form caption span tag
+      .form-caption span {
+         color: $color;
+         font-weight: 600;
+      }
+
+      // Cards have unique colour ways set here
+      .jisc_card {
+         background-color: #fff;
+         &.small {
+            .launch-out {
+               .btn-floating {
+                  background-color:$white;
+                  i {
+                     color: $color;
+                  }
+               }
+            }
+         }
+         .card-action a:not(.btn):not(.btn-large):not(.btn-floating) {
+            color: $color;
+         }
+         .btn-floating i {
+            color: $color;
+         }
+
+         .card-title{
+            a{
+               border-bottom: 1px solid $color;
+
+               &:hover{
+                  opacity:0.7;
+               }
+            }
+         }
+      }
+
+
+      .card-panel .launch-out {
+         .btn-floating {
+            background-color:$white;
+            i {
+               color: $color;
+            }
+         }
+      }
+
+      .internal-card-panel .launch-out {
+         .btn-floating {
+            background-color:$white;
+            i {
+               color: $color;
+            }
+         }
+      }
+
+      // span's used to highlight numbers in section colour 'you have 32 notifications'
+      .card-panel p.card-caption,
+      .internal-card-panel p.card-caption {
+         span:not(.label) {
+            color: $color;
+         }
+      }
+
+      .launch-out {
+         .btn-floating {
+            background-color:$white;
+            i {
+               color: $color;
+            }
+            &.right{
+               float:right;
+            }
+         }
+      }
+
+
+      // icon colours within floating buttons
+      .btn-floating i {
+         //color:$white;
+      }
+
+      // circle that holds icons within collection lists
+      .collection .collection-item.avatar i.circle {
+         background-color: $color;
+      }
+
+      .modal {
+         .launch-item {
+            background-color: $color;
+         }
+
+         .modal-close, back-sub{
+            background-color: $color;
+         }
+      }
+
+      .modal-close-all{
+         background-color: $color;
+      }
+
+      // pagination active state has a background colour
+      .pagination span {
+         background-color: $color;
+      }
+
+      .list-section{
+         a.list-title{
+            border-bottom: 1px solid $color;
+            &:hover{
+               opacity: 0.7;
+            }
+         }
+      }
+
+      .strip-table-alt,
+      .strip-table-issue-ents{
+         .result {
+            a {
+               border-bottom: 1px solid $color;
+               cursor: pointer;
+
+               &:hover{
+                  opacity: 0.7;
+               }
+            }
+         }
+      }
+
+      .content{
+         &.title{
+            a {
+               border-bottom: 1px solid $color;
+               cursor: pointer;
+
+               &:hover{
+                  opacity: 0.7;
+               }
+            }
+         }
+      }
+
+
+   } // end body option
+
+   .modal.#{$color-type} {
+      .btn {
+         background-color: $color;
+
+         &.simple-btn {
+            background-color: transparent;
+            border:1px solid $color;
+         }
+         &.deactive-btn {
+            background-color: transparent;
+            border:1px solid $color;
+            color:$grey;
+         }
+         &.no-outline-btn {
+            background-color: transparent;
+            border:0px solid $color;
+         }
+      }
+
+      .form-caption span {
+         color: $color;
+      }
+
+      .btn-floating {
+         background-color:$color !important;
+         &.transparent{
+            background-color:transparent !important;
+         }
+      }
+
+     [type="checkbox"]:checked + label:before {
+       border-right: 2px solid $color !important;
+       border-bottom: 2px solid $color !important;
+     }
+
+      h3.indicator:after {
+         background-color: $color !important;
+      }
+
+      a.launch-item {
+         background-color: $color !important;
+      }
+
+   }
+
+} // end @each loop
+
+
+
+/* THEME - TINT VARIANTS
+============================================================================= */
+
+$tint: (
+   "subscriptions": $greenLighten,
+   "licences": $purpleLighten,
+   "packages": $tealLighten,
+   "titles": $orangeLighten,
+   "home": $blueLighten,
+   "admin": $blueLighten,
+   "system": $blueLighten,
+   "data-manager": $blueLighten,
+   "organisations": $blueLighten,
+   "finance": $lightblueLighten,
+) !default;
+
+@each $tint-type, $tint in $tint {
+   body.#{$tint-type} {
+
+      background-color: #e4e9ec;
+
+      //focus on datepicker btn
+      button.picker__today:focus, button.picker__clear:focus, button.picker__close:focus {
+         background-color: $tint;
+      }
+
+
+      // Cards have unique colour ways set here
+      .jisc_card {
+         .collection .collection-item:hover {
+            background-color: $tint;
+         }
+      }
+
+      .btn {
+         &.simple-btn {
+            &:hover {
+            background-color: $tint;
+            }
+         }
+      }
+
+      // floating button background color
+      .btn-floating {
+         //background-color: $tint;
+      }
+
+
+      //modal window background color
+      .modal {
+         background-color: $tint;
+         .launch-item {
+            color: $tint;
+         }
+      }
+
+
+
+   } // end body option
+
+   .modal.#{$tint-type} {
+      background-color: $tint !important;
+      .launch-item {
+         color: $tint !important;
+      }
+
+   }
+
+} // end @each loop
+
+
+/* THEME - DARKEN VARIANTS
+============================================================================= */
+
+$darken: (
+   "subscriptions": $greenDarken,
+   "licences": $purpleDarken,
+   "packages": $tealDarken,
+   "titles": $orangeDarken,
+   "finance": $lightblueDarken,
+) !default;
+
+@each $darken-type, $darken in $darken {
+   body.#{$darken-type} {
+
+
+      //datepicker background (header)
+      .picker__weekday-display {
+         background-color: $darken;
+      }
+
+   } // end body option
+} // end @each loop
+
+
+/* THEME - MASTHEAD ICON ASSET VARIANT
+============================================================================= */
+
+$icon: (
+   "home":'../assets/menu_home.svg',
+   "admin":'../assets/menu_admin.svg',
+   "system":'../assets/menu_system.svg',
+   "subscriptions": '../assets/menu_subscriptions.svg',
+   "licences": '../assets/menu_licences.svg',
+   "packages": '../assets/menu_packages.svg',
+   "titles": '../assets/menu_titles.svg',
+   "data-manager": '../assets/menu_datamanager.svg',
+   "profile":'../assets/menu_profile.svg',
+   "organisations":'../assets/menu_institution.svg',
+   "finance":'../assets/menu_finance.svg',
+) !default;
+
+@each $icon-type, $icon in $icon {
+   body.#{$icon-type} {
+
+      .section-name {
+         .icon {
+            background-image: url($icon);
+         }
+      }
+
+   } // end body option
+} // end @each loop
+
+
+.icon-grey {
+   color: #9B9B9B;
+}
+
+
+/* THEME - ACCORDIAN COLLAPSIBLE ICONS UI
+============================================================================= */
+
+$theme-asset: (
+   "home": home,
+   "admin": admin,
+   "system": home,
+   "data-manager": home,
+   "subscriptions": subscriptions,
+   "licences": licences,
+   "packages": packages,
+   "titles": titles,
+   "organisations": home,
+   "finance": finance,
+   "profile": admin,
+) !default;
+
+@each $theme-asset-type, $theme-asset in $theme-asset {
+   body.#{$theme-asset-type} {
+
+    .collapsible-header {
+       .icon-accordian {
+          background-image: url(../assets/icon-accordian-open-#{$theme-asset}.svg);
+       }
+       .icon-accordian:hover {
+          background-image: url(../assets/icon-accordian-open-#{$theme-asset}-hover.svg);
+       }
+       &.active {
+          .icon-accordian {
+             background-image: url(../assets/icon-accordian-close-#{$theme-asset}.svg);
+          }
+          .icon-accordian:hover {
+             background-image: url(../assets/icon-accordian-close-#{$theme-asset}-hover.svg);
+          }
+       }
+    }
+
+
+   } // end option
+} // end @each loop

@@ -1,0 +1,132 @@
+/* FONTS
+----------------------------------------------- */
+// create your font mixins here
+
+
+/* FONTS
+----------------------------------------------- */
+// create your font mixins here
+
+// light
+@font-face {
+    font-family: 'Stag Sans Web';
+    src: url('../../../fonts/stag/StagSans-Light-Web.eot');
+    src: url('../../../fonts/stag/StagSans-Light-Web.eot?#iefix') format('embedded-opentype'),
+    url('../../../fonts/stag/StagSans-Light-Web.woff2') format('woff2'),
+    url('../../../fonts/stag/StagSans-Light-Web.woff') format('woff'),
+    url('../../../fonts/stag/StagSans-Light-Web.ttf') format('truetype'),
+    url('../../../fonts/stag/StagSans-Light-Web.svg#StagSans-Light-Web') format('svg');
+    font-weight: 300;
+    font-style: normal;
+    font-stretch: normal;
+}
+
+//book
+@font-face {
+    font-family: 'Stag Sans Web';
+    src: url('../../../fonts/stag/StagSans-Book-Web.eot');
+    src: url('../../../fonts/stag/StagSans-Book-Web.eot?#iefix') format('embedded-opentype'),
+    url('../../../fonts/stag/StagSans-Book-Web.woff2') format('woff2'),
+    url('../../../fonts/stag/StagSans-Book-Web.woff') format('woff'),
+    url('../../../fonts/stag/StagSans-Book-Web.ttf') format('truetype'),
+    url('../../../fonts/stag/StagSans-Book-Web.svg#StagSans-Book-Web') format('svg');
+    font-weight: 400;
+    font-style: normal;
+    font-stretch: normal;
+}
+
+//medium
+@font-face {
+    font-family: 'Stag Sans Web';
+    src: url('../../../fonts/stag/StagSans-Medium-Web.eot');
+    src: url('../../../fonts/stag/StagSans-Medium-Web.eot?#iefix') format('embedded-opentype'),
+    url('../../../fonts/stag/StagSans-Medium-Web.woff2') format('woff2'),
+    url('../../../fonts/stag/StagSans-Medium-Web.woff') format('woff'),
+    url('../../../fonts/stag/StagSans-Medium-Web.ttf') format('truetype'),
+    url('../../../fonts/stag/StagSans-Medium-Web.svg#StagSans-Medium-Web') format('svg');
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+}
+
+// mixins
+@mixin StagLight() {
+    font-family: 'Stag Sans Web';
+    font-weight: 300;
+    font-style: normal;
+    font-stretch: normal;
+}
+
+@mixin StagBook() {
+    font-family: 'Stag Sans Web';
+    font-weight: 400;
+    font-style: normal;
+    font-stretch: normal;
+}
+
+@mixin StagMedium() {
+    font-family: 'Stag Sans Web';
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+}
+
+/*
+@mixin Gotham() {
+    font-family: "Gotham SSm A", "Gotham SSm B";
+    font-style: normal;
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'tahoma';
+    src: url('../../fonts/tahoma-webfont.woff') format('woff'),
+         url('../../fonts/tahoma-webfont.eot') format('eot'),
+         url('../../fonts/tahoma-webfont.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+*/
+
+
+
+
+.font_light {
+    font-weight: 300;
+}
+
+.font_reg {
+    font-weight: 400;
+}
+
+.font_semi-bold {
+    font-weight: 500;
+}
+
+.font_bold {
+    font-weight: 500;
+}
+
+/*
+@mixin Gotham() {
+    font-family: "Gotham SSm A", "Gotham SSm B";
+    font-style: normal;
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'tahoma';
+    src: url('../../fonts/tahoma-webfont.woff') format('woff'),
+         url('../../fonts/tahoma-webfont.eot') format('eot'),
+         url('../../fonts/tahoma-webfont.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+*/
+

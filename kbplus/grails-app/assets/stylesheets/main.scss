@@ -1,0 +1,76 @@
+/* Do not remove the comments below. It's the markers used by wiredep to inject
+   sass dependencies when defined in the bower.json of your dependencies */
+// bower:scss
+// endbower
+
+// Remove the following line if you do not want to use Bourbon.
+// The homepage/_index.scss file uses some Bourbon features as
+// example. So make sure to remove or modify this file as well.
+@import './thirdparty/bourbon/stylesheets/bourbon';
+
+
+// Remove the following line if you do not want to use Breakpoint.
+// The homepage/_index.scss file uses some Breakpoint features as
+// example. So make sure to remove or modify this file as well.
+@import './thirdparty/breakpoint-sass/stylesheets/breakpoint';
+
+// Materialize elements
+@import './thirdparty/materialize/sass/materialize';
+
+// Remove the following two lines if you do not want to use the Susy grid
+// system. The homepage/_index.scss file uses the Susy grid system as an
+// example. So make sure to remove or modify this file as well.
+@import './thirdparty/susy/sass/susy';
+@import './sass/settings/susy';
+
+
+//=IMPORT UTILITIES====(DO NOT EDIT)
+@import './sass/a_utils/mixins';
+@import './sass/a_utils/clearfix';
+@import './sass/a_utils/global';
+@import './sass/a_utils/normalize';
+@import './sass/a_utils/vars';
+
+
+//=IMPORT BASE====(DO NOT EDIT)
+ @import './sass/base/grid-system';
+ @import './sass/base/headings';
+ @import './sass/base/helpers';
+
+
+//=IMPORT COMPONENTS (reusable component styles used across the site (generic))
+// *** NONE SO FAR *** //
+
+//=IMPORT THEME===(EDITABLE)
+@import './sass/theme/fonts';
+@import './sass/theme/brand';
+@import './sass/theme/base';
+@import './sass/theme/theme-layout';
+
+
+//=IMPORT THEME COMPONENTS (reusable component styles used across the site (generic))
+@import "./sass/theme/_components/footer";
+@import "./sass/theme/_components/forms";
+@import "./sass/theme/_components/labels";
+@import "./sass/theme/_components/list-section";
+@import "./sass/theme/_components/modals";
+@import "./sass/theme/_components/navigation";
+@import "./sass/theme/_components/search-section";
+
+
+//=IMPORT THEME ELEMENTS (reusable component styles used across the site (generic))
+@import "./sass/theme/_elements/editor";
+
+//=IMPORT OVERRIDES (Materialize overrides)
+@import "./sass/theme/_overrides/overrides";
+
+//=IMPORT THEME PAGES===(EDITABLE)
+// *** NONE SO FAR *** //
+
+// Mobile theme queryes //
+@import "./sass/theme/mobile";
+
+/* Do not remove the comments below. It's the markers used by gulp-inject to inject
+   all your sass files automatically */
+// injector
+// endinjector

@@ -1,0 +1,4 @@
+model {
+  com.k_int.kbplus.IdentifierOccurrence identifierOccurrence
+}
+json g.render ([(identifierOccurrence.identifier.ns.ns) : identifierOccurrence.identifier.value])

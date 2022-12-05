@@ -1,0 +1,23 @@
+model {
+  com.k_int.kbplus.TitleInstancePackagePlatform coverageStatement
+  java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat('yyyy-MM-dd')
+}
+json {
+  StartDate coverageStatement.startDate?formatter.format(coverageStatement.startDate):''
+  StartVolume coverageStatement.startVolume
+  StartIssue coverageStatement.startIssue
+  EndDate coverageStatement.endDate?formatter.format(coverageStatement.endDate):''
+  EndVolume coverageStatement.endVolume
+  EndIssue coverageStatement.endIssue
+  Embargo coverageStatement.embargo
+  CoverageDepth coverageStatement.coverageDepth
+  CoverageNote coverageStatement.coverageNote
+  HostPlatformName coverageStatement.platform?.name
+  HybridOA coverageStatement.hybridOA?.value
+  DelayedOA coverageStatement.delayedOA?.value
+  Payment coverageStatement.payment?.value
+  HostPlatformURL coverageStatement.combinedPlatformUrl
+  AccessStartDate coverageStatement.accessStartDate
+  AccessEndDate coverageStatement.accessEndDate
+  AccessStatus coverageStatement.getAvailabilityStatusAsString()
+}

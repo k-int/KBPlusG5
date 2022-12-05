@@ -1,0 +1,89 @@
+
+/*
+* === MAIN STRUCTURE AND LAYOUT CLASSES ===
+*/
+
+
+
+/* HTML + BODY
+============================================================================= */
+
+html {
+    height: 100%;
+}
+
+
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    min-width: 320px;
+    font-family: $brand-face, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+
+
+/* CORE STRUCTURE
+============================================================================= */
+
+
+.jisc-content {
+    position: relative;
+    left: 0;
+    top: 25px;
+    margin-left: 0px;
+    min-height: 100%;
+    @include breakpoint($large-screen) {
+        margin-left: 110px;
+    }    
+
+
+}
+
+
+.main-content {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 30px;
+    padding-bottom: 50px;
+    @include breakpoint(768px) {
+        padding-left: 35px;
+        padding-right: 35px;
+        padding-top: 35px;
+        padding-bottom: 80px;
+    }    
+}
+
+
+
+
+/* FLEXBOX
+============================================================================= */
+
+.flex-container {
+  display: flex; 
+  flex-direction: column; //row | row-reverse | column | column-reverse;
+  flex-wrap: wrap; // nowrap | wrap | wrap-reverse;
+  justify-content: flex-start; //flex-start | flex-end | center | space-between | space-around;
+  align-items: flex-start; //flex-start | flex-end | center | baseline | stretch;
+  align-content: flex-start; //flex-start | flex-end | center | space-between | space-around | stretch;
+  height:100%;
+  @include breakpoint(768px) {
+    flex-direction: column;
+  }
+  .flex-item {
+    width:100%;
+    flex-grow:1;
+    padding:0px;
+    color:$directive;
+  }
+}
+
+
+/* GENERAL PAGE SECTIONS
+============================================================================= */
+
+.page-response {
+  @include clearfix;
+}

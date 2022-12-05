@@ -1,0 +1,38 @@
+
+// editor typography styles
+
+.editor {
+	padding: 45px 0 0 0;
+  &.text-boundary {
+    padding-right: span(1 of 12);
+  }
+  h1 {
+    @include font-size(16px);
+    margin-bottom: 4px;
+  }
+	h2,h3,h4,h5 {
+		margin-bottom: 5px;
+	}
+	h3 {
+    	margin-top: 40px;
+  	}
+	p {
+		margin-bottom: 38px;
+    &:last-child {
+      margin-bottom: 80px;
+    }
+	}
+	ul {
+		margin-left: 0px;
+    margin-bottom: 38px;
+		li {
+  	list-style: none;
+    margin-bottom: 3px;
+    padding-left: 20px;
+    background-repeat:no-repeat;
+		}
+	} 
+  a {
+    border-bottom:1px solid #cccccc;
+  }	
+}

@@ -1,0 +1,20 @@
+model {
+  Iterable<com.k_int.kbplus.TitleInstancePackagePlatform> titlesList
+  Iterable<com.k_int.kbplus.TitleInstancePackagePlatform> expectedTitles
+  Iterable<com.k_int.kbplus.TitleInstancePackagePlatform> previousTitles
+  com.k_int.kbplus.Package packageInstance
+  java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat('yyyy-MM-dd')
+}
+json {
+  Package {
+    PackageId packageInstance.id
+    PackageName packageInstance.name
+    PkgTermStartDate packageInstance.startDate?formatter.format(packageInstance.startDate):''
+    PkgTermEndDate packageInstance.endDate?formatter.format(packageInstance.endDate):''
+    RelatedOrg tmpl.relatedOrgs(packageInstance.orgs)
+    Licence packageInstance.license?tmpl.pkgLicense([packageInstance.license]):''
+    TitleList tmpl.tipp(titlesList)
+    ExpectedTitles tmpl.tipp(expectedTitles)
+    PreviousTitles tmpl.tipp(previousTitles)
+  }
+}

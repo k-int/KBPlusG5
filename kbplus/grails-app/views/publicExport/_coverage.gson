@@ -1,0 +1,11 @@
+model {
+  TitleInstancePackagePlatform tipp
+}
+json {
+  startVolume tipp.startVolume
+  startIssue tipp.startIssue
+  startDate tipp.startDate?.format('yyyy-MM-dd')
+  endVolume tipp.endVolume
+  endIssue tipp.endIssue
+  endDate tipp.endDate?.format('yyyy-MM-dd')
+}

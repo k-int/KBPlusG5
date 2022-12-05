@@ -1,0 +1,20 @@
+model {
+  Iterable<com.k_int.kbplus.IssueEntitlement> entitlements
+  Iterable<com.k_int.kbplus.IssueEntitlement> expectedTitles
+  Iterable<com.k_int.kbplus.IssueEntitlement> previousTitles
+  com.k_int.kbplus.Subscription subscriptionInstance
+  java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat('yyyy-MM-dd')
+}
+json {
+  Subscription {
+    SubscriptionId subscriptionInstance.id
+    SubscriptionName subscriptionInstance.name
+    SubTermStartDate subscriptionInstance.startDate?formatter.format(subscriptionInstance.startDate):''
+    SubTermEndDate subscriptionInstance.endDate?formatter.format(subscriptionInstance.endDate):''
+    Licence subscriptionInstance.owner?tmpl.subLicense(subscriptionInstance.owner):''
+    RelatedOrg tmpl.relatedOrgs(subscriptionInstance.orgRelations)
+    TitleList tmpl.entitlement(entitlements)
+    ExpectedTitles tmpl.entitlement(expectedTitles)
+    PreviousTitles tmpl.entitlement(previousTitles)
+  }
+}

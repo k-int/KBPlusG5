@@ -1,0 +1,40 @@
+$susy: (
+  columns: 12,
+  gutters: 1/2,
+  container: 1200px,
+  use-custom: (
+    // Dont use a box-sizing plugin. This conflicts with the Bourbon
+    // box-sizing mixin.
+    box-sizing: false,
+    clearfix: true,
+  )
+);
+
+
+/*
+Example: 
+
+$susy: (
+  math: fluid,
+  columns: 12,
+  gutter-width: 1em,
+  grid-padding: 1em,
+  column-width: false,
+  //global-box-sizing: content-box,
+  last-flow: to,
+  debug: (
+    //image: show,
+    color: rgba(#66f, .25),
+    output: background,
+    toggle: top right,
+  ),
+  use-custom: (
+    background-image: true,
+    background-options: false,
+    box-sizing: false,
+    clearfix: true,
+    rem: true,
+  )
+);
+
+*/

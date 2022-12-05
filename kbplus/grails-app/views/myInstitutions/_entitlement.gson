@@ -1,0 +1,16 @@
+model {
+  com.k_int.kbplus.IssueEntitlement entitlement
+  java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat('yyyy-MM-dd')
+}
+json {
+  CoverageStatement tmpl.coverageStatement([entitlement])
+  InternalTitleId entitlement.id
+  PublicationType entitlement.tipp.title.publicationType
+  DateMonographPublishedPrint entitlement.tipp.title.dateMonographPublishedPrint?formatter.format(entitlement.tipp.title.dateMonographPublishedPrint):''
+  DateMonographPublishedOnline entitlement.tipp.title.dateMonographPublishedOnline?formatter.format(entitlement.tipp.title.dateMonographPublishedOnline):''
+  MonographVolume entitlement.tipp.title.monographVolume
+  MonographEdition entitlement.tipp.title.monographEdition
+  FirstEditor entitlement.tipp.title.firstEditor
+  Title entitlement.tipp.title.title
+  TitleIDs tmpl.identifierOccurrence(entitlement.tipp.title.ids)
+}

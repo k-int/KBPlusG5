@@ -1,0 +1,7 @@
+model {
+  Iterable<com.k_int.kbplus.Subscription> subscriptions
+}
+
+json {
+  Subscriptions tmpl.subTitleLicenseJsonContent(subscriptions)
+}

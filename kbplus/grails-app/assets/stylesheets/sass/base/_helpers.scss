@@ -1,0 +1,469 @@
+/*
+* — HELPERS —
+*/
+
+
+
+/* GLOBAL HELPERS
+============================================================================= */
+
+// Disable Scrolling:
+.no-scroll {
+  overflow: hidden;
+}
+
+
+// DISCREET
+.discreet{
+  @include opacity(0);
+}
+
+
+/* LAYOUT HELPERS
+============================================================================= */
+
+.centered {
+  margin: 0 auto;
+}
+
+.centerer {
+  @include centerer();
+}
+
+.v-center {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.h-center {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.valign-wrapper {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    .valign {
+        display: block;
+    }
+}
+
+// eg
+/*
+<div class="valign-wrapper">
+   <h5 class="valign center">This should be vertically aligned</h5>
+</div>
+*/
+
+/* MEDIA ASSET HELPERS: IMAGES
+============================================================================= */
+
+img{
+    display:block;
+    max-width:100%;
+    height:auto;
+    vertical-align: middle;
+    -webkit-transform: translateZ(0);
+    width: calc(100% + .49px);
+}
+
+figure > img{
+    display:block;
+}
+
+
+/* RESPONSIVE IMAGES
+============================================================================= */
+
+// fluid-aspect is a Sass mixin for creating intrinsic ratios in CSS.
+// Intrinsic ratios allow elements to fill the width of their containing
+// block and resize on the fly while maintaining their aspect ratio.
+
+@mixin fluid-aspect($ratio: 1 1, $selector: "> :first-child") {
+  $selector: unquote($selector);
+
+  padding-bottom: percentage(nth($ratio, 2) / nth($ratio, 1));
+  position: relative;
+
+  #{$selector} {
+    left: 0;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+}
+
+// example usage:
+/*
+.home__episode__item__image {
+    @include fluid-aspect(16 9, img);
+}
+*/
+
+
+/* Coloured blocks backgorunds
+============================================================================= */
+
+// for use in the licences comparisons.
+
+.isRed {
+  background-color: #F2DEDF;
+}
+
+.isYellow {
+  background-color: #FDF8E4;
+}
+
+.isGreen {
+  background-color: #DEF0D8;
+}
+
+/* RESPONSIVE IMAGES - LEGACY VERSION
+============================================================================= */
+
+.cover-image {
+  width: 100%;
+  object-fit: cover;
+}
+
+
+.asset {
+  width: 100%;
+  height: 100%;
+    iron-image {
+      width:100%;
+    }
+}
+
+.fixed-asset {
+  position:absolute;
+  top:0;
+  left:0;
+  width: 100%;
+  height: 100%;
+    iron-image {
+      width:100%;
+    }
+}
+
+
+.asset-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  -webkit-transition: all 1s ease;
+       -moz-transition: all 1s ease;
+         -o-transition: all 1s ease;
+        -ms-transition: all 1s ease;
+            transition: all 1s ease;
+  // image: height / width * 100
+  &._square {
+    padding-bottom: 0%;
+    padding-left: 10px;
+    padding-right: 10px;
+    @include breakpoint(768px) {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+  }
+  &._16-9 {
+    padding-bottom: 56.25%;
+  }
+  &._4-3 {
+    padding-bottom: 75%;
+  }
+  &._7-5 {
+    padding-bottom: 126.42%;
+  }
+  &._5-7 {
+    padding-bottom: 133.33%;
+  }
+  &._3-2 {
+    padding-bottom: 66.66%;
+  }
+  &._8-5 {
+    padding-bottom: 62.5%;
+  }
+  &._diary-asset {
+  }
+  &:hover {
+    //transform: scale(1.1);
+  }
+
+}
+
+
+/* MEDIA ASSET HELPERS: EMBED
+============================================================================= */
+
+.asset-embed {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+}
+
+.asset-embed iframe,
+.asset-embed object,
+.asset-embed embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* SHAPES
+============================================================================= */
+
+.circle {
+    border-radius: 50%;
+}
+
+
+/* TYPOGRAPHY HELPERS
+============================================================================= */
+
+.center, .center-align {
+    text-align: center;
+}
+
+.left-align {
+    text-align: left;
+}
+
+.right-align {
+    text-align: right;
+}
+
+.caps {
+  text-transform: uppercase;
+}
+
+.text-boundary { // used for columns where you dont want content to reeach the end of the column - buffer
+  padding-right: span(1 of 12);
+}
+
+.it {
+  font-style: italic;
+  @extend .font_light;
+}
+
+
+/* SPACERS
+============================================================================= */
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+.ml-0 {
+  margin-left: 0px !important;
+}
+
+.ml-5 {
+  margin-left: 5px !important;
+}
+
+.pt-10 {
+  margin-top: 12px !important;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.mt-30 {
+  margin-top: 30px;
+}
+
+.mt-35 {
+  margin-top: 35px;
+}
+
+.mt-40 {
+  margin-top: 40px;
+}
+
+.mt-50 {
+  margin-top: 50px;
+}
+
+.mb-10 {
+  margin-bottom: 10px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+.mb-30 {
+  margin-bottom: 30px;
+}
+
+.mb-30 {
+  margin-bottom: 30px;
+}
+
+.ml-10 {
+  margin-left: 10px;
+}
+
+.ml-20 {
+  margin-left: 20px;
+}
+
+.left-space {
+  margin-left: 6px;
+}
+
+.mt-40m {
+  margin-top: 0px !important;
+}
+.mt-0 {
+  margin-top: 0px !important;
+}
+
+.pd-25 {
+  padding: 25px !important;
+}
+
+.pd-35 {
+  padding: 35px !important;
+}
+
+.br{
+  border-right: 1px solid #ccc;
+}
+
+.va {
+  vertical-align: text-top;
+}
+
+.highlightTB {
+  background-color:#DBE0D5;
+}
+
+/* LIST & NAV HELPERS
+============================================================================= */
+
+
+/**
+ * Nav abstraction as per: csswizardry.com/2011/09/the-nav-abstraction
+ * When used on an `ol` or `ul`, this class throws the list into horizontal mode
+ * e.g.:
+ *
+   <ul class=nav>
+       <li><a href=#>Home</a></li>
+       <li><a href=#>About</a></li>
+   </ul>
+ *
+
+ */
+.nav{
+    list-style:none;
+    margin-left:0;
+    @extend .cf;
+
+
+    > li{
+
+        &,
+        > a{
+            display:inline-block;
+           *display:inline;
+            zoom:1;
+        }
+    }
+}
+
+
+/**
+ * `.nav--stacked` extends `.nav` and throws the list into vertical mode, e.g.:
+ *
+   <ul class="nav  nav--stacked">
+       <li><a href=#>Home</a></li>
+       <li><a href=#>About</a></li>
+   </ul>
+ *
+ */
+.nav--stacked{
+
+    > li{
+        display:list-item;
+
+        > a{
+            display:block;
+        }
+    }
+}
+
+
+/**
+ * `.nav--banner` extends `.nav` and centres the list, e.g.:
+ *
+   <ul class="nav  nav--banner">
+       <li><a href=#>Home</a></li>
+       <li><a href=#>About</a></li>
+       <li><a href=#>Portfolio</a></li>
+       <li><a href=#>Contact</a></li>
+   </ul>
+ *
+ */
+.nav--banner{
+    text-align:center;
+}
+
+
+/**
+ * Give nav links a big, blocky hit area. Extends `.nav` and needs whitespace
+ * caused by `inline-block` elements collapsing e.g.:
+ *
+   <ul class="nav  nav--block">
+       <li><a href=#>Home</a></li><!--
+    --><li><a href=#>About</a></li><!--
+   </ul>
+ *
+ */
+.nav--block{
+    line-height:1;
+
+    > li{
+
+        > a{
+            padding:10px;
+        }
+    }
+}
+
+
+/**
+ * Force a nav to occupy 100% of the available width of its parent. Extends
+ * `.nav`, e.g.:
+ *
+   <ul class="nav  nav--fit">
+       <li><a href=#>Home</a></li>
+       <li><a href=#>About</a></li>
+   </ul>
+ *
+ * Thanks to @pimpl for this idea!
+ */
+.nav--fit{
+    display:table;
+    width:100%;
+
+    > li{
+        display:table-cell;
+
+        > a{
+            display:block;
+        }
+    }
+}

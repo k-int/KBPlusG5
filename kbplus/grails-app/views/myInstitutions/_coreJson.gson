@@ -1,0 +1,7 @@
+model {
+  Iterable<com.k_int.kbplus.TitleInstitutionProvider> exportTips
+}
+
+json {
+  TitleList tmpl.coreJsonContent(exportTips)
+}

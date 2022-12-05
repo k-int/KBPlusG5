@@ -1,0 +1,8 @@
+model {
+  com.k_int.kbplus.CoreAssertion coreAssertion
+  java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat('yyyy-MM-dd')
+}
+json {
+    CoreDateStart coreAssertion.startDate?formatter.format(coreAssertion.startDate):''
+   	CoreDateEnd coreAssertion.endDate?formatter.format(coreAssertion.endDate):''
+}

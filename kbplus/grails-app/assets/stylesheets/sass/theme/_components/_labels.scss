@@ -1,0 +1,52 @@
+/* JISC LABELS
+============================================================================= */
+
+.label {
+	display: inline-block;
+    width:90px;
+    height: 28px;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 28px;
+    padding: 0 8px;
+	color: $grey;
+    //
+    &.centered-label {
+        position:relative;
+        left:50%;
+        transform: translate(-50%, 0%);
+        width: 91px;
+    }
+    &.status{
+        min-width:90px;
+        max-width:135px;
+        width: inherit;
+        text-align:right;
+    }
+    &.updatetype{
+        line-height: 20px;
+        width: 100px;
+        padding-left: 14px;
+    }
+    $section: (
+      "current": $grey,
+      "expired": $grey,
+      "default": $grey,
+    ) !default;
+
+    @each $section-type, $color in $section {
+      	&.#{$section-type} {
+    		color: $color;    
+      	}
+    }
+
+    i {
+        width: 1rem;
+        font-size: 15px;
+        line-height: 28px;
+        display: block;
+        float: left;
+        text-align: center;
+        margin-right: 5px;
+    }
+}

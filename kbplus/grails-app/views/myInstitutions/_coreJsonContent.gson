@@ -1,0 +1,23 @@
+model {
+  com.k_int.kbplus.TitleInstitutionProvider titleInstitutionProvider
+  java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat('yyyy-MM-dd')
+}
+
+json {
+  Title titleInstitutionProvider.title?.title
+  TitleID titleInstitutionProvider.title?.id
+  PublicationType titleInstitutionProvider.title?.publicationType
+  DateMonographPublishedPrint titleInstitutionProvider.title?.dateMonographPublishedPrint?formatter.format(titleInstitutionProvider.title?.dateMonographPublishedPrint):''
+  DateMonographPublishedOnline titleInstitutionProvider.title?.dateMonographPublishedOnline?formatter.format(titleInstitutionProvider.title?.dateMonographPublishedOnline):''
+  MonographVolume titleInstitutionProvider.title?.monographVolume
+  MonographEdition titleInstitutionProvider.title?.monographEdition
+  FirstAuthor titleInstitutionProvider.title?.firstAuthor
+  FirstEditor titleInstitutionProvider.title?.firstEditor
+  TitleIDs tmpl.identifierOccurrence(titleInstitutionProvider.title?.ids)
+  CoverageStatement {
+    ProviderID titleInstitutionProvider.provider?.id
+    ProviderName titleInstitutionProvider.provider?.name
+    CoreDateList tmpl.coreJsonDates(titleInstitutionProvider.coreDates)
+    CoreStatus titleInstitutionProvider.coreStatus(null)?'Core':titleInstitutionProvider.coreStatus(null)==null?'Not Core':'Was/Will Be Core'
+  }
+}

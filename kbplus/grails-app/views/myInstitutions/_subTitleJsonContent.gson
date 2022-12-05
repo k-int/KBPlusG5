@@ -1,0 +1,12 @@
+model {
+  com.k_int.kbplus.Subscription subscription
+  java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat('yyyy-MM-dd')
+}
+json {
+    SubscriptionId subscription.id
+    SubscriptionName subscription.name
+    SubTermStartDate subscription.startDate?formatter.format(subscription.startDate):''
+    SubTermEndDate subscription.endDate?formatter.format(subscription.endDate):''
+    RelatedOrgs tmpl.relatedOrgs(subscription.orgRelations)
+    Titles tmpl.entitlement(subscription.issueEntitlements)
+}

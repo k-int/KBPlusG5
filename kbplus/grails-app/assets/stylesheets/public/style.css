@@ -1,0 +1,793 @@
+/*
+ * Theme Name: UXD theme
+ * Description: Modification of Ocasta's wordpress theme produced for HT
+ * Author: TH/GWT
+*/
+
+.facetwp-type-checkboxes {
+    max-height: none;
+}
+/* =============================================================================
+   *Base rules: theme customisations on top of the patterns
+   ========================================================================== */
+/* **Fonts: get fonts working locally, for development only
+   ========================================================================== */
+
+
+/* **Icons: get fonts working locally, for development only
+   ========================================================================== */
+
+@font-face {
+    font-family: "icomoon";
+    src: url('../../fonts/icomoon/icomoon.eot');
+    src: url('../../fonts/icomoon/icomoon.eot#iefix') format('embedded-opentype'), url('../../fonts/icomoon/icomoon.woff') format('woff'), url('../../fonts/icomoon/icomoon.ttf') format('truetype'), url('../../fonts/icomoon/icomoon.svg#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    @font-face {
+        font-family: "icomoon";
+        src: url('../../fonts/icomoon/icomoon.svg') format('svg');
+    }
+}
+/* **Utilities
+   ========================================================================== */
+/* ***Clearfix
+   -------------------------------------------------------------------------- */
+/**
+ * For modern browsers
+ * 1. The space content is one way to avoid an Opera bug when the
+ *    contenteditable attribute is included anywhere else in the document.
+ *    Otherwise it causes space to appear at the top and bottom of elements
+ *    that are clearfixed.
+ * 2. The use of `table` rather than `block` is only necessary if using
+ *    `:before` to contain the top-margins of child elements.
+ */
+
+.cf:before,
+.cf:after {
+    content: " ";
+    /* 1 */
+
+    display: table;
+    /* 2 */
+}
+.cf:after {
+    clear: both;
+}
+/**
+ * For IE 6/7 only
+ * Include this rule to trigger hasLayout and contain floats.
+ */
+
+.cf {
+    *zoom: 1;
+}
+/* =============================================================================
+   *Fix v1.2.0 bugs/inconsistencies
+   ========================================================================== */
+/* **Grid and layout
+   ========================================================================== */
+/* ***Grid
+   -------------------------------------------------------------------------- */
+
+@media all and (min-width: 757px) {
+    .pull-10 {
+        margin-left: -83.33333%;
+        margin-left: -100%;
+    }
+}
+/* ***Layout containers
+   -------------------------------------------------------------------------- */
+
+@media all and (max-width: 757px) {
+    .add-mobile-gutters .l-gutter--both {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+}
+.top-bar {
+    border-style: solid;
+    border-width: 2px 1px 0 0;
+    border-right: 0;
+    border-color: #014161;
+}
+/* **Masthead and footer
+   ========================================================================== */
+/* ***Masthead
+   -------------------------------------------------------------------------- */
+
+.masthead--focussed .masthead__title a {
+    word-break: normal;
+}
+/* **Typography
+   ========================================================================== */
+/* ***Pullquote
+   -------------------------------------------------------------------------- */
+
+@media screen and (min-width: 757px) {
+    .cms .article-full__callout--hang-right {
+        margin-right: 0;
+    }
+}
+/* **Content blocks
+   ========================================================================== */
+/* ***Hero
+   -------------------------------------------------------------------------- */
+
+.hero,
+.hero__copy {
+    z-index: 0;
+}
+/* =============================================================================
+   *Local extensions
+   ========================================================================== */
+/* Style un-dealt-with content */
+
+.site-strap {
+    text-align: center;
+    line-height: 1.2;
+}
+.site-strap {
+    margin: 22px 0 20px 0;
+    font-size: 36px;
+    font-size: 3.6rem;
+}
+@media screen and (max-width: 850px) {
+    .site-strap {
+        margin: 15px 0 13px 0;
+        font-size: 30px;
+        font-size: 3rem;
+    }
+}
+@media screen and (max-width: 565px) {
+    .site-strap {
+        font-size: 24px;
+        font-size: 2.4rem;
+    }
+}
+.page-strapline,
+.article-full__strapline,
+.event-details__header h2 {
+    margin-top: 10px;
+    margin-top: 1rem;
+    font-size: 27px;
+    font-size: 2.7rem;
+    line-height: 30px;
+    line-height: 3rem;
+    font-weight: normal;
+    font-family: "Stag Sans Web Light", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Arial, sans-serif;
+}
+@media screen and (max-width: 850px) {
+    .page-strapline,
+    .article-full__strapline,
+    .event-details__header h2 {
+        font-size: 24px;
+        font-size: 2.4rem;
+        line-height: 27px;
+        line-height: 2.7rem;
+        margin-top: 10px;
+        margin-top: 1rem;
+    }
+}
+@media screen and (max-width: 565px) {
+    .page-strapline,
+    .article-full__strapline,
+    .event-details__header h2 {
+        font-size: 21px;
+        font-size: 2.1rem;
+        line-height: 24px;
+        line-height: 2.4rem;
+    }
+}
+@media screen and (min-width: 757px) {
+    .l-main-panel {
+        width: 74%;
+        float: left;
+    }
+    .l-side-panel {
+        float: right;
+        width: 24.9354005%;
+        position: relative;
+        right: 0;
+        top: 0;
+    }
+    .content-longform .l-side-panel {
+        margin-top: 30px;
+    }
+}
+.content-longform__header {
+    zoom: 1;
+    position: relative;
+    padding: 50px 10px 20px 0;
+}
+.content-longform__header:before,
+.content-longform__header:after {
+    content: "";
+    display: table;
+}
+.content-longform__header:after {
+    clear: both;
+}
+/* Add in bit to add whitespace if no washing line */
+
+.content-longform__header .l-main-panel {
+    zoom: 1;
+}
+.content-longform__header .l-main-panel:before,
+.content-longform__header .l-main-panel:after {
+    content: "";
+    display: table;
+}
+.content-longform__header .l-main-panel:after {
+    clear: both;
+}
+.content-longform__header .article-full__page-title {
+    padding-bottom: 0;
+}
+.content-longform__header .tags {
+    margin-top: 15px;
+    margin-top: 1.5rem;
+}
+
+#search form {
+    padding:0;
+}
+
+#search button {
+    right: 0px;
+    top: 0px;
+}
+/* **Page contents
+   ========================================================================== */
+/* Local nav
+   Jump link localnav that appears on long pages. Does not appear on narrower screens
+*/
+
+.localnav {
+    display: none;
+}
+@media screen and (min-width: 757px) {
+    .localnav {
+        display: block;
+    }
+}
+.localnav ul {
+    margin-left: -7px;
+    padding-top: 4px;
+    font-size: 13px;
+    font-size: 1.3rem;
+    line-height: 22px;
+    line-height: 2.2rem;
+    font-weight: normal;
+    font-family: "Stag Sans Web Book", "HelveticaNeue", "Helvetica Neue", Arial, sans-serif;
+}
+.lt-ie9 .localnav ul {
+    width: 125px !Important;
+}
+.localnav li {
+    margin-bottom: 5px;
+}
+.localnav a {
+    display: block;
+    padding: 5px 7px 3px 7px;
+    line-height: 16px;
+    line-height: 1.6rem;
+}
+/*.localnav .s-current, */
+
+.localnav a:hover {
+    color: #fff;
+}
+.localnav__title {
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-size: 1.8rem;
+}
+.localnav ul {
+    padding-bottom: 20px;
+}
+.localnav a {
+    word-break: normal;
+}
+/* **Cards
+   ========================================================================== */
+
+.card {
+    background-color: #fff;
+}
+/* =============================================================================
+   *Theme Rules
+   ========================================================================== */
+/* **Grid and layout
+   ========================================================================== */
+/* **Masthead and footer
+   ========================================================================== */
+/* ***Masthead
+   -------------------------------------------------------------------------- */
+
+.menu-button {
+    background-color: #00818e;
+    background-color: rgba(0, 0, 0, .15);
+}
+
+.menu-button:hover, .menu-button:focus {
+    background-color: #fff;
+    color:#4d4d4d;
+}
+
+.masthead__main {
+    background-color: #e85e13;
+    background-position: 50% 0;
+}
+.nav__item.active a,
+.nav__item.is--active a,
+.lt-ie9 .nav__item.active a,
+.lt-ie9 .nav__item.is--active a {
+    background-color: #fff;
+    color: #2c3841;
+}
+@media screen and (min-width: 565px) {
+    .nav__item > a {
+        background-color: #fff;
+    }
+}
+.nav__item > a:active,
+.nav__item > a:hover {
+    color: #2c3841;
+}
+.lt-ie9 .nav__item > a:active,
+.lt-ie9 .nav__item > a:hover {
+    background-color: #fff;
+}
+.nav__item.has-popup.active > a,
+.nav__item.has-popup:active > a,
+.nav__item.has-popup:hover > a {
+    color: #2c3841;
+}
+@media screen and (min-width: 757px) {
+    .nav__item > a {
+        background-color: #c65010;
+        background-color: rgba(108, 0, 0, 0.15);
+        word-break: inherit;
+    }
+    .masthead__nav .submenu ul {
+        border-top: 2px solid #e85e13;
+    }
+}
+.masthead__nav .submenu li a {
+    color: #00557f;
+}
+.masthead__nav .submenu li a:hover {
+    color: #e85e13;
+}
+.masthead--focussed .masthead__top {
+    border-bottom-color: #e85e13;
+}
+@media screen and (min-width: 757px) {
+    #search {
+        position: absolute;
+        top: -50px;
+        right: 0px;
+        margin-right: 0;
+        border: none;
+        padding: 0;
+    }
+}
+@media screen and (max-width: 757px) {
+    #search {
+        background-color: #fff;
+        float: none;
+    }
+}
+/* ***Footer
+   -------------------------------------------------------------------------- */
+
+footer[role=contentinfo] .divisional-info__body {
+    line-height: 20px;
+    line-height: 2rem;
+}
+footer[role=contentinfo] .cc.media-object {
+    display: table-row;
+}
+footer[role=contentinfo] .cc .media-object__media {
+    display: table-cell;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+footer[role=contentinfo] .cc .media-object__media img {
+    border: 0;
+}
+footer[role=contentinfo] .cc .media-object__body {
+    display: table-cell;
+    line-height: 17px;
+    vertical-align: middle;
+    padding-right: 10px;
+}
+@media screen and (min-width: 757px) {
+    footer[role=contentinfo] .cc .media-object__body {
+        padding-right: 30px;
+    }
+}
+/* **Navigation
+   ========================================================================== */
+/* ***Washing line
+   -------------------------------------------------------------------------- */
+
+.marker {
+    background-color: #e85e13;
+}
+/* ***Page contents
+   -------------------------------------------------------------------------- */
+
+.localnav a:hover {
+    background-color: #e85e13;
+}
+/* **Content blocks
+   ========================================================================== */
+
+.teaser__copy ul {
+    font-size: 15px;
+    font-size: 1.5rem;
+    line-height: 20px;
+    line-height: 2rem;
+    font-family: "Stag Sans Web Book", "HelveticaNeue", "Helvetica Neue", Arial, sans-serif;
+}
+.teaser__copy ul li {
+    padding-left: 2px 0 2px 15px;
+    padding: .2rem 0 .2rem 1.5rem;
+    background-repeat: no-repeat;
+    background-position: 0 7px;
+    background-position: 0 .7rem;
+    background-color: transparent;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo4M0RBNERBM0MyQ0ExMUUyOEVBMUIyMjU0OEI1MzNGNCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo4M0RBNERBNEMyQ0ExMUUyOEVBMUIyMjU0OEI1MzNGNCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjgzREE0REExQzJDQTExRTI4RUExQjIyNTQ4QjUzM0Y0IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjgzREE0REEyQzJDQTExRTI4RUExQjIyNTQ4QjUzM0Y0Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+lENsFgAAAGlJREFUeNpi/P//P8OstVsTGBgYIoDYFogPA/GKtGDvBYwz12wBScwAYnYGBPgJxBlMUB3IEgxQfgQT1ChswJYJagc2cBgkuQJqBwOanSuYN69ceuHs9dtPgBxOIJYC4n1A3AFyLUCAAQCwbhyl9oIfEAAAAABJRU5ErkJggg==);
+}
+.teaser__copy ul a:focus,
+.teaser__copy ul a:hover {
+    text-decoration: underline;
+}
+.box--brdtop-theme {
+    border-top: 2px solid #e85e13;
+}
+/* **Temporary CDN fixes
+   ========================================================================== */
+
+@media screen and (min-width: 757px) {
+    .readmore {
+        background: url(../images/sprite.png) 0 -717px no-repeat;
+    }
+}
+/* Make sure the dropdown nav is over the facet filter */
+
+.filter-panel--mobile {
+    z-index: 9;
+}
+/* make space for the remove tag X */
+
+.tags__link.removable {
+    padding-right: 20px;
+}
+
+.breadcrumb li, .breadcrumb li a {
+    word-break: normal;
+}
+
+.filter.is-open .filter__title__link:before {
+    /*content: "\e61a";*/
+
+    content: "\f106";
+    font-family: "icomoon";
+}
+.filter.is-closed .filter__title__link:before {
+    /*content: "\e619";*/
+
+    content: "\f107";
+    font-family: "icomoon";
+}
+.facetwp-type-checkboxes {
+    max-height: none!important;
+}
+.facetwp-facet {
+    margin-bottom: 0px!important;
+}
+.is--inline {
+    display: inline;
+}
+.hero {
+    margin-bottom: 0;
+}
+
+.wp-caption-text.wp-caption-text {
+    text-align: center;
+    font-family: "Stag Sans Web Book", "HelveticaNeue", "Helvetica Neue", Arial, sans-serif;
+    color: #666;
+    font-size: 1.5rem;
+    font-size: 15px;
+}
+/*Very hacky way to get search results to match h2 size*/
+
+.page-search-results-title {
+    font-size: 30px!important;
+    font-size: 3rem!important;
+    line-height: 33px!important;
+    line-height: 3.3rem!important;
+}
+
+
+/* Image sizes and alignments */
+.entry-content img,
+.comment-content img,
+.widget img {
+    max-width: 97.5%; /* Fluid images for posts, comments, and widgets */
+}
+img[class*="align"],
+img[class*="wp-image-"] {
+    height: auto; /* Make sure images with WordPress-added height and width attributes are scaled correctly */
+}
+img.size-full {
+    max-width: 97.5%!important;
+    width: auto; /* Prevent stretching of full-size images with height and width attributes in IE8 */
+}
+
+.wp-caption {
+    width:100%!important;
+}
+
+
+.fullsize-img-test {
+    width:100%!important;
+}
+
+
+.cms > ol li {
+    padding: 2px 0 10px 0;
+    margin-left: 2em;
+    line-height: 2.7rem;
+    background-color: transparent;
+    background-image: none;
+    background-position: 20px 10px;
+    background-repeat: no-repeat;
+}
+
+.eg-good {color: #107d10}
+.eg-bad {color: #a53232}
+
+@media screen and (min-width: 950px) {
+    .inner.l-pull-left {
+        padding-left: 10px;
+    }
+}
+
+@media screen and (min-width: 965px) {
+    .inner.l-pull-left {
+        padding-left: 0px;
+    }
+}
+
+
+.jisc_tabs {
+    background: transparent;
+    border-bottom: 1px solid #9c9c9c;
+    height:35px;
+}
+.jisc_tabs .indicator {
+    display: none;
+}
+.jisc_tabs .material-icons {
+    vertical-align: sub;
+}
+.jisc_tabs .tab {
+    margin-right: 10px;
+}
+.jisc_tabs a {
+    border-radius: 4px 4px 0px 0px;
+    color: #9c9c9c;
+    border: 1px solid #9c9c9c;
+    padding: 12px;
+}
+.jisc_tabs li {
+    display:inline-block;
+    vertical-align: sub;
+}
+.jisc_tabs a:hover {
+    color: #fff;
+    opacity: 0.8;
+    background: #9c9c9c;
+}
+.jisc_tabs .active, .jisc_tabs .active:hover {
+    background: #9c9c9c;
+    color: #fff;
+}
+.jisc_tabs .active:hover {
+    opacity: 0.8;
+}
+
+.ui-datepicker {
+    display: none;
+    border: 2px solid #d5dee2;
+    width: 17em;
+}
+
+.ui-datepicker .ui-datepicker-header {
+    padding: .2em 0;
+    position: relative;
+}
+
+.ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next {
+    height: 1.8em;
+    position: absolute;
+    top: 2px;
+    width: 4em;
+}
+
+.ui-datepicker .ui-datepicker-prev-hover, .ui-datepicker .ui-datepicker-next-hover { top: 1px; }
+
+.ui-datepicker .ui-datepicker-prev { left: 2px; }
+
+.ui-datepicker .ui-datepicker-next { right: 2px; }
+
+.ui-datepicker .ui-datepicker-prev-hover { left: 1px; }
+
+.ui-datepicker .ui-datepicker-next-hover { right: 1px; }
+
+.ui-datepicker .ui-datepicker-prev span {
+    display: block;
+    left: 20%;
+    margin-left: -8px;
+    margin-top: -8px;
+    position: absolute;
+    top: 50%;
+}
+.ui-datepicker .ui-datepicker-next span {
+    display: block;
+    left: 50%;
+    margin-left: -8px;
+    margin-top: -8px;
+    position: absolute;
+    top: 50%;
+}
+
+.ui-datepicker .ui-datepicker-title {
+    line-height: 1.8em;
+    margin: 0 2.3em;
+    text-align: center;
+}
+
+.ui-datepicker .ui-datepicker-title select {
+    font-size: 1em;
+    margin: 1px 0;
+}
+
+.ui-datepicker select.ui-datepicker-month-year { width: 100%; }
+
+.ui-datepicker select.ui-datepicker-month,
+.ui-datepicker select.ui-datepicker-year { width: 49%; }
+
+.ui-datepicker table {
+    border-collapse: collapse;
+    font-size: .9em;
+    margin: 0 0 .4em;
+    width: 100%;
+}
+
+.ui-datepicker th {
+    border: 0;
+    font-weight: bold;
+    padding: .7em .3em;
+    text-align: center;
+}
+
+.ui-datepicker td {
+    border: 0;
+    padding: 1px;
+}
+
+.ui-datepicker td span, .ui-datepicker td a {
+    display: block;
+    padding: .2em;
+    text-align: right;
+    text-decoration: none;
+}
+
+.ui-datepicker .ui-datepicker-buttonpane {
+    background-image: none;
+    border-bottom: 0;
+    border-left: 0;
+    border-right: 0;
+    margin: .7em 0 0 0;
+    padding: 0 .2em;
+}
+
+.ui-datepicker .ui-datepicker-buttonpane button {
+    cursor: pointer;
+    float: right;
+    margin: .5em .2em .4em;
+    overflow: visible;
+    padding: .2em .6em .3em .6em;
+    width: auto;
+}
+
+.ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current { float: left; }
+
+/* with multiple calendars */
+
+.ui-datepicker.ui-datepicker-multi { width: auto; }
+
+.ui-datepicker-multi .ui-datepicker-group { float: left; }
+
+.ui-datepicker-multi .ui-datepicker-group table {
+    margin: 0 auto .4em;
+    width: 95%;
+}
+
+.ui-datepicker-multi-2 .ui-datepicker-group { width: 50%; }
+
+.ui-datepicker-multi-3 .ui-datepicker-group { width: 33.3%; }
+
+.ui-datepicker-multi-4 .ui-datepicker-group { width: 25%; }
+
+.ui-datepicker-multi .ui-datepicker-group-last .ui-datepicker-header { border-left-width: 0; }
+
+.ui-datepicker-multi .ui-datepicker-group-middle .ui-datepicker-header { border-left-width: 0; }
+
+.ui-datepicker-multi .ui-datepicker-buttonpane { clear: left; }
+
+.ui-datepicker-row-break {
+    clear: both;
+    font-size: 0em;
+    width: 100%;
+}
+
+/* RTL support */
+
+.ui-datepicker-rtl { direction: rtl; }
+
+.ui-datepicker-rtl .ui-datepicker-prev {
+    left: auto;
+    right: 2px;
+}
+
+.ui-datepicker-rtl .ui-datepicker-next {
+    left: 2px;
+    right: auto;
+}
+
+.ui-datepicker-rtl .ui-datepicker-prev:hover {
+    left: auto;
+    right: 1px;
+}
+
+.ui-datepicker-rtl .ui-datepicker-next:hover {
+    left: 1px;
+    right: auto;
+}
+
+.ui-datepicker-rtl .ui-datepicker-buttonpane { clear: right; }
+
+.ui-datepicker-rtl .ui-datepicker-buttonpane button { float: left; }
+
+.ui-datepicker-rtl .ui-datepicker-buttonpane button.ui-datepicker-current { float: right; }
+
+.ui-datepicker-rtl .ui-datepicker-group { float: right; }
+
+.ui-datepicker-rtl .ui-datepicker-group-last .ui-datepicker-header {
+    border-left-width: 1px;
+    border-right-width: 0;
+}
+
+.ui-datepicker-rtl .ui-datepicker-group-middle .ui-datepicker-header {
+    border-left-width: 1px;
+    border-right-width: 0;
+}
+
+/* IE6 IFRAME FIX (taken from datepicker 1.5.3 */
+
+.ui-datepicker-cover {
+    filter: mask(); /*must have*/
+    height: 200px; /*must have*/
+    left: -4px; /*must have*/
+    position: absolute; /*must have*/
+    top: -4px; /*must have*/
+    width: 200px; /*must have*/
+    z-index: -1; /*must have*/
+}

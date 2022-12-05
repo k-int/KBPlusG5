@@ -1,0 +1,7 @@
+model {
+  Iterable<com.k_int.kbplus.IssueEntitlement> entitlements
+}
+
+json {
+  TitleList tmpl.entitlement(entitlements)
+}

@@ -1,0 +1,383 @@
+// Table Device screen size //
+
+.mobile-collapsible-header{
+  display: none;
+}
+.mobile-collapsible-body{
+  display:inherit;
+}
+
+@media(min-width:1025px) and (max-width:1323px){
+  .row-content{
+    .card{
+      &.small{
+        height:295px;
+
+        .card-detail.no-card-action{
+          height:230px;
+        }
+      }
+    }
+
+    .card-panel{
+      height:140px;
+    }
+    .card-panel.strip-table-alt{
+      height:511px;
+    }
+    .card-panel.strip-table-issue-ents{
+      height:850px;
+    }
+  }
+
+}
+
+@media(min-width:1025px) and (max-width:1323px){
+  .tab-content .card.nsmall, .row-content .card.nsmall{
+    height: 295px;
+
+    .card-detail.no-card-action{
+      height:220px;
+    }
+  }
+}
+
+@media(min-width:1025px) and (max-width:1490px){
+  .resetsearch{
+    width:50px;
+    padding-left:5px;
+    margin-top:22px !important;
+  }
+}
+
+@media(min-width:1025px) and (max-width:1200px){
+  /* This is to hide the Card titles on the details page or to drop the line  */
+  .card-panel {
+    &.hide-text {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+
+      .card-label {
+        .card-text {
+          display: none;
+        }
+      }
+    }
+
+    &.drop-line {
+      .card-label {
+        .card-text {
+          width: 100%;
+          float: left;
+        }
+        .card-response.right {
+          float: left !important;
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  .col.s3.l2.property{
+    margin-right:20px;
+  }
+}
+
+@media (min-width:768px) and (max-width:1024px){
+  table tr td .btn{
+    margin-bottom:10px;
+  }
+}
+
+@media(min-width:992px) and (max-width:1024px){
+  /* this is for ipad screen sizes */
+  .row-content{
+    .card{
+      &.small{
+        height:300px;
+
+        .card-detail.no-card-action{
+          height:230px;
+        }
+      }
+    }
+  }
+}
+
+
+
+@media(min-width:768px) and (max-width:991px) {
+
+  .list-section {
+    .collection {
+      .collection-item {
+        padding-left: 0px;
+      }
+    }
+
+  }
+}
+
+
+// Mobile Device screen size //
+
+@media(max-width:767px) {
+
+
+
+
+  /* licence types into 2 columns on mobile */
+  ul.licence-properties li{
+    margin-right:8px;
+  }
+
+  .row-content{
+    .card{
+      &.small{
+        height:300px;
+
+        .card-detail.no-card-action{
+          height:230px;
+        }
+      }
+    }
+    .card-panel{
+      &.caption-wrap{
+        height:initial;
+        .card-caption{
+          word-break:break-all;
+        }
+      }
+    }
+  }
+
+
+
+  /* Card element on the detail page */
+
+  .tab-content .card.large.mobilecard{
+    display:block;
+    height:750px;
+
+    .internal-card-panel{
+      width:100%;
+    }
+  }
+
+  .material-tooltip{
+    max-width:90%;
+    margin-right:10%;
+  }
+
+  .jisc_collapsible .collapsible-header {
+
+    .full-height-divider {
+      min-height: initial;
+      border-left: 0px;
+      border-top: 1px solid #ddd;
+      padding-top: 10px;
+      min-height: initial !important;
+
+      .collection {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+
+        .collection-item {
+          &.first {
+            margin-top: inherit;
+          }
+
+          &.terms {
+            margin-right: 5px;
+            margin-left: 5px;
+          }
+        }
+      }
+    }
+  }
+
+}
+
+
+/* From ipad down */
+@media(min-width:1px) and (max-width:1024px) {
+  /* On collapsibles moves the right column under the main one */
+  .list-section {
+    .collection {
+      .collection-item {
+        padding-left: 0px;
+      }
+    }
+
+    .full-height-divider {
+      min-height: initial;
+      border-top: 1px solid #ddd;
+      border-left: 0px;
+
+      .collection {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row-reverse;
+        justify-content: center;
+
+        .collection-item {
+          align-self: flex-end;
+          &.first {
+            margin-top: inherit;
+          }
+        }
+      }
+    }
+  }
+
+  .jisc_collapsible .collapsible-header {
+
+
+    .collection .collection-item {
+      &.actions {
+        .actions-container {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
+      }
+    }
+  }
+
+  .jisc-compare-collection.collection.with-header{
+    .collection-header{
+      min-height:100px;
+      height:inherit;
+    }
+  }
+
+  .jisc-compare{
+    &.collection{
+      .collection-item{
+        ul.options{
+          height:initial;
+        }
+      }
+    }
+  }
+
+  .jisc-compare-collection{
+    &.collection{
+      .collection-item{
+        &.fixed-compare-data{
+          height:initial;
+        }
+      }
+    }
+  }
+
+  /* search button left and placement change */
+  .search-section{
+    .btn{
+      margin-top:10px;
+      margin-bottom:15px;
+      float:left !important;
+    }
+    &.notop{
+      .btn{
+        margin-top:10px;
+      }
+    }
+  }
+
+  .card-panel.strip-table-issue-ents{
+    height:850px;
+  }
+
+  .tab-content{
+    .card-panel{
+      height:initial;
+    }
+  }
+
+  .strip-table-alt{
+    .result{
+      word-break:break-all;
+    }
+  }
+
+  /* collapsibles that only showup on mobile. Mainly for the search on lists. Has some js along with it. */
+  .mobile-collapsible-header{
+    position: relative;
+    display: block;
+    cursor: pointer;
+    min-height: $collapsible-height;
+    line-height: $collapsible-line-height;
+    padding: 0 1rem;
+    background-color: $collapsible-header-color;
+    border-bottom: 1px solid $collapsible-border-color;
+
+    i{
+      float: right;
+      height: 100%;
+      line-height: 42px;
+    }
+  }
+
+  .mobile-collapsible-body{
+    display: none;
+    border-bottom: 1px solid $collapsible-border-color;
+    box-sizing: border-box;
+    padding: 2rem;
+    margin-top:0px;
+
+    &.active{
+      display:block;
+    }
+  }
+
+  .table-responsive-scroll{
+    overflow-x:scroll;
+    th{
+      vertical-align: top;
+    }
+  }
+
+  .pagination{
+    margin-bottom: 30px;
+  }
+
+  .page-response {
+    margin-bottom: 10px;
+  }
+
+}
+
+@media(min-width:992px) and (max-width:1024px){
+  .jisc_collapsible .collapsible-header .full-height-divider {
+    min-height: 250px;
+    border-left:1px solid #ddd;
+    border-top:0px;
+  }
+
+  .list-section .full-height-divider {
+    min-height: 250px;
+    border-left:1px solid #ddd;
+    border-top:0px;
+  }
+}
+
+@media only screen
+and (min-device-width : 768px)
+and (max-device-width : 1024px)
+and (orientation : portrait) {
+  .tab-content .card.small, .row-content .card.small{
+    height:300px;
+  }
+}
+
+@media (min-width:1240px){
+  .licencepropertylist {
+    .licenceproperties:nth-child(1n+4) {
+      margin-top: 20px;
+    }
+  }
+}

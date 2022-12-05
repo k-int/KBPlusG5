@@ -1,0 +1,7 @@
+model {
+  IdentifierOccurrence identifierOccurrence
+}
+json {
+  namespace identifierOccurrence.identifier.ns.ns
+  value identifierOccurrence.identifier.value
+}

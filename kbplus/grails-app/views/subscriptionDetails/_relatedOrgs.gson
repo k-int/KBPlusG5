@@ -1,0 +1,9 @@
+model {
+  com.k_int.kbplus.OrgRole relatedOrgs
+}
+json {
+  OrgID relatedOrgs.org?.id
+  OrgName relatedOrgs.org?.name
+  OrgRole relatedOrgs.roleType?.value
+  OrgIDs tmpl.identifierOccurrence(relatedOrgs.org.ids)
+}

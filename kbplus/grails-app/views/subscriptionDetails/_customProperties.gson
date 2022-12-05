@@ -1,0 +1,8 @@
+model {
+  com.k_int.kbplus.LicenseCustomProperty customProperties
+}
+json {
+  LicenceProperty customProperties.type?.name
+  Status customProperties.getValue()
+  Notes customProperties.getNote()
+}

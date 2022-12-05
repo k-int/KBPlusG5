@@ -1,0 +1,18 @@
+model {
+  TitleInstancePackagePlatform tipp
+}
+json {
+  title tipp.title.title
+  instanceMedium 'electronic'
+  instanceMedia 'journal'
+  instanceIdentifiers tmpl.identifier( tipp.title.ids.findAll { it.identifier.ns.ns != 'issn' }  )
+  siblingInstanceIdentifiers tmpl.identifier( tipp.title.ids.findAll { it.identifier.ns.ns == 'issn' }  )
+  coverage tmpl.coverage( [tipp: tipp] )
+  embargo tipp?.embargo
+  coverageDepth tipp?.coverageDepth
+  coverageNote tipp?.coverageNote
+  platformUrl tipp?.getCombinedPlatformUrl()
+  platformName tipp?.platform?.name
+  _platformId tipp?.platform?.id
+
+}

@@ -1,0 +1,65 @@
+/*------------------------------------*\
+    $INNER FOOTER STYLES
+\*------------------------------------*/
+
+
+
+.footer-inner {
+    position:relative;
+    height: 100%;
+    width: 100%;
+    padding-top: 30px;
+    @include breakpoint(768px) {
+        padding-top: 40px;
+    }    
+    @include breakpoint(1024px) {
+        padding-left: 60px;
+        padding-right: 60px;
+    }
+    @include breakpoint(1320px) {
+        padding-left: 60px;
+        padding-right: 60px;
+    }
+    @include breakpoint(1440px) {
+        padding-left: 0px;
+        padding-right: 0px;
+    } 
+}
+
+
+
+.list__title {
+    // include font: @include small-girl();
+    font-size: 28px;
+    line-height:35px;
+    color:$white;
+    padding-left: 8px;
+}
+
+.footer__list {
+    position: relative;
+    margin-top: 18px;
+    li {
+        margin-bottom: 16px;
+        color:$white;
+        @include font-size(15px);
+        a {
+            color:$white;
+            padding:4px 8px;
+            &:hover {
+                background-color: $directiveDarken;
+                border-radius: 5px;
+            }
+        }
+    }
+}
+
+
+.footer-logo__name {
+    width: 145px;
+    height: 65px;
+    background: url('../../assets/img/ui/sidebar/mind-logoW.svg');
+    background-repeat: no-repeat;
+    background-size: 145px 65px;
+}
+

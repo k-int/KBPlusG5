@@ -1,0 +1,133 @@
+/* SEARCH SECTION INTERFACE
+============================================================================= */
+
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    $directive;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    $directive;
+   opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    $directive;
+   opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color:    $directive;
+}
+
+
+.search-section {
+	@include clearfix;
+	position: relative;
+	display: block;
+	//min-height: 100px;
+	background:$white;
+	border-radius:3px;
+	margin-bottom: 20px;
+	padding: 11px;
+
+	.search-main { // input field for main search
+		background-color: $input;
+		border-radius:4px;
+		input[type=search] {
+			border-bottom:none;
+			color:$directive;
+		}
+		i.material-icons {
+			//color: $directive;
+
+			&.close{
+				top: 11px;
+			}
+		}
+	}
+	.input-field {
+		margin-top: 1.0rem;
+		input[type=text] {
+			height:2.5rem;
+		}
+	}
+	.input-field .prefix {
+	    font-size: 22px;
+	}
+
+	&.notop{
+		.input-field{
+			margin-top:0;
+		}
+		.btn{
+			margin-top:3px;
+		}
+	}
+}
+
+
+.filter-section {
+	@include clearfix;
+	position: relative;
+	display: block;
+	//min-height: 100px;
+	background:$white;
+	border-radius:3px;
+	margin-bottom: 20px;
+	padding: 13px;
+
+	.search-main { // input field for main search
+		background-color: $input;
+		border-radius:4px;
+		input[type=search] {
+			border-bottom:none;
+			color:$directive;
+		}
+		i.material-icons {
+			//color: $directive;
+		}
+	}
+	.input-field {
+		margin-top: 1.3rem;
+		input[type=text] {
+			height:2.5rem;
+		}
+	}
+	.input-field .prefix {
+	    font-size: 22px;
+	}
+	.filter-actions {
+		padding-top: 14px;
+		padding-bottom: 20px;
+	}
+}
+
+
+
+.button-area-line {
+	@include flexbox;
+	@include flex-direction(row);
+	@include flex-wrap(nowrap);
+	@include justify-content(center);
+	a {
+		margin: 0 1rem;
+		@include flex-grow(1);
+	}
+}
+.sub-menu{
+	.search-main{
+		input[type="search"]{
+			&::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+				color:    $white;
+			}
+			&:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+				color:    $white;
+				opacity:  1;
+			}
+			&::-moz-placeholder { /* Mozilla Firefox 19+ */
+				color:    $white;
+				opacity:  1;
+			}
+			&:-ms-input-placeholder { /* Internet Explorer 10-11 */
+				color:    $white;
+			}
+		}
+	}
+}

@@ -1,0 +1,27 @@
+model {
+  Package pkg
+  List<TitleInstancePackagePlatform> packageContent
+  Long numTitles
+}
+json {
+  header {
+    availability {
+      type ( pkg?.consortia ? 'consortial' : 'general' )
+    }
+    packageProvider {
+      name pkg?.getContentProvider()?.name
+    }
+    packageSource 'kbplus'
+    packageName pkg?.name
+    description pkg?.description
+    startDate pkg?.startDate
+    endDate pkg.endDate
+    packageSlug pkg?.identifier
+    _intenalId pkg?.id
+    numTitles numTitles
+    offset params.offset?:0
+    max params.max?:10
+  }
+  packageContents tmpl.tipp(packageContent)
+}
+
