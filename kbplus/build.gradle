@@ -100,6 +100,10 @@ dependencies {
     }
     implementation 'org.grails.plugins:spring-security-core:5.1.1'
     implementation 'com.vladsch.flexmark:flexmark-all:0.64.0'
+
+    implementation 'com.bertramlabs.plugins:sass-asset-pipeline:3.4.7'
+    assets 'com.bertramlabs.plugins:sass-asset-pipeline:3.4.7'
+
 }
 
 bootRun {
