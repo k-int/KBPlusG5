@@ -99,6 +99,7 @@ dependencies {
       exclude module: 'groovy'
     }
     implementation 'org.grails.plugins:spring-security-core:5.1.1'
+    implementation 'com.vladsch.flexmark:flexmark-all:0.64.0'
 }
 
 bootRun {
