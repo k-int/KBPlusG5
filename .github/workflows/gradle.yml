@@ -16,7 +16,7 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
       - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
+        uses: gradle/wrapper-validation-action@v1
       # - name: Start containers
       #   run: |
       #     cd tools/testing
@@ -30,9 +30,9 @@ jobs:
           echo "BUILD_NUMBER=${{github.run_number}}" >> $GITHUB_ENV
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
-        with:
-          arguments: clean build
-          build-root-directory: kbplus
+      - name: Build
+        working-directory: ./kbplus
+        run: ./gradlew clean build
       #  -x integrationTest
       # - name: Publish Test Results
       #   uses: EnricoMi/publish-unit-test-result-action@v1
