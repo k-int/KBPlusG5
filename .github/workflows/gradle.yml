@@ -1,5 +1,9 @@
 name: Build KBPlusG5
 
+
+permissions:
+  contents: read
+
 on:
   push:
 
@@ -16,14 +20,6 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
           architecture: x64
-      - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@v1
-      # - name: Start containers
-      #   run: |
-      #     cd tools/testing
-      #     docker-compose down -v
-      #     docker-compose up -d
-      #     sleep 5
       - name: Inject github build number
         run: |
           # Make github run id available to gradle script via env var BUILD_NUMBER so it ends up in our module descriptor version
@@ -34,40 +30,3 @@ jobs:
       - name: Build
         working-directory: ./kbplus
         run: ./gradlew clean build
-      #  -x integrationTest
-      # - name: Publish Test Results
-      #   uses: EnricoMi/publish-unit-test-result-action@v1
-      #   if: always()
-      #   with:
-      #     files: "service/build/test-results/**/*.xml"
-      - name: Prepare env for docker build
-        run: | 
-          echo "module_name=$(grep info.app.name ./service/build/resources/main/META-INF/grails.build.info | cut -f2 -d=)" >> $GITHUB_ENV
-          echo "module_version=$(grep info.app.version ./service/build/resources/main/META-INF/grails.build.info | cut -f2 -d=)" >> $GITHUB_ENV
-          echo "is_snapshot=$(grep info.app.version ./service/build/resources/main/META-INF/grails.build.info | grep -i SNAPSHOT | wc -l)" >> $GITHUB_ENV
-      - name: Pre build info
-        run: echo "ref:${{github.REF}} name:${{env.module_name}} ver:${{env.module_version}} is_snapshot:${{env.is_snapshot}}"
-      # - name: Docker Build
-      #   run: docker build --pull=true --no-cache=true -t ${{ env.module_name }}:${{ env.module_version }} .
-      # - if: env.is_snapshot == '1'
-      #   name: Publish to snapshot
-      #   run: |
-      #     echo "push to snapshot repo ${{env.module_name}} ${{env.module_version}}"
-      #     docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }} $dockerRepo
-      #     docker tag ${{ env.module_name }}:${{ env.module_version }} $dockerRepo/knowledgeintegration/${{ env.module_name }}:${{ env.module_version }}
-      #     docker tag ${{ env.module_name }}:${{ env.module_version }} $dockerRepo/knowledgeintegration/${{ env.module_name }}:snapshot-latest
-      #     docker push $dockerRepo/knowledgeintegration/${{ env.module_name }}:${{ env.module_version }}
-      #     docker push $dockerRepo/knowledgeintegration/${{ env.module_name }}:snapshot-latest
-      #   env:
-      #     dockerRepo: docker.libsdev.k-int.com
-      # - if: env.is_snapshot == '0'
-      #   name: Publish to release
-      #   run: |
-      #     echo "push to snapshot repo ${{env.module_name}} ${{env.module_version}}"
-      #     docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }} $dockerRepo
-      #     docker tag ${{ env.module_name }}:${{ env.module_version }} $dockerRepo/knowledgeintegration/${{ env.module_name }}:${{ env.module_version }}
-      #     docker tag ${{ env.module_name }}:${{ env.module_version }} $dockerRepo/knowledgeintegration/${{ env.module_name }}:latest
-      #     docker push $dockerRepo/knowledgeintegration/${{ env.module_name }}:${{ env.module_version }}
-      #     docker push $dockerRepo/knowledgeintegration/${{ env.module_name }}:latest
-      #   env:
-      #     dockerRepo: docker.libsdev.k-int.com
