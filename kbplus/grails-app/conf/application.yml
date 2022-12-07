@@ -96,6 +96,10 @@ grails:
                 scriptlet: html
                 taglib: none
                 staticparts: none
+    hibernate:
+        osiv:
+            readonly: true
+
 
 ---
 hibernate:
@@ -103,6 +107,7 @@ hibernate:
         queries: false
         use_second_level_cache: false
         use_query_cache: false
+    allow_update_outside_transaction: true
 dataSource:
     pooled: true
     jmxExport: true

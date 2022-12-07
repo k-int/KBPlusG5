@@ -2815,7 +2815,8 @@ AND EXISTS (
 
         // result.forumActivity = zenDeskSyncService.getLatestForumActivity()
 
-        result.recentlyEditedSubscriptions = Subscription.executeQuery("select s from Subscription as s where  ( ( exists ( select o from s.orgRelations as o where o.roleType.value = 'Subscriber' and o.org = ? ) ) ) AND ( s.status.value != 'Deleted' ) order by lastUpdated desc".toString(), [result.institution], [max:5]);
+        result.recentlyEditedSubscriptions = Subscription.executeQuery("select s from Subscription as s where  ( ( exists ( select o from s.orgRelations as o where o.roleType.value = 'Subscriber' and o.org = :o ) ) ) AND ( s.status.value != 'Deleted' ) order by lastUpdated desc".toString(), ['o':result.institution], [max:5]);
+
         result.recentlyEditedLicenses = License.executeQuery('select l '+INSTITUTIONAL_LICENSES_QUERY+' order by l.lastUpdated desc', [lic_org:result.institution, org_role:licensee_role,lic_status:licence_status], [max:5]);
 
 
@@ -2861,12 +2862,13 @@ AND EXISTS (
         def pkg_del = RefdataCategory.lookupOrCreate( 'Package Status', 'Deleted' );
         def pc_status = RefdataCategory.lookupOrCreate("PendingChangeStatus", "Pending")
 
-        result.num_todos = PendingChange.executeQuery("select count(distinct pc.oid) from PendingChange as pc left outer join pc.license as lic left outer join lic.status as lic_status left outer join pc.subscription as sub left outer join sub.status as sub_status left outer join pc.pkg as pkg left outer join pkg.packageStatus as pkg_status where pc.owner = ? and (pc.status = ? or pc.status is null) and ((lic_status is null or lic_status!=?) and (sub_status is null or sub_status!=?) and (pkg_status is null or pkg_status!=?))".toString(), [result.institution,pc_status, lic_del,sub_del,pkg_del])[0]
+        result.num_todos = PendingChange.executeQuery("select count(distinct pc.oid) from PendingChange as pc left outer join pc.license as lic left outer join lic.status as lic_status left outer join pc.subscription as sub left outer join sub.status as sub_status left outer join pc.pkg as pkg left outer join pkg.packageStatus as pkg_status where pc.owner = :i and (pc.status = :s or pc.status is null) and ((lic_status is null or lic_status!=:ld) and (sub_status is null or sub_status!=:sd) and (pkg_status is null or pkg_status!=:pd))".toString(), 
+          ['i':result.institution, 's':pc_status, 'ld':lic_del,'sd': sub_del, 'pd':pkg_del])[0]
 
         log.debug("Count3 (Number of pending changes)=${result.num_todos}, fetching pending changes");
 
-        def change_summary = PendingChange.executeQuery("select distinct(pc.oid), count(pc), min(pc.ts), max(pc.ts) from PendingChange as pc left outer join pc.license as lic left outer join lic.status as lic_status left outer join pc.subscription as sub left outer join sub.status as sub_status left outer join pc.pkg as pkg left outer join pkg.packageStatus as pkg_status where pc.owner = ? and (pc.status = ? or pc.status is null) and ((lic_status is null or lic_status!=?) and (sub_status is null or sub_status!=?) and (pkg_status is null or pkg_status!=?)) group by pc.oid order by min(pc.ts)".toString(), 
-                                                        [result.institution,pc_status,lic_del,sub_del,pkg_del], 
+        def change_summary = PendingChange.executeQuery("select distinct(pc.oid), count(pc), min(pc.ts), max(pc.ts) from PendingChange as pc left outer join pc.license as lic left outer join lic.status as lic_status left outer join pc.subscription as sub left outer join sub.status as sub_status left outer join pc.pkg as pkg left outer join pkg.packageStatus as pkg_status where pc.owner = :i and (pc.status = :s or pc.status is null) and ((lic_status is null or lic_status!=:ld) and (sub_status is null or sub_status!=:sd) and (pkg_status is null or pkg_status!=:pd)) group by pc.oid order by min(pc.ts)".toString(), 
+                                                        ['i':result.institution, 's':pc_status, 'ld':lic_del, 'sd':sub_del, 'pd':pkg_del], 
                                                         [max: result.max?:20, offset: result.offset?:0]);
         result.todos = []
 
@@ -2877,7 +2879,7 @@ AND EXISTS (
           if ( ctr < 20 ) {
             // log.debug("Change summary row : ${cs}");
             def item_with_changes = genericOIDService.resolveOID(cs[0])
-      def pendingChanges = PendingChange.executeQuery("select pc from PendingChange as pc where oid=? and ( pc.status is null or pc.status = ? ) order by ts desc", [cs[0], pc_status ]);
+      def pendingChanges = PendingChange.executeQuery("select pc from PendingChange as pc where oid=:oid and ( pc.status is null or pc.status = :s ) order by ts desc", ['oid':cs[0], 's':pc_status ]);
             result.todos.add([
                     item_with_changes: item_with_changes,
                     oid              : cs[0],

@@ -129,10 +129,11 @@ class Org {
     def idstr_components = idstr.split(':');
     switch ( idstr_components.size() ) {
       case 1:
-        qr = Org.executeQuery('select t from Org as t join t.ids as io where io.identifier.value = ?',[idstr_components[0]])
+        qr = Org.executeQuery('select t from Org as t join t.ids as io where io.identifier.value = :oid',['oid':idstr_components[0]])
         break;
       case 2:
-        qr = Org.executeQuery('select t from Org as t join t.ids as io where io.identifier.value = ? and io.identifier.ns.ns = ?',[idstr_components[1],idstr_components[0]])
+        qr = Org.executeQuery('select t from Org as t join t.ids as io where io.identifier.value = :oid and io.identifier.ns.ns = :ons',
+                              ['oid':idstr_components[1],'ons':idstr_components[0]])
         break;
       default:
         break;
@@ -201,7 +202,7 @@ class Org {
     // See if we can uniquely match on any of the identifiers
     identifiers.each { k,v ->
       if ( v != null ) {
-        def o = Org.executeQuery("select o from Org as o join o.ids as io where io.identifier.ns.ns = ? and io.identifier.value = ?",[k,v])
+        def o = Org.executeQuery("select o from Org as o join o.ids as io where io.identifier.ns.ns = :ns and io.identifier.value = :id",['ns':k,'id':v])
         if ( o.size() > 0 ) {
           result = o[0]
         }
@@ -211,7 +212,7 @@ class Org {
     // No match by identifier, try and match by name
     if ( result == null ) {
       // log.debug("Match by name ${name}");
-      def o = Org.executeQuery("select o from Org as o where lower(o.name) = ?",[name.toLowerCase()])
+      def o = Org.executeQuery("select o from Org as o where lower(o.name) = :n",['n':name.toLowerCase()])
       if ( o.size() > 0 ) {
         result = o[0]
       }
