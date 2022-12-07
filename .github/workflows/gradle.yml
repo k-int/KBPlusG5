@@ -28,11 +28,12 @@ jobs:
           # Make github run id available to gradle script via env var BUILD_NUMBER so it ends up in our module descriptor version
           # echo "BUILD_NUMBER=${{github.run_id}}" >> $GITHUB_ENV
           echo "BUILD_NUMBER=${{github.run_number}}" >> $GITHUB_ENV
-      - name: Build with Gradle
-        uses: gradle/gradle-build-action@0d13054264b0bb894ded474f08ebb30921341cee
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
         with:
-          arguments: build -x integrationTest
+          arguments: clean build
           build-root-directory: kbplus
+      #  -x integrationTest
       # - name: Publish Test Results
       #   uses: EnricoMi/publish-unit-test-result-action@v1
       #   if: always()
