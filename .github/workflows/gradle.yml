@@ -36,4 +36,6 @@ jobs:
 
     - name: Build
       working-directory: ./kbplus
-      run: ./gradlew clean build --stacktrace --info --no-daemon
+      run: ./gradlew --version
+      run: ./gradlew clean 
+      run: ./gradlew build --stacktrace --info --no-daemon
