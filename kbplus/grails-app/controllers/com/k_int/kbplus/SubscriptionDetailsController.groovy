@@ -90,7 +90,7 @@ class SubscriptionDetailsController {
     log.debug("max = ${result.max}");
 
     def pending_change_pending_status = RefdataCategory.lookupOrCreate("PendingChangeStatus", "Pending")
-    def pendingChanges = PendingChange.executeQuery("select pc.id from PendingChange as pc where subscription=? and ( pc.status is null or pc.status = ? ) order by ts desc", [result.subscriptionInstance, pending_change_pending_status ]);
+    def pendingChanges = PendingChange.executeQuery("select pc.id from PendingChange as pc where subscription=:sub and ( pc.status is null or pc.status = :s ) order by ts desc", [sub:result.subscriptionInstance, s:pending_change_pending_status ]);
 
     if(result.subscriptionInstance?.isSlaved?.value == "Auto" && pendingChanges){
       log.debug("Slaved subscription, auto-accept pending changes")
