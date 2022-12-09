@@ -324,12 +324,8 @@ class AjaxController {
       options:[]
     ]
 
-    def query_params = ["%${params.query.trim().toLowerCase()}%"];
-
-    // log.debug("q params: ${query_params}");
-
-    // result.options = Org.executeQuery("select o.name from Org as o where lower(o.name) like ? order by o.name desc",["%${params.query.trim().toLowerCase()}%"],[max:10]);
-    def ol = Org.executeQuery("select o from Org as o where lower(o.name) like ? order by o.name asc",query_params,[max:10,offset:0]);
+    def query_params = [name:"%${params.query.trim().toLowerCase()}%"];
+    def ol = Org.executeQuery("select o from Org as o where lower(o.name) like :name order by o.name asc",query_params,[max:10,offset:0]);
 
     ol.each {
       result.options.add(it.name);
