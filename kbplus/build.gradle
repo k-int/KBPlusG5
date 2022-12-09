@@ -106,7 +106,7 @@ dependencies {
     // implementation 'com.bertramlabs.plugins:sass-asset-pipeline:3.4.7'
     implementation 'com.bertramlabs.plugins:sass-asset-pipeline:4.0.0'
     // assets 'com.bertramlabs.plugins:sass-asset-pipeline:3.4.7'
-    assets 'com.bertramlabs.plugins:sass-asset-pipeline:4.0.0'
+    // assets 'com.bertramlabs.plugins:sass-asset-pipeline:4.0.0'
 
 }
 
