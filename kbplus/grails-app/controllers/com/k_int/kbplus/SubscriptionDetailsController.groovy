@@ -263,23 +263,23 @@ class SubscriptionDetailsController {
 
   
     //edit history count for new display on page
-    def history_qry_params = [result.subscriptionInstance.class.name, "${result.subscriptionInstance.id}"]
-    result.historyLinesTotal = AuditLogEvent.executeQuery("select count(e.id) from AuditLogEvent as e where className=? and persistedObjectId=?",history_qry_params)[0];
+    def history_qry_params = [cn:result.subscriptionInstance.class.name, poid:"${result.subscriptionInstance.id}"]
+    result.historyLinesTotal = AuditLogEvent.executeQuery("select count(e.id) from AuditLogEvent as e where className=:cn and persistedObjectId=:poid",history_qry_params)[0];
   
     //todo history count for new display on page
-    result.todoHistoryLinesTotal = PendingChange.executeQuery("select count(pc) from PendingChange as pc where subscription=?", result.subscriptionInstance)[0];
+    result.todoHistoryLinesTotal = PendingChange.executeQuery("select count(pc) from PendingChange as pc where subscription=:sub", [sub:result.subscriptionInstance])[0];
   
     //expected and previous counts for new displays on page
-    def exp_prev_qry_params = [result.subscriptionInstance]
     def exp_prev_date_filter = new Date();
-    exp_prev_qry_params.add(exp_prev_date_filter);
+    def exp_prev_qry_params = [si:result.subscriptionInstance, df:exp_prev_date_filter]
+    // exp_prev_qry_params.add(exp_prev_date_filter);
   
-    def exp_prev_base_qry = "from IssueEntitlement as ie where ie.subscription = ? and ie.status.value != 'Deleted' "
-    def exp_qry = exp_prev_base_qry + "and (coalesce(ie.accessStartDate,subscription.startDate) > ? )"
-    def prev_qry = exp_prev_base_qry + "and ( coalesce(ie.accessEndDate,subscription.endDate) <= ? )"
+    def exp_prev_base_qry = "from IssueEntitlement as ie where ie.subscription = :si and ie.status.value != 'Deleted' "
+    def exp_qry = exp_prev_base_qry + "and (coalesce(ie.accessStartDate,subscription.startDate) > :df )"
+    def prev_qry = exp_prev_base_qry + "and ( coalesce(ie.accessEndDate,subscription.endDate) <= :df )"
 	
-	result.expectedTitles = IssueEntitlement.executeQuery("select ie "+exp_qry, exp_prev_qry_params)
-	result.previousTitles = IssueEntitlement.executeQuery("select ie "+prev_qry, exp_prev_qry_params)
+    result.expectedTitles = IssueEntitlement.executeQuery("select ie "+exp_qry, exp_prev_qry_params)
+    result.previousTitles = IssueEntitlement.executeQuery("select ie "+prev_qry, exp_prev_qry_params)
   
     result.expectedCount = IssueEntitlement.executeQuery("select count(ie) "+exp_qry, exp_prev_qry_params )[0]
     result.previousCount = IssueEntitlement.executeQuery("select count(ie) "+prev_qry, exp_prev_qry_params )[0]
