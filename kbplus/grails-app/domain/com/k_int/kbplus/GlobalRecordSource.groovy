@@ -55,13 +55,13 @@ class GlobalRecordSource {
 
   @Transient
   def getNumberLocalPackages() {
-    GlobalRecordSource.executeQuery("select count(*) from GlobalRecordTracker grt where grt.owner.source = ?",[this]);
+    GlobalRecordSource.executeQuery("select count(*) from GlobalRecordTracker grt where grt.owner.source = :src",[src:this]);
   }
 
   @Transient
   static def removeSource(source_id) {
-    GlobalRecordSource.executeUpdate("delete GlobalRecordInfo gri where gri.source.id = ?",[source_id])
-    GlobalRecordSource.executeUpdate("delete GlobalRecordSource grs where grs.id = ?",[source_id])
+    GlobalRecordSource.executeUpdate("delete GlobalRecordInfo gri where gri.source.id = :sid",[sid:source_id])
+    GlobalRecordSource.executeUpdate("delete GlobalRecordSource grs where grs.id = :sid",[sid:source_id])
   }
   
 }

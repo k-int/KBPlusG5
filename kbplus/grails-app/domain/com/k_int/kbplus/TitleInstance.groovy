@@ -131,10 +131,10 @@ class TitleInstance {
 
     switch ( idstr_components.size() ) {
       case 1:
-        qr = TitleInstance.executeQuery('select t from TitleInstance as t join t.ids as io where io.identifier.value = ?',[idstr_components[0]])
+        qr = TitleInstance.executeQuery('select t from TitleInstance as t join t.ids as io where io.identifier.value = :id',[id:idstr_components[0]])
         break;
       case 2:
-        qr = TitleInstance.executeQuery('select t from TitleInstance as t join t.ids as io where io.identifier.value = ? and lower(io.identifier.ns.ns) = ?',[idstr_components[1],idstr_components[0]?.toLowerCase()])
+        qr = TitleInstance.executeQuery('select t from TitleInstance as t join t.ids as io where io.identifier.value = :v and lower(io.identifier.ns.ns) = :ns',[v:idstr_components[1],ns:idstr_components[0]?.toLowerCase()])
         break;
       default:
         // println("Unable to split");
@@ -149,10 +149,10 @@ class TitleInstance {
           log.debug("No matches - trying to locate via identifier group");
           switch ( idstr_components.size() ) {
             case 1:
-              qr = TitleInstance.executeQuery('select t from TitleInstance as t join t.ids as io where exists ( select i from Identifier where i.value = ? and i.ig = io.identifier.ig )',[idstr_components[0]])
+              qr = TitleInstance.executeQuery('select t from TitleInstance as t join t.ids as io where exists ( select i from Identifier where i.value = :v and i.ig = io.identifier.ig )',[v:idstr_components[0]])
               break;
             case 2:
-              qr = TitleInstance.executeQuery('select t from TitleInstance as t join t.ids as io where exists ( select i from Identifier where i.value = ? and i.ns.ns = ? and i.ig = io.identifier.ig )',[idstr_components[1],idstr_components[0]?.toLowerCase()])
+              qr = TitleInstance.executeQuery('select t from TitleInstance as t join t.ids as io where exists ( select i from Identifier where i.value = :v and i.ns.ns = :ns and i.ig = io.identifier.ig )',[v:idstr_components[1],ns:idstr_components[0]?.toLowerCase()])
               break;
             default:
               // println("Unable to split");
@@ -194,7 +194,7 @@ class TitleInstance {
     // Didn't match anything - see if we can match based on identifier without namespace [In case of duff supplier data]
     if ( matched.size() == 0 ) {
       candidate_identifiers.each { i ->
-        def id1 = Identifier.executeQuery('Select io from IdentifierOccurrence as io where io.identifier.value = ?',[i.value]);
+        def id1 = Identifier.executeQuery('Select io from IdentifierOccurrence as io where io.identifier.value = :v',[v:i.value]);
         id1.each {
           if ( it.ti != null ) {
             if ( matched.contains(it.ti) ) {
@@ -548,25 +548,25 @@ class TitleInstance {
   static def expunge(title_id) {
     try {
       log.debug("  -> IEs");
-      TitleInstance.executeUpdate('delete from IssueEntitlement ie where ie.tipp in ( select tipp from TitleInstancePackagePlatform tipp where tipp.title.id = ? )',[title_id])
+      TitleInstance.executeUpdate('delete from IssueEntitlement ie where ie.tipp in ( select tipp from TitleInstancePackagePlatform tipp where tipp.title.id = :tid )',[tid:title_id])
       log.debug("  -> TIPPs");
-      TitleInstance.executeUpdate('delete from TitleInstancePackagePlatform tipp where tipp.title.id = ?',[title_id])
+      TitleInstance.executeUpdate('delete from TitleInstancePackagePlatform tipp where tipp.title.id = :tid',[tid:title_id])
       log.debug("  -> IdentifierOccurrence");
-      TitleInstance.executeUpdate('delete from IdentifierOccurrence io where io.ti.id = ?',[title_id])
+      TitleInstance.executeUpdate('delete from IdentifierOccurrence io where io.ti.id = :tid',[tid:title_id])
       log.debug("  -> OrgRole");
-      TitleInstance.executeUpdate('delete from OrgRole orl where orl.title.id = ?',[title_id])
+      TitleInstance.executeUpdate('delete from OrgRole orl where orl.title.id = :tid',[tid:title_id])
       log.debug("  -> TitleHistoryEventParticipant");
-      TitleInstance.executeUpdate('delete from TitleHistoryEventParticipant he where he.participant.id = ?',[title_id])
+      TitleInstance.executeUpdate('delete from TitleHistoryEventParticipant he where he.participant.id = :tid',[tid:title_id])
       log.debug("  -> CoreAssertion");
-      TitleInstance.executeUpdate('delete from CoreAssertion ca where ca.tiinp in (select tip from TitleInstitutionProvider tip where tip.title.id = ?)',[title_id])
+      TitleInstance.executeUpdate('delete from CoreAssertion ca where ca.tiinp in (select tip from TitleInstitutionProvider tip where tip.title.id = :tid)',[tid:title_id])
       log.debug("  -> TitleInstitutionProvider");
-      TitleInstance.executeUpdate('delete from TitleInstitutionProvider tip where tip.title.id = ?',[title_id])
+      TitleInstance.executeUpdate('delete from TitleInstitutionProvider tip where tip.title.id = :tid',[tid:title_id])
       log.debug("  -> Fact");
-      TitleInstance.executeUpdate('delete from Fact fact where fact.relatedTitle.id = ?',[title_id])
+      TitleInstance.executeUpdate('delete from Fact fact where fact.relatedTitle.id = :tid',[tid:title_id])
       log.debug("  -> OrgTitleStats");
-      TitleInstance.executeUpdate('delete from OrgTitleStats ots where ots.title.id = ?',[title_id])
+      TitleInstance.executeUpdate('delete from OrgTitleStats ots where ots.title.id = :tid',[tid:title_id])
       log.debug("  -> TI itself");
-      TitleInstance.executeUpdate('delete from TitleInstance ti where ti.id = ?',[title_id])
+      TitleInstance.executeUpdate('delete from TitleInstance ti where ti.id = :tid',[tid:title_id])
       log.debug("  -> DONE");
     }
     catch ( Exception e ) {
