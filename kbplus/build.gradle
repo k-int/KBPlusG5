@@ -83,6 +83,8 @@ dependencies {
 
     
     implementation 'mysql:mysql-connector-java:8.0.31'
+    testImplementation 'mysql:mysql-connector-java:8.0.31'
+
     implementation 'org.elasticsearch:elasticsearch:6.5.0'
     implementation 'org.elasticsearch.client:elasticsearch-rest-high-level-client:6.5.0'
     implementation 'org.apache.poi:poi:3.8'
@@ -134,15 +136,15 @@ tasks.withType(Test) {
 }
 
 
-// webdriverBinaries {
-//     if (!System.getenv().containsKey('GITHUB_ACTIONS')) {
-//         chromedriver {
-//             version = '2.45.0'
-//             fallbackTo32Bit = true
-//         }
-//         geckodriver '0.30.0'
-//     }
-// }
+webdriverBinaries {
+    if (!System.getenv().containsKey('GITHUB_ACTIONS')) {
+        chromedriver {
+            version = '2.45.0'
+            fallbackTo32Bit = true
+        }
+        geckodriver '0.30.0'
+    }
+}
 
 tasks.withType(Test) {
     systemProperty "geb.env", System.getProperty('geb.env')

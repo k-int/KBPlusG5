@@ -169,7 +169,7 @@ environments:
         eshost: "${elasticsearch.service:localhost}"
         localauth: true
         dataSource:
-            dbCreate: none
+            dbCreate: update
             driverClassName: com.mysql.jdbc.Driver
             dialect: org.hibernate.dialect.MySQL5Dialect
             username: "${db.username:k-int}"
