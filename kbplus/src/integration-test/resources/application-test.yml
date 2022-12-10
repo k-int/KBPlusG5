@@ -1,0 +1,37 @@
+kbplus:
+  bootstrap:
+    accounts:
+      admin:
+        name: admin
+        pass: admin
+        display: Admin
+        roles:
+          - ROLE_USER
+          - INST_ADM
+          - ROLE_ADMIN
+        apikey: nullapikey
+      usera:
+        name: usera
+        pass: usera
+        display: usera
+        roles:
+          - ROLE_USER
+          - INST_USER
+      userb:
+        name: userb
+        pass: userb
+        display: userb
+        roles:
+          - ROLE_USER
+          - INST_USER
+      userc:
+        name: userc
+        pass: userc
+        display: userc
+        roles:
+          - ROLE_USER
+          - INST_USER
+
+localauth: true
+configValidation: Integrationtest
+
