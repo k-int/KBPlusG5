@@ -22,7 +22,7 @@ class PublicHomeSpec extends GebSpec {
         when:"The home page is visited"
             go '/'
 
-        then:"The title is correct"
-        	title == "Welcome to Grails"
+        then:"The title is Knowledge Base+"
+        	title == "Knowledge Base+"
     }
 }
