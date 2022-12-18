@@ -215,11 +215,10 @@ class BootStrap {
   
   
     if ( grailsApplication.config.localauth ) { 
-      log.debug("localauth is set.. ensure user accounts present (From local config file) ${grailsApplication.config.kbplus?.bootstrap?.accounts}");
-      if ( grailsApplication.config.kbplus?.bootstrap?.accounts?.size() > 0 ) {
-
-        grailsApplication.config.kbplus?.bootstrap?.accounts?.each { k,su ->
-  
+      List bootstrap_accounts = grailsApplication.config.getProperty('sysusers', List, []);
+      log.debug("localauth is set.. ensure user accounts present (From local config file) ${bootstrap_accounts}");
+      if ( bootstrap_accounts.size() > 0 ) {
+        bootstrap_accounts.each { su ->
           log.debug("test ${su.name} ${su.pass} ${su.display} ${su.roles}");
           def user = User.findByUsername(su.name)
           if ( user ) {
@@ -836,45 +835,49 @@ No Host Platform URL Content
   def updateSystemSavedQueries() {
 
     def admin_user = User.findByUsername('admin')
-
-    // Add any default system queries here by adding  well known reference and some sql. Formatting is important as the data managers
-    // will want to modify and extend this SQL, so please make sure it's readable. Column aliases are used for display.
-    def sq_info_list = [
-      [
-        ref:'DupTitle',
-        query:'''
-select dt.ti_id TitleId, 
-       dt.ti_title Title, 
-       tis.ids TitleIds
-from duplicate_titles dt, 
-     title_identifiers tis 
-where tis.ti_id = dt.ti_id
-''',
-        type:'sql',
-        owner:'admin'
+    if ( admin_user != null ) {
+      // Add any default system queries here by adding  well known reference and some sql. Formatting is important as the data managers
+      // will want to modify and extend this SQL, so please make sure it's readable. Column aliases are used for display.
+      def sq_info_list = [
+        [
+          ref:'DupTitle',
+          query:'''
+  select dt.ti_id TitleId, 
+         dt.ti_title Title, 
+         tis.ids TitleIds
+  from duplicate_titles dt, 
+       title_identifiers tis 
+  where tis.ti_id = dt.ti_id
+  ''',
+          type:'sql',
+          owner:'admin'
+        ]
       ]
-    ]
-
-    sq_info_list.each { sq_info ->
-      log.debug("SavedQuery ${sq_info.ref}");
-      def sq = SavedQuery.findByRef(sq_info.ref) 
-
-      if ( sq == null ) {
-        // Could not look up existing query to update - create
-        sq = new SavedQuery(
-                            ref:sq_info.ref, 
-                            query:sq_info.query,
-                            type:sq_info.type,
-                            owner:User.findByUsername(sq_info.owner)).save(flush:true, failOnError:true);
-      }
-      else {
-        // Found an existing saved query - update it
-        if ( ( sq.query != sq_info.query ) || ( sq.type != sq_info.type ) ) {
-          sq.query = sq_info.query
-          sq.type = sq_info.type
-          sq.save(flush:true, failOnError:true);
+  
+      sq_info_list.each { sq_info ->
+        log.debug("SavedQuery ${sq_info.ref}");
+        def sq = SavedQuery.findByRef(sq_info.ref) 
+  
+        if ( sq == null ) {
+          // Could not look up existing query to update - create
+          sq = new SavedQuery(
+                              ref:sq_info.ref, 
+                              query:sq_info.query,
+                              type:sq_info.type,
+                              owner:User.findByUsername(sq_info.owner)).save(flush:true, failOnError:true);
+        }
+        else {
+          // Found an existing saved query - update it
+          if ( ( sq.query != sq_info.query ) || ( sq.type != sq_info.type ) ) {
+            sq.query = sq_info.query
+            sq.type = sq_info.type
+            sq.save(flush:true, failOnError:true);
+          }
         }
       }
+    }
+    else {
+      log.error("No admin user present - unable to update");
     }
   }
   

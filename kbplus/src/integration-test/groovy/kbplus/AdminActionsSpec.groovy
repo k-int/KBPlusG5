@@ -59,11 +59,26 @@ class AdminActionsSpec extends GebSpec {
     logger.info("Orgs import upload");
     
     when:
+      logger.info("Navigate to orgs import page");
       to OrgsImportPage
-      
-      uploadOrgs(new File('src/test/resources/orgs1.csv').getAbsolutePath())
+
+      logger.info("Get path for orgs file");
+      ClassLoader classLoader = this.getClass().getClassLoader();
+      File orgs_file = new File(classLoader.getResource('orgs1.csv').getFile())
+
+      // File orgs_file = new File('src/test/resources/orgs1.csv')
+      if ( orgs_file != null ) {
+        String absolute_path = orgs_file.getAbsolutePath();
+        logger.debug("Attempt to load orgs from ${absolute_path}");
+        uploadOrgs(absolute_path)
+      }
+      else {
+        logger.warn("Unable to get a handle to orgs import file");
+        throw new RuntimeException("Unable to get hold of orgs import file");
+      }
     
     then:
+      logger.debug("Test result");
       at OrgsImportPage
       alertInfo() == 'CSV of Orgs Successfully loaded'
   }

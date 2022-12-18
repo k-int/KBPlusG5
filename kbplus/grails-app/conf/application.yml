@@ -140,7 +140,8 @@ environments:
         eshost: "${elasticsearch.service:eskbplusg3}"
         dataSource:
             dbCreate: update
-            driverClassName: com.mysql.jdbc.Driver
+            # driverClassName: com.mysql.jdbc.Driver
+            driverClassName: com.mysql.cj.jdbc.Driver
             dialect: org.hibernate.dialect.MySQL5Dialect
             username: "${db.username:k-int}"
             password: "${db.password:k-int}"
@@ -170,7 +171,8 @@ environments:
         localauth: true
         dataSource:
             dbCreate: update
-            driverClassName: com.mysql.jdbc.Driver
+            # driverClassName: com.mysql.jdbc.Driver
+            driverClassName: com.mysql.cj.jdbc.Driver
             dialect: org.hibernate.dialect.MySQL5Dialect
             username: "${db.username:k-int}"
             password: "${db.password:k-int}"
@@ -201,7 +203,8 @@ environments:
         eshost: "${elasticsearch.service:eskbplusg3}"
         dataSource:
             dbCreate: none
-            driverClassName: com.mysql.jdbc.Driver
+            # driverClassName: com.mysql.jdbc.Driver
+            driverClassName: com.mysql.cj.jdbc.Driver
             dialect: org.hibernate.dialect.MySQL5Dialect
             username: "${db.username:k-int}"
             password: "${db.password:k-int}"

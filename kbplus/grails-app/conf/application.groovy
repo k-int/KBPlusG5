@@ -425,7 +425,7 @@ environments {
     feature.issnl=true
   }
   test {
-	  aggr_es_cluster='elasticsearch'
+    aggr_es_cluster='elasticsearch'
     KBPlusMaster=false
     JuspApiUrl='https://www.jusp.mimas.ac.uk/'
     kbplus.analytics.code=''
@@ -445,37 +445,37 @@ environments {
     feature_finance=true
     feature.eBooks=true
     feature.issnl=true
-	  sysusers = [
-		  [
-			name:'userb',
-			pass:'userb',
-			display:'UserB',
-			email:'read@localhost',
-			roles:['ROLE_USER','INST_USER']
-		  ],
-		  [
-			name:'userc',
-			pass:'userc',
-			display:'UserC',
-			email:'read@localhost',
-			roles:['ROLE_USER','INST_USER'
-			]
-		  ],
-		  [
-			name:'usera',
-			pass:'usera',
-			display:'UserA',
-			email:'read@localhost',
-			roles:['ROLE_USER','INST_USER']
-		  ],
-		  [
-			name:'admin',
-			pass:'admin',
-			display:'TestAdmin',
-			email:'read@localhost',
-			roles:['ROLE_USER','ROLE_ADMIN',"INST_ADM"]
-		  ]
-		]
+    sysusers = [
+          [
+            name:'userb',
+            pass:'userb',
+            display:'UserB',
+            email:'read@localhost',
+            roles:['ROLE_USER','INST_USER']
+          ],
+          [
+            name:'userc',
+            pass:'userc',
+            display:'UserC',
+            email:'read@localhost',
+            roles:['ROLE_USER','INST_USER'
+            ]
+          ],
+          [
+            name:'usera',
+            pass:'usera',
+            display:'UserA',
+            email:'read@localhost',
+            roles:['ROLE_USER','INST_USER']
+          ],
+          [
+            name:'admin',
+            pass:'admin',
+            display:'TestAdmin',
+            email:'read@localhost',
+            roles:['ROLE_USER','ROLE_ADMIN',"INST_ADM"]
+          ]
+    ]
   }
 }
 
@@ -486,18 +486,18 @@ grails.cache.config = {
     cache {
       name 'ApiResponses'
     }
-	cache {
-		name 'SubCount'
-	}
-	cache {
-		name 'LicenceCount'
-	}
-	cache {
-		name 'TitleCount'
-	}
-	cache {
-		name 'PkgCount'
-	}
+    cache {
+        name 'SubCount'
+    }
+    cache {
+        name 'LicenceCount'
+    }
+    cache {
+        name 'TitleCount'
+    }
+    cache {
+        name 'PkgCount'
+    }
 }
 
 subscriptionTransforms = [
@@ -595,10 +595,10 @@ grails {
         }
 
         def username = request.applicationContext.springSecurityService.principal?.username
-		
-		// if (SpringSecurityUtils.isSwitched()){
-	// 		username = SpringSecurityUtils.switchedUserOriginalUsername+" AS "+username
-		// }
+        
+        // if (SpringSecurityUtils.isSwitched()){
+    //         username = SpringSecurityUtils.switchedUserOriginalUsername+" AS "+username
+        // }
 
         return username
       }
@@ -706,19 +706,19 @@ financialImportTSVLoaderMappings = [
           ]
         ]
       ],
-	  [
-		ref:'CIStatus',
-		cls:'com.k_int.kbplus.RefdataValue',
-		heuristics:[
-	      [ type : 'hql',
-		    hql: 'select o from RefdataValue as o where o.value = :civalue and o.owner.desc = :citype',
-		    values : [ citype : [type:'static', value:'CostItemStatus'], civalue: [type:'column', colname:'InvoiceStatus']]
-		  ]
-		],
-		creation:[
-		  onMissing:false,
-		]
-	  ],
+      [
+        ref:'CIStatus',
+        cls:'com.k_int.kbplus.RefdataValue',
+        heuristics:[
+          [ type : 'hql',
+            hql: 'select o from RefdataValue as o where o.value = :civalue and o.owner.desc = :citype',
+            values : [ citype : [type:'static', value:'CostItemStatus'], civalue: [type:'column', colname:'InvoiceStatus']]
+          ]
+        ],
+        creation:[
+          onMissing:false,
+        ]
+      ],
       [
         ref:'CICategory',
         cls:'com.k_int.kbplus.RefdataValue',
@@ -814,9 +814,9 @@ financialImportTSVLoaderMappings = [
             [ type:'ref', property:'sub', refname:'subscription' ],
             // Use price instead
             [ type:'val', property:'costInBillingCurrencyExVAT', colname:'Price', datatype:'Double'],
-			[ type:'val', property:'taxInBillingCurrency', colname:'SubscriptionVAT', datatype:'Double'],
-			[ type:'val', property:'costInBillingCurrencyIncVAT', colname:'TotalSubscriptionValue', datatype:'Double'],
-			[ type:'ref', property:'costItemStatus', refname:'CIStatus'],
+            [ type:'val', property:'taxInBillingCurrency', colname:'SubscriptionVAT', datatype:'Double'],
+            [ type:'val', property:'costInBillingCurrencyIncVAT', colname:'TotalSubscriptionValue', datatype:'Double'],
+            [ type:'ref', property:'costItemStatus', refname:'CIStatus'],
             [ type:'ref', property:'costItemCategory', refname:'CICategory'],
             [ type:'ref', property:'costItemElement', refname:'CIElement'],
             [ type:'val', property:'startDate', colname:'InvoicePeriodStart', datatype:'date'],
@@ -867,8 +867,8 @@ financialImportTSVLoaderMappings = [
     [colname:'TotalSubscriptionValue', desc:''],
     [colname:'CreditDebit', desc:''],
     [colname:'InvoiceType', desc:'', type:'vocab', mapping:[
-	  'SubscriptionInvoice':'Price',
-	]],
+      'SubscriptionInvoice':'Price',
+    ]],
   ]
 ];
 
