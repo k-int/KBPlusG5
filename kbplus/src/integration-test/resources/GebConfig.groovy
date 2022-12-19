@@ -2,6 +2,10 @@ import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.firefox.FirefoxDriver
 
+// See https://stackoverflow.com/questions/13575999/mantain-session-between-tests-using-geb
+// https://www.gebish.org/manual/current/
+autoClearCookies = false
+
 environments {
 
     // run via “./gradlew -Dgeb.env=chrome iT”

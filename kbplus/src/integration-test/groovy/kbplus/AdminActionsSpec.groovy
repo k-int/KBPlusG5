@@ -45,12 +45,6 @@ class AdminActionsSpec extends GebSpec {
       login('admin', 'admin')
 
     then:
-      if (title) {
-        println title
-      }
-      else {
-        println 'No values found for title'
-      }
       at ProfilePage
     }
   
