@@ -5,8 +5,12 @@ import org.hibernate.ScrollMode
 import java.nio.charset.Charset
 import java.util.GregorianCalendar
 import au.com.bytecode.opencsv.CSVReader
-
 import groovy.util.logging.Slf4j
+import static java.util.concurrent.TimeUnit.*
+import static grails.async.Promises.*
+import grails.async.Promise
+import grails.async.PromiseList
+
 
 
 @Slf4j
@@ -44,10 +48,12 @@ class DataloadService {
     log.debug("updateFTIndexes hashcode:${this.hashCode()} - submitting to executor service CurrentStatus:${update_running}");
     new EventLog(event:'kbplus.updateFTIndexes',message:'Update FT indexes',tstp:new Date(System.currentTimeMillis())).save(flush:true)
     // def future = executorService.submit({
-    runAsync{
+    Promise p = task {
       try {
         log.debug("testing executor thread access to logger");
-        doFTUpdate()
+        FTControl.withTransaction { status ->
+          doFTUpdate()
+        }
       }
       catch ( Exception e ) {
         log.error("Problem in doFTUpdate()",e);
@@ -56,14 +62,21 @@ class DataloadService {
         log.debug("updateFTIndexes completed");
       }
     }
-
+    p.onError { Throwable err ->
+      log.warn "ES Update error occured ${err.message}"
+    }
+    p.onComplete { result ->
+      log.info "ES Update Promise returned $result"
+    }
     log.debug("updateFTIndexes returning");
   }
 
   def fullESReset() {
     log.debug("DataloadService::fullESReset");
-    FTControl.executeUpdate('update FTcontrol set lastTimestamp=0');
-    doFTUpdate()
+    FTControl.withTransaction { status ->
+      FTControl.executeUpdate('update FTcontrol set lastTimestamp=0');
+      doFTUpdate()
+    }
   }
 
   def doFTUpdate() {
