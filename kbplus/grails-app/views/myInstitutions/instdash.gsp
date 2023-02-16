@@ -49,6 +49,15 @@
         </div>
       </g:if>
 
+      <g:if test="${( features != null ) && ( features.contains('EXPORT') ) }">
+        <div class="col s12">
+          <div class="card-panel clearfix">
+            <p class="card-title" data-kb-message-code="dash.export.title"><g:message code="dash.export.title" /></p>
+            <p class="" data-kb-message-code="dash.export.brief"><g:message code="dash.export.brief" /></p>
+          </div>
+        </div>
+      </g:if>
+
       <!-- Search panel -->
       <div class="col s12">
         <div class="card-panel clearfix">

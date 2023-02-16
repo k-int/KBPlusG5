@@ -2764,6 +2764,7 @@ AND EXISTS (
         def result = [:]
         result.user = User.get(springSecurityService.principal.id)
         result.institution = request.getAttribute('institution')//Org.findByShortcode(params.shortcode)
+        result.features = grailsApplication.config.getProperty('features', List<String>, []);
 
         if ( result.institution == null ) {
           log.error("No institution present in request");
