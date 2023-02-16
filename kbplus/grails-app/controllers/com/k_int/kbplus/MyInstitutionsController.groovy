@@ -56,6 +56,7 @@ where exists ( select ie from IssueEntitlement as ie where ie.tipp.title = t AND
       // Work out what orgs this user has admin level access to
       def result = [:]
       result.user = User.get(springSecurityService.principal.id)
+      result.features = grailsApplication.config.getProperty('features', List<String>, [])
       log.debug("index for user with id ${springSecurityService.principal.id} :: ${result.user}");
  
 

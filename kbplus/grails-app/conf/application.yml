@@ -114,6 +114,8 @@ dataSource:
 
 environments:
     development:
+        features:
+                - EXPORT
         localauth: true
         sysusers:
             - name: admin
