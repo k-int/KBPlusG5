@@ -31,7 +31,7 @@ body {
 .jisc-content {
     position: relative;
     left: 0;
-    top: 25px;
+    top: 0px;
     margin-left: 0px;
     min-height: 100%;
     @include breakpoint($large-screen) {
