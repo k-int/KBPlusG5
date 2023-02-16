@@ -115,28 +115,24 @@ dataSource:
 environments:
     development:
         localauth: true
-        kbplus:
-            bootstrap:
-                accounts:
-                    admin:
-                        name: admin
-                        pass: admin
-                        display: Admin
-                        email: admin@some.domain.com
-                        roles:
-                            - ROLE_USER
-                            - ROLE_EDITOR
-                            - ROLE_ADMIN
-                            - ROLE_API
-                            - ROLE_SYSADMIN
-                    user:
-                        name: user
-                        pass: user
-                        display: User
-                        email: user@some.domain.com
-                        roles:
-                            - ROLE_USER
-                            - ROLE_API
+        sysusers:
+            - name: admin
+              pass: admin
+              display: Admin
+              email: admin@some.domain.com
+              roles:
+                  - ROLE_USER
+                  - ROLE_EDITOR
+                  - ROLE_ADMIN
+                  - ROLE_API
+                  - ROLE_SYSADMIN
+            - name: user
+              pass: user
+              display: User
+              email: user@some.domain.com
+              roles:
+                  - ROLE_USER
+                  - ROLE_API
         eshost: "${elasticsearch.service:eskbplusg3}"
         dataSource:
             dbCreate: update
