@@ -23,6 +23,7 @@ apply plugin:"org.grails.grails-web"
 apply plugin:"com.github.erdi.webdriver-binaries"
 apply plugin:"org.grails.grails-gsp"
 apply plugin:"com.bertramlabs.asset-pipeline"
+apply plugin:"maven-publish"
 
 repositories {
     mavenCentral()
@@ -167,3 +168,30 @@ assets {
     minifyJs = true
     minifyCss = true
 }
+
+
+publishing {
+   publications {
+       maven(MavenPublication) {
+           groupId = project.group
+           artifactId = 'KBPlusG5'
+           version = project.version
+
+           artifact bootJar
+           // artifact(tasks.bootJar.get()) 
+           // artifactId bootJar.baseName
+
+           pom {
+               name = 'KBPlusG5'
+               description = 'KBplus'
+               url = 'https://github.com/k-int/KBPlusG5'
+               scm {
+                   connection = 'git@github.com:k-int/KBPlusG5.git'
+                   developerConnection = 'git@github.com:k-int/KBPlusG5.git'
+                   url = 'https://github.com/k-int/KBPlusG5'
+               }
+           }
+       }
+   }
+}
+
