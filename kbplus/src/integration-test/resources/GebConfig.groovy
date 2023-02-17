@@ -1,6 +1,7 @@
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.firefox.FirefoxDriver
+import org.openqa.selenium.firefox.FirefoxOptions
 
 // See https://stackoverflow.com/questions/13575999/mantain-session-between-tests-using-geb
 // https://www.gebish.org/manual/current/
@@ -26,4 +27,13 @@ environments {
     firefox {
         driver = { new FirefoxDriver() }
     }
+
+    firefoxHeadless {
+      driver = {
+        FirefoxOptions o = new FirefoxOptions()
+        o.addArguments('--headless')
+        new FirefoxDriver(o)
+      }
+    }
+
 }
