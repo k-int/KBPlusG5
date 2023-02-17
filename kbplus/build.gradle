@@ -193,5 +193,15 @@ publishing {
            }
        }
    }
+   repositories {
+       maven {
+            name = "maven-snapshots"
+            url = "https://nexus.libsdev.k-int.com/repository/maven-snapshots"
+            credentials {
+                username = System.getenv("NEXUS_USER")
+                password = System.getenv("NEXUS_PASS")
+            }
+       }
+   }
 }
 
