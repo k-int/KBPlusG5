@@ -43,4 +43,4 @@ jobs:
 
     - name: Build
       working-directory: ./kbplus
-      run: ./gradlew -Dgeb.env=firefoxHeadless clean build
+      run: ./gradlew -Dgeb.env=firefoxHeadless clean build publishMavenPublicationToMaven-snapshotsRepository

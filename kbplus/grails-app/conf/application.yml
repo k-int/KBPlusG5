@@ -200,13 +200,13 @@ environments:
         # escluster: kbplusg3
         eshost: "${elasticsearch.service:eskbplusg3}"
         dataSource:
-            dbCreate: none
+            dbCreate: update
             # driverClassName: com.mysql.jdbc.Driver
             driverClassName: com.mysql.cj.jdbc.Driver
             dialect: org.hibernate.dialect.MySQL5Dialect
             username: "${db.username:k-int}"
             password: "${db.password:k-int}"
-            url: "jdbc:${db.uri:mysql://127.0.0.1}/${db.database.name:kbplusLive}?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8"
+            url: "jdbc:${db.uri:mysql://127.0.0.1}/${db.database.name:kbplus700prod}?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8"
             logSql: false
             # url: "jdbc:mysql://localhost/kbplus700prod?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8"
             properties:
