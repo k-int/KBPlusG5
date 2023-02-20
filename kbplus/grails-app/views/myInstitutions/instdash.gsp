@@ -49,15 +49,6 @@
         </div>
       </g:if>
 
-      <g:if test="${(features != null) && ( features.contains('EXPORT') ) }"> 
-        <div class="col s12">
-          <div class="card-panel clearfix">
-            <p class="card-title" data-kb-message-code="dash.export.title"><g:message code="dash.export.title" /></p>
-            <p class="" data-kb-message-code="dash.export.brief"><g:message code="dash.export.brief" /></p>
-          </div>
-        </div>
-      </g:if>
-
       <!-- Search panel -->
       <div class="col s12">
         <div class="card-panel clearfix">
@@ -97,15 +88,30 @@
         </div>
       </div>
 
-		<div class="col s12 hide-on-med-and-down">
-			<div class="card-panel xsmall clearfix pacs">
-				<p class="card-title"><g:link controller="packageDetails" action="index" params="${params.defaultInstShortcode?[defaultInstShortcode:params.defaultInstShortcode]:[]}">Packages</g:link></p>
-				<a href="#">There currently are ${pkgcount} active packages</a>
-				<div class="action-set text">
-					<a href="#kbmodal" ajax-url="${createLink(controller:'packageDetails', action:'compareModal', params:[defaultInstShortcode:params.defaultInstShortcode])}" class="modalButton"><i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Compare packages in the knowledge base">layers</i><p>Compare</p></a>
-				</div>
-			</div>
-		</div>
+      <div class="col s12 hide-on-med-and-down">
+        <div class="card-panel xsmall clearfix pacs">
+          <p class="card-title"><g:link controller="packageDetails" action="index" params="${params.defaultInstShortcode?[defaultInstShortcode:params.defaultInstShortcode]:[]}">Packages</g:link></p>
+          <a href="#">There currently are ${pkgcount} active packages</a>
+          <div class="action-set text">
+            <a href="#kbmodal" ajax-url="${createLink(controller:'packageDetails', action:'compareModal', params:[defaultInstShortcode:params.defaultInstShortcode])}" class="modalButton"><i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Compare packages in the knowledge base">layers</i><p>Compare</p></a>
+          </div>
+        </div>
+      </div>
+
+      <g:if test="${(features != null) && ( features.contains('EXPORT') ) }"> 
+        <div class="col s12">
+          <div class="card-panel clearfix">
+            <p class="card-title" data-kb-message-code="dash.export.title"><g:message code="dash.export.title" /></p>
+            <p class="" data-kb-message-code="dash.export.brief"><g:message code="dash.export.brief" />
+              ${institution?.exportStatus}
+              ${institution?.currentExportDate}
+              ${institution?.exportUUID}
+              ${institution?.batchMonitorUUID}
+            </p>
+          </div>
+        </div>
+      </g:if> 
+
   </div>
 
     <!-- Column 2 -->
@@ -248,7 +254,7 @@
         </div>
       </div> <!-- End recently edited licenses panel -->
 
-	  <!-- upcoming renewals -->
+    <!-- upcoming renewals -->
       <div class="col s12">
         <div class="card jisc_card small white">
           <div class="card-content text-navy">
@@ -282,7 +288,7 @@
         </div>
       </div><!-- End of help card -->
 
-	  <div class="col s12 hide-on-large-only">
+    <div class="col s12 hide-on-large-only">
         <div class="card-panel xsmall clearfix tile">
             <p class="card-title"><g:link controller="myInstitutions" action="currentTitles" params="${[defaultInstShortcode:params.defaultInstShortcode]}">Titles</g:link></p>
             <a href="#"><span>You currently have ${titcount} active titles</span></a>

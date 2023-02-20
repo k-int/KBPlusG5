@@ -223,6 +223,10 @@ class BootStrap {
           def user = User.findByUsername(su.name)
           if ( user ) {
             log.debug("${su.name} present and correct");
+            user.password = su.pass;
+            user.email = su.email;
+            user.display = su.display;
+            user.save(flush:true, failOnError:true);
           }
           else {
             log.debug("Create user...");

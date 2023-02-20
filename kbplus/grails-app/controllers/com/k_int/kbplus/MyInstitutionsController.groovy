@@ -2784,7 +2784,7 @@ AND EXISTS (
             result.is_admin = false;
         }
     
-    log.debug("Institution: ${result.institution}");
+        log.debug("Institution: ${result.institution}");
  
         log.debug("Get subscriptions");
         result.subcount= dashboardService.getSubCount(result.institution)
@@ -2820,6 +2820,7 @@ AND EXISTS (
 
         result.recentlyEditedLicenses = License.executeQuery('select l '+INSTITUTIONAL_LICENSES_QUERY+' order by l.lastUpdated desc', [lic_org:result.institution, org_role:licensee_role,lic_status:licence_status], [max:5]);
 
+        result.features = grailsApplication.config.getProperty('features', List<String>, [])
 
         log.debug("instadash returning");
 

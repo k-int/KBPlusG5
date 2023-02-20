@@ -13,3 +13,7 @@ Load a dump file storred on the container
 
 cat backup.sql | docker exec -i jc_mysql mysql -u root --password=jc kbplus700prod
 
+Or 
+
+cat backup.sql | docker exec -i jc_mysql mysql -u root --password=jc kbplus700dev
+

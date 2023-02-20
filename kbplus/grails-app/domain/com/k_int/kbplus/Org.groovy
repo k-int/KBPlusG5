@@ -30,6 +30,10 @@ class Org {
   // Used to generate friendly semantic URLs
   String shortcode
 
+  String exportStatus
+  Date currentExportDate
+  String exportUUID
+  String batchMonitorUUID
 
   Set ids = []
 
@@ -63,6 +67,10 @@ class Org {
                    keyName column:'org_key_name', index:'org_key_name_idx'
     membershipOrganisation column:'org_membershipyn'
                      nonce column:'org_nonce'
+              exportStatus column:'org_export_status'
+         currentExportDate column:'org_current_export_date'
+                exportUUID column:'org_export_uuid'
+          batchMonitorUUID column:'org_batch_monitor_uuid'
   }
 
   static constraints = {
@@ -78,6 +86,10 @@ class Org {
                    keyName(nullable:true, blank:true);
     membershipOrganisation(nullable:true, blank:true);
                      nonce(nullable:true, blank:true);
+              exportStatus(nullable:true, blank:true);
+         currentExportDate(nullable:true, blank:true);
+                exportUUID(nullable:true, blank:true);
+          batchMonitorUUID(nullable:true, blank:true);
   }
 
   def beforeInsert() {
