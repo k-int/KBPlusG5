@@ -13,6 +13,7 @@ import groovy.util.logging.Slf4j
 class BootStrap {
 
   def dataloadService
+  def ejectService
   def grailsApplication
 
   def init = { servletContext ->
