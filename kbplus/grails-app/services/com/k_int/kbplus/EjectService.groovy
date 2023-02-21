@@ -2,6 +2,7 @@ package com.k_int.kbplus
 
 import com.k_int.kbplus.Org;
 import groovy.util.logging.Slf4j
+import java.util.UUID;
 
 /**
  *
@@ -12,11 +13,18 @@ class EjectService {
 
   private boolean running = true;
   private Object exportRequestMonitor = new Object();
+  private UUID instanceId = null;
+  private static String PENDING_EXPORT_REQUESTS_QRY = '''
+select o.id
+from Org as o 
+where o.exportStatus = :requested
+and o.batchMonitorUUID is null
+'''
 
   @javax.annotation.PostConstruct
   def init () {
-    log.info("EjectService::init");
-    // es_index= grailsApplication.config.aggr_es_index ?: 'kbplus'
+    this.instanceId = UUID.randomUUID();
+    log.info("EjectService::init - instance id is ${this.instanceId}");
     java.lang.Thread.startDaemon({
       this.watchExportRequests();
     })
@@ -43,7 +51,24 @@ class EjectService {
   }
 
   private boolean processNextExportRequest() {
-    return false;
+    boolean work_done = false;
+    List<Long> pending_requests = Org.executeQuery(PENDING_EXPORT_REQUESTS_QRY, [requested:'REQUESTED'])
+    pending_requests.each { org_id ->
+      boolean proceed=false;
+      Org.withNewTransaction {
+        Org o = Org.lock(org_id);
+        if ( ( o.batchMonitorUUID == null ) && ( o.exportStatus == 'REQUESTED' ) ) {
+          o.batchMonitorUUID = this.instanceId;
+          o.save(flush:true, failOnError:true);
+          proceed=true
+        }
+      }
+
+      // If we have claimed the monitor for this instance
+      if ( proceed ) {
+      }
+    }
+    return work_done;
   }
 
   public void requestFreshExport(Org org) {
