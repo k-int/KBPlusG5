@@ -242,5 +242,6 @@ grails:
 skin: live
 master: true
 docstoreDir: ./docstore
+exportsDir: ./exports
 doDocstoreMigration: false
 configValidation: Application

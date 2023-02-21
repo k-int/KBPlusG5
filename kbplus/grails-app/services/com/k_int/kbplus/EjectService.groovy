@@ -11,6 +11,8 @@ import java.util.UUID;
 @Slf4j
 class EjectService {
 
+  def grailsApplication;
+
   private boolean running = true;
   private Object exportRequestMonitor = new Object();
   private UUID instanceId = null;
@@ -24,6 +26,13 @@ and o.batchMonitorUUID is null
   @javax.annotation.PostConstruct
   def init () {
     this.instanceId = UUID.randomUUID();
+    String export_dir_name = grailsApplication.config.exportsDir ?: './exportFiles'
+    File f = new File(export_dir_name);
+    if (!f.isDirectory()) {
+      log.debug("Making root exort dir ${f}");
+      f.mkdirs()
+    }
+
     log.info("EjectService::init - instance id is ${this.instanceId}");
     java.lang.Thread.startDaemon({
       this.watchExportRequests();
@@ -52,20 +61,22 @@ and o.batchMonitorUUID is null
 
   private boolean processNextExportRequest() {
     boolean work_done = false;
-    List<Long> pending_requests = Org.executeQuery(PENDING_EXPORT_REQUESTS_QRY, [requested:'REQUESTED'])
-    pending_requests.each { org_id ->
-      boolean proceed=false;
-      Org.withNewTransaction {
-        Org o = Org.lock(org_id);
-        if ( ( o.batchMonitorUUID == null ) && ( o.exportStatus == 'REQUESTED' ) ) {
-          o.batchMonitorUUID = this.instanceId;
-          o.save(flush:true, failOnError:true);
-          proceed=true
+    Org.withNewSession {
+      List<Long> pending_requests = Org.executeQuery(PENDING_EXPORT_REQUESTS_QRY, [requested:'REQUESTED'])
+      pending_requests.each { org_id ->
+        boolean proceed=false;
+        Org.withNewTransaction {
+          Org o = Org.lock(org_id);
+          if ( ( o.batchMonitorUUID == null ) && ( o.exportStatus == 'REQUESTED' ) ) {
+            o.batchMonitorUUID = this.instanceId;
+            o.save(flush:true, failOnError:true);
+            proceed=true
+          }
         }
-      }
 
-      // If we have claimed the monitor for this instance
-      if ( proceed ) {
+        // If we have claimed the monitor for this instance
+        if ( proceed ) {
+        }
       }
     }
     return work_done;
