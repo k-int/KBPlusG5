@@ -67,22 +67,38 @@ and o.batchMonitorUUID is null
         boolean proceed=false;
         Org.withNewTransaction {
           Org o = Org.lock(org_id);
+
+          // Take this request from the queue by marking it with the instance ID
           if ( ( o.batchMonitorUUID == null ) && ( o.exportStatus == 'REQUESTED' ) ) {
             o.batchMonitorUUID = this.instanceId;
+            o.exportStatus = 'PROCESSING'
             o.save(flush:true, failOnError:true);
             proceed=true
           }
         }
 
-        // If we have claimed the monitor for this instance
+        // If we have claimed the monitor for this instance - process it
         if ( proceed ) {
+
+          performExport(org_id);
+
+          Org.withNewTransaction {
+            Org o = Org.lock(org_id);
+            o.batchMonitorUUID = null;
+            o.exportStatus = 'COMPLETE'
+            o.save(flush:true, failOnError:true);
+          }
         }
       }
     }
     return work_done;
   }
 
-  public void requestFreshExport(Org org) {
+  public Map performExport(Long org_id) {
+    Map result= [:]
+    log.debug("performExport(${org_id})");
+    // set org.exportUUID =
+    return result;
   }
 
 }
