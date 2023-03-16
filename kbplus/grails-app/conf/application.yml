@@ -239,7 +239,7 @@ grails:
 # an environment entry like
 # <Environment name="spring.config.location" value="/home/kbplusstaging/.grails/kbplus7.yaml" type="java.lang.String" />
 # Defaults provided below to get you up and running
-skin: live
+skin: "${skin:live}"
 master: true
 docstoreDir: ./docstore
 exportsDir: ./exports

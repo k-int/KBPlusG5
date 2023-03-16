@@ -13,12 +13,14 @@ services:
   jc_es6:
     container_name: jc_es6
     # image: docker.elastic.co/elasticsearch/elasticsearch:6.5.1
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.6.1
+    # image: docker.elastic.co/elasticsearch/elasticsearch:6.6.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
     restart: 'no'
     environment:
       - bootstrap.memory_lock=true
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
       - cluster.name=elasticsearch
+      - discovery.type=single-node
     ulimits:
       memlock:
         soft: -1
