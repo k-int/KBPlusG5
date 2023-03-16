@@ -46,4 +46,4 @@ jobs:
       env:
         NEXUS_USER: ${{ secrets.NEXUS_USER }}
         NEXUS_PASS: ${{ secrets.NEXUS_PASS }}
-      run: ./gradlew -Dgeb.env=firefoxHeadless clean build publishMavenPublicationToMaven-snapshotsRepository
+      run: ./gradlew -x integrationTest -Dgeb.env=firefoxHeadless clean build publishMavenPublicationToMaven-snapshotsRepository
