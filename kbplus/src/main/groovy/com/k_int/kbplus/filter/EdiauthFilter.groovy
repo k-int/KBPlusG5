@@ -10,25 +10,8 @@ public class EdiauthFilter extends org.springframework.security.web.authenticati
   private java.util.HashMap map = null;
   def grailsApplication
 
-  def setEdiAuthTokenMap(java.util.HashMap map) {
-    this.map = map;
-  }
-
-  def getPreAuthenticatedPrincipal(javax.servlet.http.HttpServletRequest request) {
-
-    // log.debug("EdiauthFilter::getPreAuthenticatedPrincipal ${request} - config = ${grailsApplication?.config?.kbplus?.authmethod}");
-
-    def result
-
-    if ( grailsApplication?.config?.kbplus?.authmethod=='shib' ) {
-      if ( request.getRemoteUser() != null ) {
-        log.debug("In shibboleth authentication mode. If we're here - the user is pre-authenticated. Extract username and make sure there is a user record");
-        // User ID should be in request.getAttribute('persistent-id');
-        log.debug("Remote User(fn):: ${request.getRemoteUser()}");
-        log.debug("Remote User:: ${request.getAttribute('REMOTE_USER')}");
-        log.debug("Persistent Id:: ${request.getAttribute('persistent-id')}");
-
-        def tst_attrs = [ 'persistent-id',
+  private static final List SHIB_ATTRS = [
+                      'persistent-id',
                       'eppn',
                       'mail',
                       'givenname',
@@ -49,11 +32,32 @@ public class EdiauthFilter extends org.springframework.security.web.authenticati
                       'employeeNumber',
                       'displayName',
                       'description'
-                    ]
-        tst_attrs.each { it ->
-          log.debug("testing auth attr:: ${it} : ${request.getAttribute(it)}");
-        }
-  
+  ];
+
+  def setEdiAuthTokenMap(java.util.HashMap map) {
+    this.map = map;
+  }
+
+  def getPreAuthenticatedPrincipal(javax.servlet.http.HttpServletRequest request) {
+
+    // log.debug("EdiauthFilter::getPreAuthenticatedPrincipal ${request} - config = ${grailsApplication?.config?.kbplus?.authmethod}");
+
+    def result
+
+    if ( grailsApplication?.config?.kbplus?.authmethod=='shib' ) {
+
+      log.debug("Using shib authentication method");
+      SHIB_ATTRS.each { it ->
+        log.debug("testing auth attr:: ${it} : ${request.getAttribute(it)}");
+      }
+
+      if ( request.getRemoteUser() != null ) {
+        log.debug("In shibboleth authentication mode. If we're here - the user is pre-authenticated. Extract username and make sure there is a user record");
+        // User ID should be in request.getAttribute('persistent-id');
+        log.debug("Remote User(fn):: ${request.getRemoteUser()}");
+        log.debug("Remote User:: ${request.getAttribute('REMOTE_USER')}");
+        log.debug("Persistent Id:: ${request.getAttribute('persistent-id')}");
+
 
         User.withTransaction { status ->
           log.debug("Lookup  user...${request.getRemoteUser()}");
@@ -136,15 +140,19 @@ public class EdiauthFilter extends org.springframework.security.web.authenticati
 
         result = request.getRemoteUser()
       }
+      else {
+        log.debug("Shib authentication mode, but request.getRemoteUser() is null!");
+        log.debug("  principal: ${request.getPrincipal()}");
+      }
     }
     else {
     }
-    // log.debug("Exiting");
+    log.debug("Exiting");
     result
   }
 
   def getPreAuthenticatedCredentials(javax.servlet.http.HttpServletRequest request) {
-    // log.debug("EdiauthFilter::getPreAuthenticatedCredentials()");
+    log.debug("EdiauthFilter::getPreAuthenticatedCredentials()");
     return "";
   }
 }
