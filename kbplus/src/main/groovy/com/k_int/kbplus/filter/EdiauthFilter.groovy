@@ -142,7 +142,7 @@ public class EdiauthFilter extends org.springframework.security.web.authenticati
       }
       else {
         log.debug("Shib authentication mode, but request.getRemoteUser() is null!");
-        log.debug("  principal: ${request.getPrincipal()}");
+        log.debug("  principal: ${request.getUserPrincipal()}");
       }
     }
     else {

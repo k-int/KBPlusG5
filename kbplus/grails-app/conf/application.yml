@@ -8,6 +8,13 @@ grails:
             # Whether to translate GORM events into Reactor events
             # Disabled by default for performance reasons
             events: false
+
+server:
+  ajp:
+    port: 8009
+    protocol: AJP/1.3
+    address: "0.0.0.0" 
+
 info:
     app:
         name: '@info.app.name@'
@@ -239,7 +246,7 @@ grails:
 # an environment entry like
 # <Environment name="spring.config.location" value="/home/kbplusstaging/.grails/kbplus7.yaml" type="java.lang.String" />
 # Defaults provided below to get you up and running
-skin: "${skin:live}"
+skin: "${skinenv:live}"
 master: true
 docstoreDir: ./docstore
 exportsDir: ./exports

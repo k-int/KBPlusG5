@@ -15,6 +15,7 @@
     <logger name="com.k_int" level="debug"></logger>
     <logger name="kbplus" level="debug"></logger>
     <logger name="kbplus.PreferencesInterceptor" level="warn"></logger>
+    <logger name="org.apache.catalina" level="debug"></logger>
 
     <root level="error">
         <appender-ref ref="STDOUT" />
