@@ -3,6 +3,12 @@ Grails5 Port of KBPlus
 
 prerequisites:
 
+# Deploy
+
+## Build
+
+    ./gradlew clean build -x integrationTest
+
 
 # Testing notes
 

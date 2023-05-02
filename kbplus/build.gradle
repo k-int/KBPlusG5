@@ -9,6 +9,7 @@ buildscript {
         classpath "gradle.plugin.com.github.erdi.webdriver-binaries:webdriver-binaries-gradle-plugin:2.6"
         classpath "org.grails.plugins:hibernate5:7.3.0"
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:4.3.0"
+        classpath 'com.bertramlabs.plugins:sass-dart-asset-pipeline:4.3.0'
         classpath "org.ysb33r.gradle:grolifant50:2.0.0-alpha.6"
     }
 }
@@ -106,9 +107,9 @@ dependencies {
     implementation 'org.grails.plugins:spring-security-core:5.1.1'
     implementation 'com.vladsch.flexmark:flexmark-all:0.64.0'
 
+    implementation 'com.bertramlabs.plugins:sass-dart-asset-pipeline:4.3.0'
     implementation 'com.bertramlabs.plugins:asset-pipeline-grails:4.3.0'
-    implementation 'com.bertramlabs.plugins:less-asset-pipeline:4.3.0'
-    implementation 'com.bertramlabs.plugins:sass-asset-pipeline:4.3.0'
+    assets 'com.bertramlabs.plugins:sass-dart-asset-pipeline:4.3.0'
 }
 
 war {
@@ -187,8 +188,8 @@ assets {
     // angularPass: true // Can use @ngInject annotation for Angular Apps
   ]
   
-  includes = []
-  excludes = ['**/*.sass'] //Example Exclude GLOB pattern
+  includes = ['**/*.sass']
+  // excludes = ['**/*.sass'] //Example Exclude GLOB pattern
 
   //for plugin packaging
   packagePlugin=false //set to true if this is a library
