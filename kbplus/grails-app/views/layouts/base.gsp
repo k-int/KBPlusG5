@@ -103,7 +103,7 @@
 
 
     </div>
-    <asset:javascript src="jisc_header.js"/>
+    <!-- asset:javascript src="jisc_header.js" -->
     <asset:javascript src="application.js"/>
     
     <button id="support-button" onclick="window.location.href='mailto: help@jisc.ac.uk?subject=Support%20Query';" class="support-button"><i class="material-icons" style="font-size:22px;">help_outline</i> <span style="position:absolute;padding-left:5px">Support</span></button>
