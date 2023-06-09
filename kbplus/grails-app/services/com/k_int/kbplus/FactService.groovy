@@ -65,8 +65,8 @@ class FactService {
          org_id != null &&
          supplier_id != null ) {
 
-      def q = "select sum(f.factValue),f.reportingYear,f.reportingMonth,f.factType from Fact as f where f.relatedTitle.id=? and f.supplier.id=? and f.inst.id=? group by f.factType, f.reportingYear, f.reportingMonth order by f.reportingYear desc,f.reportingMonth desc,f.factType.value desc"
-      def l1 = Fact.executeQuery(q,[title_id, supplier_id, org_id])
+      def q = "select sum(f.factValue),f.reportingYear,f.reportingMonth,f.factType from Fact as f where f.relatedTitle.id=:rtid and f.supplier.id=:sid and f.inst.id=:oid group by f.factType, f.reportingYear, f.reportingMonth order by f.reportingYear desc,f.reportingMonth desc,f.factType.value desc"
+      def l1 = Fact.executeQuery(q,[rtid:title_id, sid:supplier_id, oid:org_id])
 
       def y_axis_labels = []
       def x_axis_labels = []
@@ -108,8 +108,8 @@ class FactService {
          org_id != null &&
          supplier_id != null ) {
 
-      def q = "select sum(f.factValue),f.reportingYear,f.factType from Fact as f where f.relatedTitle.id=? and f.supplier.id=? and f.inst.id=? group by f.factType, f.reportingYear  order by f.reportingYear,f.factType.value"
-      def l1 = Fact.executeQuery(q,[title_id, supplier_id, org_id])
+      def q = "select sum(f.factValue),f.reportingYear,f.factType from Fact as f where f.relatedTitle.id=:tid and f.supplier.id=:sid and f.inst.id=:oid group by f.factType, f.reportingYear  order by f.reportingYear,f.factType.value"
+      def l1 = Fact.executeQuery(q,[tid:title_id, sid:supplier_id, oid:org_id])
 
       def y_axis_labels = []
       def x_axis_labels = []
@@ -161,8 +161,8 @@ class FactService {
          org_id != null &&
          supplier_id != null ) {
 
-      def q = "select sum(f.factValue),f.reportingYear,f.factType from Fact as f where f.relatedTitle.id=? and f.supplier.id=? and f.inst.id=? and f.factType.value = ? and f.reportingYear >= ? group by f.factType, f.reportingYear  order by f.reportingYear desc,f.factType.value"
-      def l1 = Fact.executeQuery(q,[title_id, supplier_id, org_id, report_type, (long)(year-n)])
+      def q = "select sum(f.factValue),f.reportingYear,f.factType from Fact as f where f.relatedTitle.id=:rid and f.supplier.id=:sid and f.inst.id=:oid and f.factType.value = :rt and f.reportingYear >= :ry group by f.factType, f.reportingYear  order by f.reportingYear desc,f.factType.value"
+      def l1 = Fact.executeQuery(q,[rid:title_id, sid:supplier_id, oid:org_id, rt:report_type, (long)(year-n)])
 
       l1.each{ y ->
         if ( y[1] >= (year - n) ) {
@@ -187,8 +187,8 @@ class FactService {
          org_id != null &&
          supplier_id != null ) {
 
-      def q = "select sum(f.factValue),f.reportingYear,f.reportingMonth,f.factType from Fact as f where f.relatedTitle.id=? and f.supplier.id=? and f.inst.id=? group by f.factType, f.reportingYear, f.reportingMonth order by f.reportingYear desc,f.reportingMonth desc,f.factType.value desc"
-      def l1 = Fact.executeQuery(q,[title_id, supplier_id, org_id])
+      def q = "select sum(f.factValue),f.reportingYear,f.reportingMonth,f.factType from Fact as f where f.relatedTitle.id=:t and f.supplier.id=:s and f.inst.id=:i group by f.factType, f.reportingYear, f.reportingMonth order by f.reportingYear desc,f.reportingMonth desc,f.factType.value desc"
+      def l1 = Fact.executeQuery(q,[t:title_id, s:supplier_id, i:org_id])
 
       def y_axis_labels = []
       def x_axis_labels = []

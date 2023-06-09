@@ -208,7 +208,7 @@ class CostItem {
 
     @Transient
     static def orderedCurrency() {
-        def all_currencies = RefdataValue.executeQuery('select rdv from RefdataValue as rdv where rdv.owner.desc=?', 'Currency')
+        def all_currencies = RefdataValue.executeQuery('select rdv from RefdataValue as rdv where rdv.owner.desc=:c', [c:'Currency'])
         def staticOrder    = grails.util.Holders.config?.financials?.currency?.split("[|]")
 
         if (staticOrder) {
