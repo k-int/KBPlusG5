@@ -198,7 +198,7 @@ class SubscriptionDetailsController {
     }
 
     def deleted_ie = RefdataCategory.lookupOrCreate('Entitlement Issue Status','Deleted');
-    def qry_params = [result.subscriptionInstance]
+    def qry_params = [:si result.subscriptionInstance]
 
     def date_filter
     if(params.asAt && params.asAt.length() > 0) {
@@ -213,36 +213,32 @@ class SubscriptionDetailsController {
 
     // def num_core_assertions_subqry = '(select count(ca) from CoreAssertion as ca where ca.tiinp';
 
-    def base_qry = "from IssueEntitlement as ie where ie.subscription = ? "
+    def base_qry = "from IssueEntitlement as ie where ie.subscription = :si "
     if ( params.filter ) {
       if ( params.mode != 'advanced' ) {
         // If we are not in advanced mode, hide IEs that are not current, otherwise filter
-        // base_qry += "and ie.status <> ? and ( ? >= coalesce(ie.accessStartDate,subscription.startDate) ) and ( ( ? <= coalesce(ie.accessEndDate,subscription.endDate) ) OR ( ie.accessEndDate is null ) )  "
-        // qry_params.add(deleted_ie);
-        base_qry += "and ( ? >= coalesce(ie.accessStartDate,subscription.startDate) ) and ( ( ? <= coalesce(ie.accessEndDate,subscription.endDate) ) OR ( ie.accessEndDate is null ) )  "
-        qry_params.add(date_filter);
-        qry_params.add(date_filter);
+        base_qry += "and ( :df >= coalesce(ie.accessStartDate,subscription.startDate) ) and ( ( df <= coalesce(ie.accessEndDate,subscription.endDate) ) OR ( ie.accessEndDate is null ) )  "
+        qry_params.df = date_filter;
       }
-      base_qry += "and ( ( lower(ie.tipp.title.title) like ? ) or ( exists ( from IdentifierOccurrence io where io.ti.id = ie.tipp.title.id and io.identifier.value like ? ) ) ) "
-      qry_params.add("%${params.filter.trim().toLowerCase()}%") 
-      qry_params.add("%${params.filter}%")
+      base_qry += "and ( ( lower(ie.tipp.title.title) like :t ) or ( exists ( from IdentifierOccurrence io where io.ti.id = ie.tipp.title.id and io.identifier.value like :i ) ) ) "
+      qry_params.t = "%${params.filter.trim().toLowerCase()}%"
+      qry_params.i = "%${params.filter}%"
     }
     else {
       if ( params.mode != 'advanced' ) {
         // If we are not in advanced mode, hide IEs that are not current, otherwise filter
 
-        base_qry += " and ( ? >= coalesce(ie.accessStartDate,subscription.startDate) ) and ( ( ? <= coalesce(ie.accessEndDate,subscription.endDate) ) OR ( ie.accessEndDate is null ) ) "
-        qry_params.add(date_filter);
-        qry_params.add(date_filter);
+        base_qry += " and ( :df2 >= coalesce(ie.accessStartDate,subscription.startDate) ) and ( ( :df2 <= coalesce(ie.accessEndDate,subscription.endDate) ) OR ( ie.accessEndDate is null ) ) "
+        qry_params.df2 = date_filter;
       }
     }
 
-    base_qry += " and ie.status <> ? "
-    qry_params.add(deleted_ie);
+    base_qry += " and ie.status <> :st "
+    qry_params.st = deleted_ie;
 
     if ( params.pkgfilter && ( params.pkgfilter != '' ) ) {
-      base_qry += " and ie.tipp.pkg.id = ? "
-      qry_params.add(Long.parseLong(params.pkgfilter));
+      base_qry += " and ie.tipp.pkg.id = :tpid "
+      qry_params.tpid = Long.parseLong(params.pkgfilter);
     }
 
     def sort_clause = null;
@@ -374,8 +370,8 @@ class SubscriptionDetailsController {
     if ( subscriber ) {
     def licensee_role = RefdataCategory.lookupOrCreate('Organisational Role','Licensee');
     def template_license_type = RefdataCategory.lookupOrCreate('License Type','Template');
-    def qry_params = [subscriber, licensee_role]
-    def qry = "select l from License as l where exists ( select ol from OrgRole as ol where ol.lic = l AND ol.org = ? and ol.roleType = ? ) AND l.status.value != 'Deleted' order by l.reference"
+    def qry_params = [o:subscriber, r:licensee_role]
+    def qry = "select l from License as l where exists ( select ol from OrgRole as ol where ol.lic = l AND ol.org = :o and ol.roleType = :r ) AND l.status.value != 'Deleted' order by l.reference"
     def license_list = License.executeQuery(qry, qry_params);
     result.licences = license_list
     }
@@ -531,10 +527,11 @@ class SubscriptionDetailsController {
   def removePackagePendingChanges(pkg_id,sub_id,confirmed){
 
     def tipp_class = TitleInstancePackagePlatform.class.getName()
-    def tipp_id_query = "from TitleInstancePackagePlatform tipp where tipp.pkg.id = ?"
-    def change_doc_query = "from PendingChange pc where pc.subscription.id = ? "
-    def tipp_ids = TitleInstancePackagePlatform.executeQuery("select tipp.id ${tipp_id_query}".toString(),[pkg_id])
-    def pendingChanges = PendingChange.executeQuery("select pc.id, pc.changeDoc ${change_doc_query}".toString(),[sub_id])
+    def tipp_id_query = "from TitleInstancePackagePlatform tipp where tipp.pkg.id = :t"
+    def change_doc_query = "from PendingChange pc where pc.subscription.id = :s "
+
+    def tipp_ids = TitleInstancePackagePlatform.executeQuery("select tipp.id ${tipp_id_query}".toString(),[t:pkg_id])
+    def pendingChanges = PendingChange.executeQuery("select pc.id, pc.changeDoc ${change_doc_query}".toString(),[s:sub_id])
 
     def pc_to_delete = []
     pendingChanges.each{pc->
@@ -621,10 +618,11 @@ class SubscriptionDetailsController {
       try{
         listA = createCompareList(params.subA ,params.dateA, params, result)
         listB = createCompareList(params.subB, params.dateB, params, result)
+
         if(!params.countA){
-          def countQuery = "select count(elements(sub.issueEntitlements)) from Subscription sub where sub.id = ?"
-          params.countA = Subscription.executeQuery(countQuery, [result.subInsts.get(0).id])
-          params.countB = Subscription.executeQuery(countQuery, [result.subInsts.get(1).id])
+          def countQuery = "select count(elements(sub.issueEntitlements)) from Subscription sub where sub.id = :s"
+          params.countA = Subscription.executeQuery(countQuery, [s:result.subInsts.get(0).id])
+          params.countB = Subscription.executeQuery(countQuery, [s:result.subInsts.get(1).id])
         }
       }catch(IllegalArgumentException e){
         request.message = e.getMessage()
@@ -912,29 +910,28 @@ class SubscriptionDetailsController {
 
   def generateIEQuery(params, qry_params, showDeletedTipps, asAt) {
 
-    def base_qry = "from IssueEntitlement as ie left outer join ie.tipp.status as tippstatus where ie.subscription = ? "
+    def base_qry = "from IssueEntitlement as ie left outer join ie.tipp.status as tippstatus where ie.subscription = :s "
 
     if ( showDeletedTipps == false ) {
          base_qry += "and tippstatus.value != 'Deleted'  "
     }
 
     if ( params.filter ) {
-      base_qry += " and ( ( lower(ie.tipp.title.title) like ? ) or ( exists ( from IdentifierOccurrence io where io.ti.id = ie.tipp.title.id and io.identifier.value like ? ) ) )"
-      qry_params.add("%${params.filter.trim().toLowerCase()}%")
-      qry_params.add("%${params.filter}%")
+      base_qry += " and ( ( lower(ie.tipp.title.title) like :t ) or ( exists ( from IdentifierOccurrence io where io.ti.id = ie.tipp.title.id and io.identifier.value like :i ) ) )"
+      qry_params.t = "%${params.filter.trim().toLowerCase()}%"
+      qry_params.i = "%${params.filter}%"
     }
 
     if ( params.startsBefore && params.startsBefore.length() > 0 ) {
         def sdf = new java.text.SimpleDateFormat('yyyy-MM-dd');
         def d = sdf.parse(params.startsBefore)
-        base_qry += " and ie.startDate <= ?"
-        qry_params.add(d)
+        base_qry += " and ie.startDate <= :d2"
+        qry_params.d2 = d
     }
 
     if ( asAt != null ) {
-        base_qry += " and ( ( ? >= coalesce(ie.tipp.accessStartDate, ie.startDate) ) and ( ( ? <= ie.tipp.accessEndDate ) or ( ie.tipp.accessEndDate is null ) ) ) "
-        qry_params.add(asAt);
-        qry_params.add(asAt);
+        base_qry += " and ( ( :d3 >= coalesce(ie.tipp.accessStartDate, ie.startDate) ) and ( ( :d3 <= ie.tipp.accessEndDate ) or ( ie.tipp.accessEndDate is null ) ) ) "
+        qry_params.d3 = asAt;
     }
 
     return base_qry
@@ -1100,36 +1097,37 @@ class SubscriptionDetailsController {
     if ( result.subscriptionInstance ) {
       // We need all issue entitlements from the parent subscription where no row exists in the current subscription for that item.
       def basequery = null;
-      def qry_params = [result.subscriptionInstance, tipp_deleted, result.subscriptionInstance, ie_deleted]
+      def qry_params = [si:result.subscriptionInstance, st:tipp_deleted, idst: ie_deleted]
 
       if ( params.filter ) {
         log.debug("Filtering....");
-        basequery = "from TitleInstancePackagePlatform tipp where tipp.pkg in ( select pkg from SubscriptionPackage sp where sp.subscription = ? ) and tipp.status != ? and ( not exists ( select ie from IssueEntitlement ie where ie.subscription = ? and ie.tipp.id = tipp.id and ie.status != ? ) ) and ( ( lower(tipp.title.title) like ? ) OR ( exists ( select io from IdentifierOccurrence io where io.ti.id = tipp.title.id and io.identifier.value like ? ) ) ) "
-        qry_params.add("%${params.filter.trim().toLowerCase()}%")
-        qry_params.add("%${params.filter}%")
+        basequery = "from TitleInstancePackagePlatform tipp where tipp.pkg in ( select pkg from SubscriptionPackage sp where sp.subscription = :si ) and tipp.status != :st and ( not exists ( select ie from IssueEntitlement ie where ie.subscription = :si and ie.tipp.id = tipp.id and ie.status != :idst ) ) and ( ( lower(tipp.title.title) like :t2 ) OR ( exists ( select io from IdentifierOccurrence io where io.ti.id = tipp.title.id and io.identifier.value like :i ) ) ) "
+
+        qry_params.t2 = "%${params.filter.trim().toLowerCase()}%"
+        qry_params.i = "%${params.filter}%"
       }
       else {
-        basequery = "from TitleInstancePackagePlatform tipp where tipp.pkg in ( select pkg from SubscriptionPackage sp where sp.subscription = ? ) and tipp.status != ? and ( not exists ( select ie from IssueEntitlement ie where ie.subscription = ? and ie.tipp.id = tipp.id and ie.status != ? ) )"
+        basequery = "from TitleInstancePackagePlatform tipp where tipp.pkg in ( select pkg from SubscriptionPackage sp where sp.subscription = :si ) and tipp.status != :st and ( not exists ( select ie from IssueEntitlement ie where ie.subscription = :si and ie.tipp.id = tipp.id and ie.status != :idst ) )"
       }
 
       if ( params.endsAfter && params.endsAfter.length() > 0 ) {
         def sdf = new java.text.SimpleDateFormat('yyyy-MM-dd');
         def d = sdf.parse(params.endsAfter)
-        basequery += " and tipp.endDate >= ?"
-        qry_params.add(d)
+        basequery += " and tipp.endDate >= :ed"
+        qry_params.ed = d
       }
 
       if ( params.startsBefore && params.startsBefore.length() > 0 ) {
         def sdf = new java.text.SimpleDateFormat('yyyy-MM-dd');
         def d = sdf.parse(params.startsBefore)
-        basequery += " and tipp.startDate <= ?"
-        qry_params.add(d)
+        basequery += " and tipp.startDate <= :sd"
+        qry_params.sd=d
       }
 
 
       if ( params.pkgfilter && ( params.pkgfilter != '' ) ) {
-        basequery += " and tipp.pkg.id = ? "
-        qry_params.add(Long.parseLong(params.pkgfilter));
+        basequery += " and tipp.pkg.id = :tpid "
+        qry_params.tpid=Long.parseLong(params.pkgfilter);
       }
 
 
@@ -1191,18 +1189,18 @@ class SubscriptionDetailsController {
 
         def limits = (!params.format||params.format.equals("html"))?[max:result.max, offset:result.offset]:[offset:0]
 
-        def qry_params = [subscriptionInstance]
+        def qry_params = [si:subscriptionInstance]
         def date_filter =  new Date();
 
-        def base_qry = "from IssueEntitlement as ie where ie.subscription = ? "
+        def base_qry = "from IssueEntitlement as ie where ie.subscription = :si "
         base_qry += "and ie.status.value != 'Deleted' "
         if ( date_filter != null ) {
             if(screen.equals('previous')) {
-                base_qry += " and ( coalesce(ie.accessEndDate,subscription.endDate) <= ? ) "
+                base_qry += " and ( coalesce(ie.accessEndDate,subscription.endDate) <= :df ) "
             }else{
-                base_qry += " and (coalesce(ie.accessStartDate,subscription.startDate) > ? )"
+                base_qry += " and (coalesce(ie.accessStartDate,subscription.startDate) > :df )"
             }
-            qry_params.add(date_filter);
+            qry_params.df = date_filter;
         }
 
         log.debug("Base qry: ${base_qry}, params: ${qry_params}, result:${result}");
@@ -1474,9 +1472,9 @@ class SubscriptionDetailsController {
       def licensee_role = RefdataCategory.lookupOrCreate('Organisational Role','Licensee');
       def template_license_type = RefdataCategory.lookupOrCreate('License Type','Template');
 
-      def qry_params = [subscriber, licensee_role]
+      def qry_params = [su:subscriber, lr:licensee_role]
 
-      def qry = "select l from License as l where exists ( select ol from OrgRole as ol where ol.lic = l AND ol.org = ? and ol.roleType = ? ) AND l.status.value != 'Deleted' order by l.reference"
+      def qry = "select l from License as l where exists ( select ol from OrgRole as ol where ol.lic = l AND ol.org = :su and ol.roleType = :lr ) AND l.status.value != 'Deleted' order by l.reference"
 
       def license_list = License.executeQuery(qry, qry_params);
       license_list.each { l ->
@@ -1606,9 +1604,9 @@ class SubscriptionDetailsController {
     result.max = params.max ?: result.user.defaultPageSize;
     result.offset = params.offset ?: 0;
 
-    def qry_params = [result.subscription.class.name, "${result.subscription.id}"]
-    result.historyLines = AuditLogEvent.executeQuery("select e from AuditLogEvent as e where className=? and persistedObjectId=? order by id desc", qry_params, [max:result.max, offset:result.offset]);
-    result.historyLinesTotal = AuditLogEvent.executeQuery("select count(e.id) from AuditLogEvent as e where className=? and persistedObjectId=?",qry_params)[0];
+    def qry_params = [cn:result.subscription.class.name, oid:"${result.subscription.id}"]
+    result.historyLines = AuditLogEvent.executeQuery("select e from AuditLogEvent as e where className=:cn and persistedObjectId=:oid order by id desc", qry_params, [max:result.max, offset:result.offset]);
+    result.historyLinesTotal = AuditLogEvent.executeQuery("select count(e.id) from AuditLogEvent as e where className=:cn and persistedObjectId=:oid",qry_params)[0];
 
     result
   }
@@ -1637,9 +1635,9 @@ class SubscriptionDetailsController {
 
     def qry_params = [result.subscription.class.name, "${result.subscription.id}"]
 
-    result.todoHistoryLines = PendingChange.executeQuery("select pc from PendingChange as pc where pc.subscription=? order by pc.ts desc", [result.subscription], [max:result.max, offset:result.offset]);
+    result.todoHistoryLines = PendingChange.executeQuery("select pc from PendingChange as pc where pc.subscription=:s order by pc.ts desc", [s:result.subscription], [max:result.max, offset:result.offset]);
 
-    result.todoHistoryLinesTotal = PendingChange.executeQuery("select count(pc) from PendingChange as pc where subscription=?", result.subscription)[0];
+    result.todoHistoryLinesTotal = PendingChange.executeQuery("select count(pc) from PendingChange as pc where subscription=:s", [s:result.subscription])[0];
 
     result
   }
@@ -1666,13 +1664,13 @@ class SubscriptionDetailsController {
     def offset = (params.offset && response.format && response.format != "html") ? Integer.parseInt(params.offset) : 0;
     
     def pending_change_pending_status = RefdataCategory.lookupOrCreate("PendingChangeStatus", "Pending")
-    def pendingChangesTotal = PendingChange.executeQuery("select count(pc) from PendingChange as pc where subscription=? and ( pc.status is null or pc.status = ? )", [subscription, pending_change_pending_status])[0];
+    def pendingChangesTotal = PendingChange.executeQuery("select count(pc) from PendingChange as pc where subscription=:sub and ( pc.status is null or pc.status = :st )", [sub:subscription, st:pending_change_pending_status])[0];
     
     if (offset >= pendingChangesTotal) {
       offset = 0
     }
     
-    def pendingChanges = PendingChange.executeQuery("select pc.id from PendingChange as pc where subscription=? and ( pc.status is null or pc.status = ? ) order by ts desc", [subscription, pending_change_pending_status ], [max:max, offset:offset]);
+    def pendingChanges = PendingChange.executeQuery("select pc.id from PendingChange as pc where subscription=:sub and ( pc.status is null or pc.status = :st ) order by ts desc", [sub:subscription, st:pending_change_pending_status ], [max:max, offset:offset]);
     
     def pcs = null
     if(subscription?.isSlaved?.value == "Auto" && pendingChanges) {

@@ -36,7 +36,7 @@ class ReminderService implements ApplicationContextAware{
     def getActiveEmailRemindersByUserID() {
         //Get active reminders and users who have email
         def result = [:]
-        Reminder.executeQuery('select r from Reminder as r where r.active = ? and r.user.email != null and r.reminderMethod.value = ? order by r.user.id',[Boolean.TRUE,'email']).each { r ->
+        Reminder.executeQuery('select r from Reminder as r where r.active = :a and r.user.email != null and r.reminderMethod.value = :v order by r.user.id',[a:Boolean.TRUE,v:'email']).each { r ->
             if (result.containsKey(r.user.id)) {
                 ArrayList userReminders = result.get(r.user.id)  //Group Reminders and organise via users ID
                 userReminders.add(r)
@@ -57,9 +57,11 @@ class ReminderService implements ApplicationContextAware{
      * @return List of Subscriptions
      */
     def getAuthorisedSubsciptionsByUser(User user) {
-        def qry_params = [user.defaultDash, LocalDate.now().minusMonths(13).toDate()]
+        def qry_params = [o:user.defaultDash, rd:LocalDate.now().minusMonths(13).toDate()]
         log.debug("Looking up subscriptions for user : ${user.username} Restricting to Subscriptions with renewal date one year previous to today!")
-        def base_qry = "select s from Subscription as s where  ( ( exists ( select o from s.orgRelations as o where o.roleType.value = 'Subscriber' and o.org = ? ) ) ) AND ( s.status.value != 'Deleted' ) AND s.manualRenewalDate < ? order by s.manualRenewalDate asc "
+
+        def base_qry = "select s from Subscription as s where  ( ( exists ( select o from s.orgRelations as o where o.roleType.value = 'Subscriber' and o.org = :o ) ) ) AND ( s.status.value != 'Deleted' ) AND s.manualRenewalDate < :rd order by s.manualRenewalDate asc "
+
         def results = Subscription.executeQuery(base_qry, qry_params);
         if (results.size() == 0)
             log.error("ReminderService :: getAuthorisedSubsciptionsByUser - Unable to retrieve any subscriptions for user ${user.username}")
