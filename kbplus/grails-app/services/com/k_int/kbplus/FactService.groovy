@@ -162,7 +162,8 @@ class FactService {
          supplier_id != null ) {
 
       def q = "select sum(f.factValue),f.reportingYear,f.factType from Fact as f where f.relatedTitle.id=:rid and f.supplier.id=:sid and f.inst.id=:oid and f.factType.value = :rt and f.reportingYear >= :ry group by f.factType, f.reportingYear  order by f.reportingYear desc,f.factType.value"
-      def l1 = Fact.executeQuery(q,[rid:title_id, sid:supplier_id, oid:org_id, rt:report_type, (long)(year-n)])
+
+      def l1 = Fact.executeQuery(q,[rid:title_id, sid:supplier_id, oid:org_id, rt:report_type, ry:(long)(year-n)])
 
       l1.each{ y ->
         if ( y[1] >= (year - n) ) {
