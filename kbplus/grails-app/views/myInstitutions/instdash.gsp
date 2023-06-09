@@ -98,15 +98,20 @@
         </div>
       </div>
 
-      <g:if test="${(features != null) && ( features.contains('EXPORT') ) }"> 
+      <g:if test="${(features != null) && ( features.export?.equals('ON') ) }"> 
         <div class="col s12">
           <div class="card-panel clearfix">
             <p class="card-title" data-kb-message-code="dash.export.title"><g:message code="dash.export.title" /></p>
             <p class="" data-kb-message-code="dash.export.brief"><g:message code="dash.export.brief" />
-              ${institution?.exportStatus}
-              ${institution?.currentExportDate}
-              ${institution?.exportUUID}
-              ${institution?.batchMonitorUUID}
+              status: ${institution?.exportStatus}<br/>
+              date: ${institution?.currentExportDate}<br/>
+              uuid: ${institution?.exportUUID}<br/>
+              monitor: ${institution?.batchMonitorUUID}<br/>
+              <g:if test="${( ( institution?.exportStatus == null ) ||( institution?.exportStatus=='' ) )}">
+                <g:link controller="myInstitutions" action="requestExport" params="${[defaultInstShortcode:params.defaultInstShortcode]}">
+                  <Button>Create an export for your data</Button>
+                </g:link>
+              </g:if>
             </p>
           </div>
         </div>

@@ -56,7 +56,8 @@ where exists ( select ie from IssueEntitlement as ie where ie.tipp.title = t AND
       // Work out what orgs this user has admin level access to
       def result = [:]
       result.user = User.get(springSecurityService.principal.id)
-      result.features = grailsApplication.config.getProperty('features', List<String>, [])
+      result.features = grailsApplication.config.getProperty('features', Map<String,String>, [:])
+      log.debug("Set features to ${result.features}");
       log.debug("index for user with id ${springSecurityService.principal.id} :: ${result.user}");
  
 
@@ -463,23 +464,22 @@ def getLicencePropertyIcons() {
         }
 
         def template_license_type = RefdataCategory.lookupOrCreate('License Type', 'Template');
-        def qparams = [template_license_type]
+        Map qparams = [t:template_license_type]
         def public_flag = RefdataCategory.lookupOrCreate('YN', 'No');
 
        // This query used to allow institutions to copy their own licenses - now users only want to copy template licenses
         // (OS License specs)
-        // def qry = "from License as l where ( ( l.type = ? ) OR ( exists ( select ol from OrgRole as ol where ol.lic = l AND ol.org = ? and ol.roleType = ? ) ) OR ( l.isPublic=? ) ) AND l.status.value != 'Deleted'"
 
-        def query = "from License as l where l.type = ? AND l.status.value != 'Deleted'"
+        def query = "from License as l where l.type = :t AND l.status.value != 'Deleted'"
 
         if (params.filter) {
-            query += " and lower(l.reference) like ?"
-            qparams.add("%${params.filter.toLowerCase()}%")
+            query += " and lower(l.reference) like :r"
+            qparams.r = "%${params.filter.toLowerCase()}%"
         }
 
         //separately select all licences that are not public or are null, to test access rights.
         // For some reason that I could track, l.isPublic != 'public-yes' returns different results.
-        def non_public_query = query + " and ( l.isPublic = ? or l.isPublic is null) "
+        def non_public_query = query + " and ( l.isPublic = :p or l.isPublic is null) "
 
         if ((params.sort != null) && (params.sort.length() > 0)) {
             query += " order by l.${params.sort} ${params.order}"
@@ -492,7 +492,7 @@ def getLicencePropertyIcons() {
         result.licenses = License.executeQuery("select l ${query}".toString(), qparams,[max: result.max, offset: result.offset])
 
         //We do the following to remove any licences the user does not have access rights
-        qparams += public_flag
+        qparams.p=public_flag
 
         def nonPublic = License.executeQuery("select l ${non_public_query}".toString(), qparams)
         def no_access = nonPublic.findAll{ !it.hasPerm("view",result.user)  }
@@ -541,33 +541,29 @@ def getLicencePropertyIcons() {
         result.max = params.max ? Integer.parseInt(params.max) : result.user.defaultPageSize;
         result.offset = params.offset ? Integer.parseInt(params.offset) : 0;
 
-        def base_qry = " from Subscription as s where  ( ( exists ( select o from s.orgRelations as o where o.roleType.value = 'Subscriber' and o.org = ? ) ) ) AND ( s.status.value != 'Deleted' ) "
-        def qry_params = [result.institution]
+        def base_qry = " from Subscription as s where  ( ( exists ( select o from s.orgRelations as o where o.roleType.value = 'Subscriber' and o.org = :o ) ) ) AND ( s.status.value != 'Deleted' ) "
+        def qry_params = [o:result.institution]
 
         if (params.q?.length() > 0) {
-            base_qry += " and ( lower(s.name) like ? or exists ( select sp from SubscriptionPackage as sp where sp.subscription = s and ( lower(sp.pkg.name) like ? ) ) ) "
-            qry_params.add("%${params.q.trim().toLowerCase()}%");
-            qry_params.add("%${params.q.trim().toLowerCase()}%");
+            base_qry += " and ( lower(s.name) like :n or exists ( select sp from SubscriptionPackage as sp where sp.subscription = s and ( lower(sp.pkg.name) like :n ) ) ) "
+            qry_params.n = "%${params.q.trim().toLowerCase()}%";
         }
 
         if (date_restriction) {
           switch ( date_filter_type ) {
             case 'Renewal Date':
-              base_qry += " and s.manualRenewalDate <= ? and s.manualRenewalDate >= ? "
-              qry_params.add(date_restriction)
-              qry_params.add(date_restriction)
+              base_qry += " and s.manualRenewalDate <= :mrd and s.manualRenewalDate >= :mrd "
+              qry_params.mrd = date_restriction
             
               break;
             case 'End Date':
-              base_qry += " and s.endDate <= ? and s.endDate >= ? "
-              qry_params.add(date_restriction)
-              qry_params.add(date_restriction)
+              base_qry += " and s.endDate <= :ed and s.endDate >= :ed"
+              qry_params.ed = date_restriction
               break;
             case 'Valid On':
             default:
-              base_qry += " and s.startDate <= ? and s.endDate >= ? "
-              qry_params.add(date_restriction)
-              qry_params.add(date_restriction)
+              base_qry += " and s.startDate <= :sd and s.endDate >= :sd "
+              qry_params.sd = date_restriction
               break;
           }
         }
@@ -703,9 +699,9 @@ def getLicencePropertyIcons() {
         def dateBeforeFilterVal = null;
         if(params.dateBeforeFilter && params.dateBeforeVal){
             if(params.dateBeforeFilter == "Renewal Date"){
-                dateBeforeFilter = " and s.manualRenewalDate < ?"
+                dateBeforeFilter = " and s.manualRenewalDate < :datef"
             }else if (params.dateBeforeFilter == "End Date"){
-                dateBeforeFilter = " and s.endDate < ?"
+                dateBeforeFilter = " and s.endDate < :datef"
             }
             dateBeforeFilterVal =sdf.parse(params.dateBeforeVal)
         }
@@ -728,25 +724,23 @@ def getLicencePropertyIcons() {
         result.offset = params.offset ? Integer.parseInt(params.offset) : 0;
 
         // def base_qry = " from Subscription as s where  ( ( exists ( select o from s.orgRelations as o where o.roleType.value = 'Subscriber' and o.org = ? ) ) OR ( s.isPublic=? ) ) AND ( s.status.value != 'Deleted' ) "
-        def base_qry = " from Subscription as s where  ( ( exists ( select o from s.orgRelations as o where o.roleType.value = 'Subscriber' and o.org = ? ) ) ) AND ( s.status.value != 'Deleted' ) "
+        def base_qry = " from Subscription as s where  ( ( exists ( select o from s.orgRelations as o where o.roleType.value = 'Subscriber' and o.org = :o ) ) ) AND ( s.status.value != 'Deleted' ) "
         // def qry_params = [result.institution, public_flag]
-        def qry_params = [result.institution]
+        def qry_params = [o:result.institution]
 
         if (params.q?.length() > 0) {
-            base_qry += " and ( lower(s.name) like ? or exists ( select sp from SubscriptionPackage as sp where sp.subscription = s and ( lower(sp.pkg.name) like ? ) ) ) "
-            qry_params.add("%${params.q.trim().toLowerCase()}%");
-            qry_params.add("%${params.q.trim().toLowerCase()}%");
+            base_qry += " and ( lower(s.name) like :n or exists ( select sp from SubscriptionPackage as sp where sp.subscription = s and ( lower(sp.pkg.name) like :n ) ) ) "
+            qry_params.n = "%${params.q.trim().toLowerCase()}%";
         }
 
         if (date_restriction) {
-            base_qry += " and s.startDate <= ? and s.endDate >= ? "
-            qry_params.add(date_restriction)
-            qry_params.add(date_restriction)
+            base_qry += " and s.startDate <= :sd and s.endDate >= :sd "
+            qry_params.sd = date_restriction
         }
 
         if(dateBeforeFilter ){
             base_qry += dateBeforeFilter
-            qry_params.add(dateBeforeFilterVal)
+            qry_params.datef = dateBeforeFilterVal
         }
 
         if ((params.sort != null) && (params.sort.length() > 0)) {
@@ -817,19 +811,18 @@ def getLicencePropertyIcons() {
         result.offset = params.offset ? Integer.parseInt(params.offset) : 0;
 
         // def base_qry = " from Subscription as s where s.type.value = 'Subscription Offered' and s.isPublic=?"
-        def qry_params = []
-        def base_qry = " from Package as p where lower(p.name) like ?"
+        def qry_params = [:]
+        def base_qry = " from Package as p where lower(p.name) like :pname"
 
         if (params.q == null) {
-            qry_params.add("%");
+            qry_params.pname = "%";
         } else {
-            qry_params.add("%${params.q.trim().toLowerCase()}%");
+            qry_params.pname = "%${params.q.trim().toLowerCase()}%";
         }
 
         if (date_restriction) {
-            base_qry += " and p.startDate <= ? and p.endDate >= ? "
-            qry_params.add(date_restriction)
-            qry_params.add(date_restriction)
+            base_qry += " and p.startDate <= :dt and p.endDate >= :dt "
+            qry_params.dt = date_restriction
         }
 
         // Only list subscriptions where the user has view perms against the org
@@ -2766,6 +2759,9 @@ AND EXISTS (
         result.user = User.get(springSecurityService.principal.id)
         result.institution = request.getAttribute('institution')//Org.findByShortcode(params.shortcode)
 
+        result.features = grailsApplication.config.getProperty('features', Map<String,String>, [:])
+        log.debug("Set features to ${result.features}");
+
         if ( result.institution == null ) {
           log.error("No institution present in request");
           flash.error = "No institution found. Please contact support. Your user id is ${result.user?.id}, please quote this in your support request. The request URL was ${request.forwardURI}"
@@ -2820,11 +2816,14 @@ AND EXISTS (
 
         result.recentlyEditedLicenses = License.executeQuery('select l '+INSTITUTIONAL_LICENSES_QUERY+' order by l.lastUpdated desc', [lic_org:result.institution, org_role:licensee_role,lic_status:licence_status], [max:5]);
 
-        result.features = grailsApplication.config.getProperty('features', List<String>, [])
-
         log.debug("instadash returning");
 
         result
+    }
+
+    private requestExport() {
+      log.debug("requestExport()");
+      redirect(url: request.getHeader('referer'))
     }
 
     private def getUpcomingRenewals(inst) {
@@ -2973,10 +2972,10 @@ AND EXISTS (
           result.offset = params.offset ? Integer.parseInt(params.offset) : 0;
         }
 
-        PendingChange.executeQuery('select distinct(pc.license) from PendingChange as pc where pc.owner = ?',[result.institution]).each {
+        PendingChange.executeQuery('select distinct(pc.license) from PendingChange as pc where pc.owner = :o',[o:result.institution]).each {
           result.institutional_objects.add(['com.k_int.kbplus.License:'+it.id,"${message(code:'licence')}: "+it.reference]);
         }
-        PendingChange.executeQuery('select distinct(pc.subscription) from PendingChange as pc where pc.owner = ?',[result.institution]).each {
+        PendingChange.executeQuery('select distinct(pc.subscription) from PendingChange as pc where pc.owner = :o',[o:result.institution]).each {
           result.institutional_objects.add(['com.k_int.kbplus.Subscription:'+it.id,"${message(code:'subscription')}: "+it.name]);
         }
 
@@ -3005,16 +3004,16 @@ AND EXISTS (
             html {
         //result.changes = PendingChange.executeQuery("select pc "+base_query+"  order by ts desc", qry_params, [max: result.max, offset:result.offset])
         
-        result.num_todos = PendingChange.executeQuery("select count(distinct pc.oid) from PendingChange as pc where pc.owner = ?", [result.institution])[0]
+        result.num_todos = PendingChange.executeQuery("select count(distinct pc.oid) from PendingChange as pc where pc.owner = :o", [o:result.institution])[0]
         
-        def change_summary = PendingChange.executeQuery("select distinct(pc.oid), count(pc), min(pc.ts), max(pc.ts) from PendingChange as pc where pc.owner = ? group by pc.oid", [result.institution], [max: result.max, offset: result.offset]);
+        def change_summary = PendingChange.executeQuery("select distinct(pc.oid), count(pc), min(pc.ts), max(pc.ts) from PendingChange as pc where pc.owner = :o group by pc.oid", [o:result.institution], [max: result.max, offset: result.offset]);
         result.todos = []
         
         log.debug("Process change summary: ${change_summary.size()}");
         change_summary.each { cs ->
           // log.debug("Change summary row : ${cs}");
           def item_with_changes = genericOIDService.resolveOID(cs[0])
-          def pendingChanges = PendingChange.executeQuery("select pc from PendingChange as pc where oid=? order by ts desc", [cs[0]]);
+          def pendingChanges = PendingChange.executeQuery("select pc from PendingChange as pc where oid=:oid order by ts desc", [oid:cs[0]]);
           result.todos.add([
               item_with_changes: item_with_changes,
               oid              : cs[0],

@@ -19,6 +19,7 @@ class UrlMappings {
     "/myInstitutions"(controller:'home', action:'index');
     "/myInstitutions/$defaultInstShortcode/dashboard"(controller:'myInstitutions', action:'instdash')
     "/myInstitutions/$defaultInstShortcode" (controller:'myInstitutions', action:'instdash')
+    "/myInstitutions/$defaultInstShortcode/requestExport" (controller:'myInstitutions', action:'requestExport')
     
     "/subscriptionDetails/$action" (controller:'subscriptionDetails')
     "/subscriptionDetails/$action/$id" (controller:'subscriptionDetails')

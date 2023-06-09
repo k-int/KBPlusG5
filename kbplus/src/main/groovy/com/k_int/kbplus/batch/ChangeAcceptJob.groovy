@@ -23,15 +23,15 @@ class ChangeAcceptJob {
       def httpRequestMock = [:]
       httpRequestMock.user = user
       // Get all changes associated with slaved subscriptions
-      def subQueryStr = "select pc.id from PendingChange as pc where subscription.isSlaved.value = 'Yes' and ( pc.status is null or pc.status = ? ) order by pc.ts desc"
-      def subPendingChanges = PendingChange.executeQuery(subQueryStr, [ pending_change_pending_status ]);
+      def subQueryStr = "select pc.id from PendingChange as pc where subscription.isSlaved.value = 'Yes' and ( pc.status is null or pc.status = :s ) order by pc.ts desc"
+      def subPendingChanges = PendingChange.executeQuery(subQueryStr, [ s:pending_change_pending_status ]);
       log.debug(subPendingChanges.size() +" pending changes have been found for slaved subscriptions")
       subPendingChanges.each {
           pendingChangeService.performAccept(it,httpRequestMock)
       }
   
-      def licQueryStr = "select pc.id from PendingChange as pc join pc.license.incomingLinks lnk where lnk.isSlaved.value = 'Yes' and ( pc.status is null or pc.status = ? ) order by pc.ts desc"
-      def licPendingChanges = PendingChange.executeQuery(licQueryStr, [ pending_change_pending_status ]);
+      def licQueryStr = "select pc.id from PendingChange as pc join pc.license.incomingLinks lnk where lnk.isSlaved.value = 'Yes' and ( pc.status is null or pc.status = :s ) order by pc.ts desc"
+      def licPendingChanges = PendingChange.executeQuery(licQueryStr, [ s:pending_change_pending_status ]);
       log.debug( licPendingChanges.size() +" pending changes have been found for slaved licences")
       licPendingChanges.each {
           pendingChangeService.performAccept(it,httpRequestMock)

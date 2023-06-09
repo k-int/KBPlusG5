@@ -264,8 +264,8 @@ class Subscription {
   static def refdataFind(params) {
     def result = [];
 
-    def hqlString = "select sub from Subscription sub where lower(sub.name) like ? "
-    def hqlParams = [((params.q ? params.q.toLowerCase() : '' ) + "%")]
+    def hqlString = "select sub from Subscription sub where lower(sub.name) like :q "
+    Map hqlParams = [q:((params.q ? params.q.toLowerCase() : '' ) + "%")]
     def sdf = new java.text.SimpleDateFormat("yyyy-MM-dd")
 
     if(params.hasDate ){
@@ -288,8 +288,8 @@ class Subscription {
     }
 
     if(params.inst_shortcode && params.inst_shortcode.length() > 1){
-      hqlString += " AND exists ( select orgs from sub.orgRelations orgs where orgs.org.shortcode = ? AND orgs.roleType.value = 'Subscriber' ) "
-      hqlParams += params.inst_shortcode
+      hqlString += " AND exists ( select orgs from sub.orgRelations orgs where orgs.org.shortcode = :c AND orgs.roleType.value = 'Subscriber' ) "
+      hqlParams.c = params.inst_shortcode
     }
 
 

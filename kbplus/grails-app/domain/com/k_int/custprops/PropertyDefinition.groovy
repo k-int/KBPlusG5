@@ -127,15 +127,15 @@ class PropertyDefinition {
 
   @Transient
   def getOccurrencesOwner(String cls){
-    def qparams = [this]
-    def qry = 'select c.owner from '+cls+" as c where c.type = ?"
+    def qparams = [p:this]
+    def qry = 'select c.owner from '+cls+" as c where c.type = :p"
     return PropertyDefinition.executeQuery(qry,qparams); 
   }
 
   @Transient
   def countOccurrences(String cls) {
-    def qparams = [this]
-    def qry = 'select count(c) from '+cls+" as c where c.type = ?"
+    def qparams = [p:this]
+    def qry = 'select count(c) from '+cls+" as c where c.type = :p"
     return (PropertyDefinition.executeQuery(qry,qparams))[0]; 
   }
   @Transient
@@ -149,8 +149,8 @@ class PropertyDefinition {
   @Transient
   def removeProperty() {
     log.debug("Remove");
-    PropertyDefinition.executeUpdate('delete from com.k_int.kbplus.LicenseCustomProperty c where c.type = ?',[this])
-    PropertyDefinition.executeUpdate('delete from com.k_int.kbplus.SubscriptionCustomProperty c where c.type = ?',[this])
+    PropertyDefinition.executeUpdate('delete from com.k_int.kbplus.LicenseCustomProperty c where c.type = :t',[t:this])
+    PropertyDefinition.executeUpdate('delete from com.k_int.kbplus.SubscriptionCustomProperty c where c.type = :t',[t:this])
     this.delete();
   }
 }

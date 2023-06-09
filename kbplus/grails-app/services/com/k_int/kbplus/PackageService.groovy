@@ -128,7 +128,7 @@ class PackageService{
         // Go through the tipps in chunks.
         //def tipps = pkg.tipps.collect { it.id }
 
-        def tipps = TitleInstancePackagePlatform.executeQuery('select tipp.id from TitleInstancePackagePlatform as tipp where tipp.pkg=?',[pkg]);
+        def tipps = TitleInstancePackagePlatform.executeQuery('select tipp.id from TitleInstancePackagePlatform as tipp where tipp.pkg=:p',[p:pkg]);
         
         log.debug("Query returns ${tipps.size()} tipps");
 

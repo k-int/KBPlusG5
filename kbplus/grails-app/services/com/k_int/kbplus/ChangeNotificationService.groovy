@@ -76,7 +76,7 @@ class ChangeNotificationService {
           ChangeNotificationQueueItem.executeUpdate("delete ChangeNotificationQueueItem c where c.oid = :oid", [oid:poidc])
         }
 
-        def pendingChanges = ChangeNotificationQueueItem.executeQuery("select c from ChangeNotificationQueueItem as c where c.oid = ? order by c.ts asc",[poidc]);
+        def pendingChanges = ChangeNotificationQueueItem.executeQuery("select c from ChangeNotificationQueueItem as c where c.oid = :oid order by c.ts asc",[oid:poidc]);
         StringWriter sw = new StringWriter();
         def pc_title = null;
 

@@ -66,18 +66,18 @@ class GlobalSourceSyncService {
 
       // Now - See if we can find a title history event for data and these particiapnts.
       // Title History Events are IMMUTABLE - so we delete them rather than updating them.
-      def base_query = "select the from TitleHistoryEvent as the where the.eventDate = ? "
+      def base_query = "select the from TitleHistoryEvent as the where the.eventDate = :d "
       // Need to parse date...
       def sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-      def query_params = [(((historyEvent.date != null ) && ( historyEvent.date.trim().length() > 0 ) ) ? sdf.parse(historyEvent.date) : null)]
+      def query_params = [d:(((historyEvent.date != null ) && ( historyEvent.date.trim().length() > 0 ) ) ? sdf.parse(historyEvent.date) : null)]
 
       fromset.each {
-        base_query += "and exists ( select p from the.participants as p where p.participant = ? and p.participantRole = 'from' ) "
-        query_params.add(it)
+        base_query += "and exists ( select p from the.participants as p where p.participant = :from and p.participantRole = 'from' ) "
+        query_params['from'] = it;
       }
       toset.each {
-        base_query += "and exists ( select p from the.participants as p where p.participant = ? and p.participantRole = 'to' ) "
-        query_params.add(it)
+        base_query += "and exists ( select p from the.participants as p where p.participant = :to and p.participantRole = 'to' ) "
+        query_params['to'] = it;
       }
 
       def existing_title_history_event = TitleHistoryEvent.executeQuery(base_query,query_params);
@@ -560,9 +560,9 @@ class GlobalSourceSyncService {
   
           log.debug("Got OAI Record ${rec.header.identifier} datestamp: ${rec.header.datestamp} job:${sync_job.id} url:${sync_job.uri} cfg:${cfg.name}")
   
-          def qryparams = [sync_job.id, rec.header.identifier.text()]
+          def qryparams = [s:sync_job.id, i:rec.header.identifier.text()]
           def record_timestamp = sdf.parse(rec.header.datestamp.text())
-          def existing_record_info = GlobalRecordInfo.executeQuery('select r from GlobalRecordInfo as r where r.source.id = ? and r.identifier = ?',qryparams);
+          def existing_record_info = GlobalRecordInfo.executeQuery('select r from GlobalRecordInfo as r where r.source.id = :s and r.identifier = :i',qryparams);
           if ( existing_record_info.size() == 1 ) {
             log.debug("convert xml into json - config is ${cfg} ");
             def parsed_rec = cfg.converter.call(rec.metadata, sync_job)

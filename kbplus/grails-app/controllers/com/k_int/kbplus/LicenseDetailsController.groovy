@@ -57,7 +57,8 @@ class LicenseDetailsController {
     }else{
 
       def pending_change_pending_status = RefdataCategory.lookupOrCreate("PendingChangeStatus", "Pending")
-      def pendingChanges = PendingChange.executeQuery("select pc.id from PendingChange as pc where license=? and ( pc.status is null or pc.status = ? ) order by pc.ts desc", [result.license, pending_change_pending_status]);
+      def pendingChanges = PendingChange.executeQuery("select pc.id from PendingChange as pc where license=:l and ( pc.status is null or pc.status = :s ) order by pc.ts desc", 
+                                                      [l:result.license, s:pending_change_pending_status]);
 
         //Filter any deleted subscriptions out of displayed links
         Iterator<Subscription> it = result.license.subscriptions.iterator()
@@ -91,7 +92,7 @@ class LicenseDetailsController {
   result.historyLinesTotal = AuditLogEvent.executeQuery("select count(e.id) from AuditLogEvent as e where ( (className=:licClass and persistedObjectId=:licId) or (className = :prop and persistedObjectId in (select lp.id from LicenseCustomProperty as lp where lp.owner=:owner))) ", eh_qry_params)[0];
   
   //todo history count
-  result.todoHistoryLinesTotal = PendingChange.executeQuery("select count(pc) from PendingChange as pc where pc.license=? order by pc.ts desc", [result.license])[0];
+  result.todoHistoryLinesTotal = PendingChange.executeQuery("select count(pc) from PendingChange as pc where pc.license=:l order by pc.ts desc", [l:result.license])[0];
   
     withFormat {
       html result
@@ -302,13 +303,13 @@ class LicenseDetailsController {
       result.consortia = consortia
       result.consortiaInstsWithStatus = []
     def type = RefdataCategory.lookupOrCreate('Combo Type', 'Consortium')
-    def institutions_in_consortia_hql = "select c.fromOrg from Combo as c where c.type = ? and c.toOrg = ? order by c.fromOrg.name"
-    def consortiaInstitutions = Combo.executeQuery(institutions_in_consortia_hql, [type, consortia])
+    def institutions_in_consortia_hql = "select c.fromOrg from Combo as c where c.type = :t and c.toOrg = :o order by c.fromOrg.name"
+    def consortiaInstitutions = Combo.executeQuery(institutions_in_consortia_hql, [t:type, o:consortia])
 
      result.consortiaInstsWithStatus = [ : ]
-     def findOrgLicences = "SELECT lic from License AS lic WHERE exists ( SELECT link from lic.orgLinks AS link WHERE link.org = ? and link.roleType.value = 'Licensee') AND exists ( SELECT incLink from lic.incomingLinks AS incLink WHERE incLink.fromLic = ? ) AND lic.status.value != 'Deleted'"
+     def findOrgLicences = "SELECT lic from License AS lic WHERE exists ( SELECT link from lic.orgLinks AS link WHERE link.org = :o and link.roleType.value = 'Licensee') AND exists ( SELECT incLink from lic.incomingLinks AS incLink WHERE incLink.fromLic = :l ) AND lic.status.value != 'Deleted'"
      consortiaInstitutions.each{ 
-        def queryParams = [ it, result.license]
+        def queryParams = [ o:it, l:result.license]
         def hasLicence = License.executeQuery(findOrgLicences, queryParams)
         if (hasLicence){
           result.consortiaInstsWithStatus.put(it, RefdataCategory.lookupOrCreate("YNO","Yes") )    
@@ -387,11 +388,11 @@ class LicenseDetailsController {
 
     result.historyLines = AuditLogEvent.executeQuery("select e from AuditLogEvent as e where (( className=:licClass and persistedObjectId=:licId ) or (className = :prop and persistedObjectId in (select lp.id from LicenseCustomProperty as lp where lp.owner=:owner))) order by e.dateCreated desc", qry_params, [max:result.max, offset:result.offset]);
     
-    def propertyNameHql = "select pd.name from LicenseCustomProperty as licP, PropertyDefinition as pd where licP.id= ? and licP.type = pd"
+    def propertyNameHql = "select pd.name from LicenseCustomProperty as licP, PropertyDefinition as pd where licP.id= :l and licP.type = pd"
     
     result.historyLines?.each{
       if(it.className == qry_params.prop ){
-        def propertyName = LicenseCustomProperty.executeQuery(propertyNameHql,[it.persistedObjectId.toLong()])[0]
+        def propertyName = LicenseCustomProperty.executeQuery(propertyNameHql,[l:it.persistedObjectId.toLong()])[0]
         it.propertyName = propertyName
       }
     }
@@ -424,13 +425,13 @@ class LicenseDetailsController {
     def offset = (params.offset && response.format && response.format != "html") ? Integer.parseInt(params.offset) : 0;
     
     def pending_change_pending_status = RefdataCategory.lookupOrCreate("PendingChangeStatus", "Pending")
-    def pendingChangesTotal = PendingChange.executeQuery("select count(pc) from PendingChange as pc where license=? and ( pc.status is null or pc.status = ? )", [license, pending_change_pending_status])[0];
+    def pendingChangesTotal = PendingChange.executeQuery("select count(pc) from PendingChange as pc where license=:l and ( pc.status is null or pc.status = :s )", [l:license, s:pending_change_pending_status])[0];
     
     if (offset >= pendingChangesTotal) {
       offset = 0
     }
     
-    def pendingChanges = PendingChange.executeQuery("select pc.id from PendingChange as pc where license=? and ( pc.status is null or pc.status = ? ) order by pc.ts desc", [license, pending_change_pending_status], [max:max, offset:offset]);
+    def pendingChanges = PendingChange.executeQuery("select pc.id from PendingChange as pc where license=:l and ( pc.status is null or pc.status = :s ) order by pc.ts desc", [l:license, s:pending_change_pending_status], [max:max, offset:offset]);
     
     def pcs = null
     if(license.incomingLinks.find{it?.isSlaved?.value == "Yes"} && pendingChanges) {
@@ -469,9 +470,9 @@ class LicenseDetailsController {
     result.max = params.max ? Integer.parseInt(params.max) : result.user.defaultPageSize;
     result.offset = params.offset ?: 0;
 
-    result.todoHistoryLines = PendingChange.executeQuery("select pc from PendingChange as pc where pc.license=? order by pc.ts desc", [result.license],[max:result.max,offset:result.offset]);
+    result.todoHistoryLines = PendingChange.executeQuery("select pc from PendingChange as pc where pc.license=:l order by pc.ts desc", [l:result.license],[max:result.max,offset:result.offset]);
 
-    result.todoHistoryLinesTotal = PendingChange.executeQuery("select count(pc) from PendingChange as pc where pc.license=? order by pc.ts desc", [result.license])[0];
+    result.todoHistoryLinesTotal = PendingChange.executeQuery("select count(pc) from PendingChange as pc where pc.license=:l order by pc.ts desc", [l:result.license])[0];
     result
   }
 

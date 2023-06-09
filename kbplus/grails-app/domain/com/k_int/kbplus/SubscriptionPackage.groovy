@@ -23,12 +23,12 @@ class SubscriptionPackage {
   static def refdataFind(params) {
 
     def result = [];
-    def hqlString = "select sp from SubscriptionPackage as sp where lower(sp.pkg.name) like ?"
-    def hqlParams = [((params.q ? params.q.toLowerCase() : '' ) + "%")]
+    def hqlString = "select sp from SubscriptionPackage as sp where lower(sp.pkg.name) like :n"
+    def hqlParams = [n:((params.q ? params.q.toLowerCase() : '' ) + "%")]
 
     if ( params.subFilter ) {
-      hqlString += ' and sp.subscription.id = ?'
-      hqlParams.add(params.long('subFilter'))
+      hqlString += ' and sp.subscription.id = :s'
+      hqlParams.s = (params.long('subFilter'))
     }
 
     def results = SubscriptionPackage.executeQuery(hqlString,hqlParams)

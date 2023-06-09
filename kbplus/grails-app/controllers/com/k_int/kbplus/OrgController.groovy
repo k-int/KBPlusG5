@@ -25,19 +25,19 @@ class OrgController {
         def count = null;
         if ( ( params.orgNameContains != null ) && ( params.orgNameContains.length() > 0 ) &&
              ( params.orgRole != null ) && ( params.orgRole.length() > 0 ) ) {
-          def qry = "from Org o where o.name like ? and exists ( from o.links r where r.roleType.id = ? )"
-          results = Org.findAll(qry, ["%${params.orgNameContains}%", Long.parseLong(params.orgRole)],params);
-          count = Org.executeQuery("select count(o) ${qry}".toString(),["%${params.orgNameContains}%", Long.parseLong(params.orgRole)])[0]
+          def qry = "from Org o where o.name like :n and exists ( from o.links r where r.roleType.id = :rt )"
+          results = Org.findAll(qry, [n:"%${params.orgNameContains}%", rt:Long.parseLong(params.orgRole)],params);
+          count = Org.executeQuery("select count(o) ${qry}".toString(),[n:"%${params.orgNameContains}%", rt:Long.parseLong(params.orgRole)])[0]
         }
         else if ( ( params.orgNameContains != null ) && ( params.orgNameContains.length() > 0 ) ) {
-          def qry = "from Org o where o.name like ?"
-          results = Org.findAll(qry, ["%${params.orgNameContains}%"], params);
-          count = Org.executeQuery("select count (o) ${qry}".toString(),["%${params.orgNameContains}%"])[0]
+          def qry = "from Org o where o.name like :n"
+          results = Org.findAll(qry, [n:"%${params.orgNameContains}%"], params);
+          count = Org.executeQuery("select count (o) ${qry}".toString(),[n:"%${params.orgNameContains}%"])[0]
         }
         else if ( ( params.orgRole != null ) && ( params.orgRole.length() > 0 ) ) {
-          def qry = "from Org o where exists ( select r from o.links r where r.roleType.id = ? )"
-          results = Org.findAll(qry, [Long.parseLong(params.orgRole)],params);
-          count = Org.executeQuery("select count(o) ${qry}".toString(), [Long.parseLong(params.orgRole)])[0]
+          def qry = "from Org o where exists ( select r from o.links r where r.roleType.id = :r )"
+          results = Org.findAll(qry, [r:Long.parseLong(params.orgRole)],params);
+          count = Org.executeQuery("select count(o) ${qry}".toString(), [r:Long.parseLong(params.orgRole)])[0]
         }
         else { 
           results = Org.list(params)

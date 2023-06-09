@@ -292,6 +292,10 @@ class BootStrap {
       }
     }
 
+    grailsApplication.config.features.each { k,v ->
+      log.info("Feature flag ${k} = ${v}");
+    }
+
     log.debug("Init completed....");
   }
 
@@ -629,6 +633,9 @@ No Host Platform URL Content
     ContentItem.lookupOrCreate('kbplus.cookies','','Placeholder - cookies');
     ContentItem.lookupOrCreate('kbplus.privacy','','Placeholder - privacy');
     ContentItem.lookupOrCreate('kbplus.accessibility','','Placeholder - accessibility');
+
+    ContentItem.lookupOrCreate('dash.export.title','','KB+ Export');
+    ContentItem.lookupOrCreate('dash.export.brief','','Export all your KB+ data to a zip file');
 
    RefdataCategory.lookupOrCreate('CostItemStatus', 'Estimated').save();
    RefdataCategory.lookupOrCreate('CostItemStatus', 'Ordered').save();

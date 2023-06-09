@@ -674,28 +674,27 @@ class FinanceController {
     def fqResult = [:]
     fqResult.qry_joins = "" //probably do not need this now as query is looking like it is working with at least the four parameters so far combined
     fqResult.qry_where = ""
-    fqResult.fqParams = [] as List //HQL list parameters for user data, can't be trusted!
+    fqResult.fqParams = [:] as List //HQL list parameters for user data, can't be trusted!
 
-    fqResult.qry_where += " WHERE ci.owner = ? "
-    fqResult.fqParams.add(result.institution)
+    fqResult.qry_where += " WHERE ci.owner = :owner "
+    fqResult.fqParams.owner = result.institution
     
     if (params.orderNumberFilter) {
       //fqResult.qry_joins += " INNER JOIN kbplus_ord ord on ci.ci_ord_fk=ord.ord_id "
-      fqResult.qry_where += " AND ci.order.orderNumber like ? " //" AND ci.order.orderNumber = ? "
-      fqResult.fqParams.add("%${params.orderNumberFilter}%") //fqResult.fqParams.add(params.orderNumberFilter)
+      fqResult.qry_where += " AND ci.order.orderNumber like :on " //" AND ci.order.orderNumber = ? "
+      fqResult.fqParams.on = "%${params.orderNumberFilter}%"
     }
 
     if (params.invoiceNumberFilter) {
-      //fqResult.qry_joins += " INNER JOIN invoice inv on ci.ci_inv_fk=inv.inv_id "
-      fqResult.qry_where += " AND ci.invoice.invoiceNumber like ? " //" AND ci.invoice.invoiceNumber = ? "
-      fqResult.fqParams.add("%${params.invoiceNumberFilter}%") //fqResult.fqParams.add(params.invoiceNumberFilter)          
+      fqResult.qry_where += " AND ci.invoice.invoiceNumber like :in " //" AND ci.invoice.invoiceNumber = ? "
+      fqResult.fqParams.in = "%${params.invoiceNumberFilter}%"
     }
 
     if (params?.subscriptionFilter?.startsWith("com.k_int.kbplus.Subscription:")) {
       //fqResult.qry_joins += " INNER JOIN subscription sub on ci.ci_sub_fk=sub.sub_id "
       def subid = params.subscriptionFilter.split(":")[1]
-      fqResult.qry_where += " AND ci_sub_fk = ? "
-      fqResult.fqParams.add(subid)
+      fqResult.qry_where += " AND ci_sub_fk = :sub "
+      fqResult.fqParams.sub = subid
       
       def sub = Subscription.get(subid)
       if (sub) {
@@ -706,8 +705,8 @@ class FinanceController {
     if (params?.packageFilter?.startsWith("com.k_int.kbplus.SubscriptionPackage:")) {
       //fqResult.qry_joins += " INNER JOIN subscription_package subpkg on ci.ci_subPkg_fk=subpkg.sp_id "
       def pkgid = params.packageFilter.split(":")[1]
-      fqResult.qry_where += " AND ci_subPkg_fk = ? "
-      fqResult.fqParams.add(pkgid)
+      fqResult.qry_where += " AND ci_subPkg_fk = :pkg "
+      fqResult.fqParams.pkg = pkgid
       
       def subpkg = SubscriptionPackage.get(pkgid)
       if (subpkg) {
@@ -717,8 +716,8 @@ class FinanceController {
     
     if (params?.adv_ie?.startsWith("com.k_int.kbplus.IssueEntitlement:")) {
       def ieid = params.adv_ie.split(":")[1]
-      fqResult.qry_where += " AND ci_e_fk = ? "
-      fqResult.fqParams.add(ieid)
+      fqResult.qry_where += " AND ci_e_fk = :cifk "
+      fqResult.fqParams.cifk = ieid
       
       def ie = IssueEntitlement.get(ieid)
       if (ie) {
@@ -729,35 +728,35 @@ class FinanceController {
     if (params.adv_codes) {
       def bc = RefdataValue.get(params.adv_codes)
       if (bc) {
-        fqResult.qry_where += " AND (exists ( select cig from CostItemGroup as cig where cig.costItem=ci and ( cig.budgetcode = ? ) ) ) "
-        fqResult.fqParams.add(bc)
+        fqResult.qry_where += " AND (exists ( select cig from CostItemGroup as cig where cig.costItem=ci and ( cig.budgetcode = :bc ) ) ) "
+        fqResult.fqParams.bc = bc
         
         fqResult.bctext = bc.value
       }
     }
     
     if (params.adv_costItemStatus) {
-      fqResult.qry_where += " AND ci_status_rv_fk = ? "
-      fqResult.fqParams.add(params.adv_costItemStatus)
+      fqResult.qry_where += " AND ci_status_rv_fk = :srvfk "
+      fqResult.fqParams.srvfk = params.adv_costItemStatus
     }
     
     if (params.adv_costItemCategory) {
-      fqResult.qry_where += " AND ci_cat_rv_fk = ? "
-      fqResult.fqParams.add(params.adv_costItemCategory)
+      fqResult.qry_where += " AND ci_cat_rv_fk = :cifk "
+      fqResult.fqParams.cifk = params.adv_costItemCategory
     }
     
     if (params.adv_start || params.adv_end) {
       def sdf = new java.text.SimpleDateFormat(session?.sessionPreferences?.globalDateFormat)
       if (params.adv_start) {
         def start = sdf.parse(params.adv_start)
-        fqResult.qry_where += " AND ci_start_date >= ? "
-        fqResult.fqParams.add(start)
+        fqResult.qry_where += " AND ci_start_date >= :cisd "
+        fqResult.fqParams.cisd = start
       }
       
       if (params.adv_end) {
         def end = sdf.parse(params.adv_end)
-        fqResult.qry_where += " AND ci_end_date <= ? "
-        fqResult.fqParams.add(end)
+        fqResult.qry_where += " AND ci_end_date <= :cied "
+        fqResult.fqParams.cied = end
       }
     }
 
@@ -778,8 +777,8 @@ class FinanceController {
       
       fqResult.qry_where += " AND ci_cost_in_local_currency_inc_vat"
       fqResult.qry_where += operator
-      fqResult.qry_where += "? "
-      fqResult.fqParams.add(params.adv_amount)
+      fqResult.qry_where += ":cst "
+      fqResult.fqParams.cst = params.adv_amount
     }
 
     return fqResult
@@ -793,8 +792,8 @@ class FinanceController {
                     countQry: 'select count(ci.id) from CostItem as ci '
              ],
             'invoice' : [
-                    stdQry: 'AND ci.invoice.invoiceNumber like ? ',
-                    wildQry: 'AND ci.invoice.invoiceNumber like ? ',
+                    stdQry: 'AND ci.invoice.invoiceNumber like :inv ',
+                    wildQry: 'AND ci.invoice.invoiceNumber like :inv ',
                     countQry:"",
             ],
             'adv' : [
