@@ -198,7 +198,7 @@ class SubscriptionDetailsController {
     }
 
     def deleted_ie = RefdataCategory.lookupOrCreate('Entitlement Issue Status','Deleted');
-    def qry_params = [:si result.subscriptionInstance]
+    def qry_params = [si:result.subscriptionInstance]
 
     def date_filter
     if(params.asAt && params.asAt.length() > 0) {
