@@ -342,8 +342,8 @@ where tipp.pkg.id = :pkg
   static def refdataFind(params) {
     def result = [];
     
-    def hqlString = "select pkg from Package pkg where lower(pkg.name) like ? "
-    def hqlParams = [((params.q ? params.q.toLowerCase() : '' ) + "%")]
+    def hqlString = "select pkg from Package pkg where lower(pkg.name) like :p "
+    def hqlParams = [p:((params.q ? params.q.toLowerCase() : '' ) + "%")]
     def sdf = new java.text.SimpleDateFormat("yyyy-MM-dd")
     
     if(params.hasDate ){
@@ -352,12 +352,12 @@ where tipp.pkg.id = :pkg
       def endDate =  params.endDate.length() > 1 ? sdf.parse(params.endDate)  : null
 
       if(startDate) {
-        hqlString += " AND pkg.startDate >= ?"
-        hqlParams += startDate
+        hqlString += " AND pkg.startDate >= :sd"
+        hqlParams.sd = startDate
       }
       if(endDate) {
-        hqlString += " AND pkg.endDate <= ?"
-        hqlParams += endDate
+        hqlString += " AND pkg.endDate <= :ed"
+        hqlParams.ed = endDate
       }
     }
 

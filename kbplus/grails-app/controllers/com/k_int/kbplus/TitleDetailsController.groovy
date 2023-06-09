@@ -164,7 +164,7 @@ class TitleDetailsController {
     
     result.duplicates = reusedIdentifiers(result.ti);
 
-    result.titleHistory = TitleHistoryEvent.executeQuery("select distinct thep.event from TitleHistoryEventParticipant as thep where thep.participant = ?",[result.ti]);
+    result.titleHistory = TitleHistoryEvent.executeQuery("select distinct thep.event from TitleHistoryEventParticipant as thep where thep.participant = :p",[p:result.ti]);
   
     def user = User.get(springSecurityService.principal.id)
     result.max = params.max ? Integer.parseInt(params.max) : user.defaultPageSize
@@ -444,7 +444,7 @@ class TitleDetailsController {
   def availability() {
     def result = [:]
     result.ti = TitleInstance.get(params.id)
-    result.availability = IssueEntitlement.executeQuery("select ie from IssueEntitlement as ie where ie.tipp.title = ?",[result.ti]);
+    result.availability = IssueEntitlement.executeQuery("select ie from IssueEntitlement as ie where ie.tipp.title = :t",[t:result.ti]);
 
     result
   }

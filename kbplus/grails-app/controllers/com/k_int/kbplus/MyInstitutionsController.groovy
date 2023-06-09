@@ -723,7 +723,6 @@ def getLicencePropertyIcons() {
         result.max = params.max ? Integer.parseInt(params.max) : result.user.defaultPageSize;
         result.offset = params.offset ? Integer.parseInt(params.offset) : 0;
 
-        // def base_qry = " from Subscription as s where  ( ( exists ( select o from s.orgRelations as o where o.roleType.value = 'Subscriber' and o.org = ? ) ) OR ( s.isPublic=? ) ) AND ( s.status.value != 'Deleted' ) "
         def base_qry = " from Subscription as s where  ( ( exists ( select o from s.orgRelations as o where o.roleType.value = 'Subscriber' and o.org = :o ) ) ) AND ( s.status.value != 'Deleted' ) "
         // def qry_params = [result.institution, public_flag]
         def qry_params = [o:result.institution]

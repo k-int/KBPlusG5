@@ -119,7 +119,7 @@ class EnrichmentService implements ApplicationContextAware {
     def initial_title_list = TitleInstance.executeQuery("select title.id, title.normTitle from TitleInstance as title order by title.id asc",[], [readOnly:true]);
     initial_title_list.each { title ->
       // Compare this title against every other title
-      def inner_title_list = TitleInstance.executeQuery("select title.id, title.normTitle from TitleInstance as title where title.id > ? order by title.id asc", title[0]);
+      def inner_title_list = TitleInstance.executeQuery("select title.id, title.normTitle from TitleInstance as title where title.id > :t order by title.id asc", [t:title[0]]);
       inner_title_list.each { inner_title ->
         def similarity = GOKbTextUtils.cosineSimilarity(title[1], inner_title[1])
         if ( similarity > ( ( grailsApplication.config.cosine?.good_threshold ) ?: 0.925 ) ) {
@@ -132,7 +132,7 @@ class EnrichmentService implements ApplicationContextAware {
 
   def addPackagesAddedInLastWeek(result) {
     def last_week = new Date(System.currentTimeMillis() - (1000*60*60*24*7))
-    def packages_in_last_week = Package.executeQuery("select p from Package as p where p.dateCreated > ? order by p.dateCreated",[last_week], [readOnly:true])
+    def packages_in_last_week = Package.executeQuery("select p from Package as p where p.dateCreated > :d order by p.dateCreated",[d:last_week], [readOnly:true])
     packages_in_last_week.each {
       result.packagesInLastWeek.add(it);
     }

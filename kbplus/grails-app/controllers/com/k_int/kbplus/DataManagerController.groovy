@@ -28,7 +28,7 @@ class DataManagerController {
     def result =[:]
     def pending_change_pending_status = RefdataCategory.lookupOrCreate("PendingChangeStatus", "Pending")
 
-    result.pendingChanges = PendingChange.executeQuery("select pc from PendingChange as pc where pc.pkg is not null and ( pc.status is null or pc.status = ? ) order by ts desc", [pending_change_pending_status]);
+    result.pendingChanges = PendingChange.executeQuery("select pc from PendingChange as pc where pc.pkg is not null and ( pc.status is null or pc.status = :s ) order by ts desc", [s:pending_change_pending_status]);
 
     result
   }
@@ -495,23 +495,19 @@ class DataManagerController {
     }
 
     def template_license_type = RefdataCategory.lookupOrCreate('License Type', 'Template');
-    def qparams = [template_license_type]
+    Map qparams = [t:template_license_type]
     def public_flag = RefdataCategory.lookupOrCreate('YN', 'No');
 
-   // This query used to allow institutions to copy their own licenses - now users only want to copy template licenses
-    // (OS License specs)
-    // def qry = "from License as l where ( ( l.type = ? ) OR ( exists ( select ol from OrgRole as ol where ol.lic = l AND ol.org = ? and ol.roleType = ? ) ) OR ( l.isPublic=? ) ) AND l.status.value != 'Deleted'"
-
-    def query = "from License as l where l.type = ? AND l.status.value != 'Deleted'"
+    def query = "from License as l where l.type = :t AND l.status.value != 'Deleted'"
 
     if (params.filter) {
-      query += " and lower(l.reference) like ?"
-      qparams.add("%${params.filter.toLowerCase()}%")
+      query += " and lower(l.reference) like :t"
+      qparams.r = "%${params.filter.toLowerCase()}%"
     }
 
     //separately select all licences that are not public or are null, to test access rights.
     // For some reason that I could track, l.isPublic != 'public-yes' returns different results.
-    def non_public_query = query + " and ( l.isPublic = ? or l.isPublic is null) "
+    def non_public_query = query + " and ( l.isPublic = :p or l.isPublic is null) "
 
     if ((params.sort != null) && (params.sort.length() > 0)) {
       query += " order by l.${params.sort} ${params.order}"
@@ -524,7 +520,7 @@ class DataManagerController {
     result.licenses = License.executeQuery("select l ${query}".toString(), qparams,[max: result.max, offset: result.offset])
 
     //We do the following to remove any licences the user does not have access rights
-    qparams += public_flag
+    qparams.p = public_flag
 
     def nonPublic = License.executeQuery("select l ${non_public_query}".toString(), qparams)
     def no_access = nonPublic.findAll{ !it.hasPerm("view",result.user)  }
@@ -583,7 +579,7 @@ class DataManagerController {
       else {
         // Reset upload info for each row
         def title = null;
-        def query_params = []
+        def query_params = [:]
         def i = 0;
         def ident = null;
         def idInput = null;
@@ -592,8 +588,8 @@ class DataManagerController {
         java.util.Date end_date = null;
         
         // Set up base_query
-        def query = "select ie.id from IssueEntitlement as ie where ie.subscription.id = ?"
-        query_params.add(long_subId)
+        def query = "select ie.id from IssueEntitlement as ie where ie.subscription.id = :s"
+        query_params.s = long_subId
         
         // Grab appropriate data from each column
         cols.each { cn ->
@@ -626,9 +622,9 @@ class DataManagerController {
         // Check if minimum requirement for core title creation is met
         if (start_date && ident){
         
-            query += " and exists ( select io from IdentifierOccurrence as io where io.ti = ie.tipp.title and io.identifier.ns.ns = ? and io.identifier.value = ? )"
-            query_params.add(idType)
-            query_params.add(ident)
+            query += " and exists ( select io from IdentifierOccurrence as io where io.ti = ie.tipp.title and io.identifier.ns.ns = :ns and io.identifier.value = :idv )"
+            query_params.ns = idType
+            query_params.idv = ident
   
             log.debug("${query}");
             log.debug("${query_params}");
@@ -896,7 +892,7 @@ class DataManagerController {
         }
 
         log.debug("Query...");
-        def l = TitleInstance.executeQuery('select t.id from TitleInstance t where t.status.value=?',['Deleted']);
+        def l = TitleInstance.executeQuery('select t.id from TitleInstance t where t.status.value= :s',[s:'Deleted']);
 
         if ( ( l != null ) && ( l instanceof List ) ) {
           log.debug("Processing...");
@@ -956,7 +952,7 @@ class DataManagerController {
         }
 
         log.debug("Query...");
-        def l = TitleInstancePackagePlatform.executeQuery('select t.id from TitleInstancePackagePlatform t where t.status.value=?',['Deleted']);
+        def l = TitleInstancePackagePlatform.executeQuery('select t.id from TitleInstancePackagePlatform t where t.status.value=:d',[d:'Deleted']);
 
         if ( ( l != null ) && ( l instanceof List ) ) {
           log.debug("Processing...");
