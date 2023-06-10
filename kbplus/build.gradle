@@ -2,7 +2,7 @@ buildscript {
     repositories {
         maven { url "https://plugins.gradle.org/m2/" }
         maven { url "https://repo.grails.org/grails/core" }
-        maven { url "https://nexus.k-int.com/content/groups/public/" }
+        maven { url "https://maven.k-int.com/content/groups/public/" }
     }
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsGradlePluginVersion"
