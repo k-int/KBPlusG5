@@ -11,20 +11,12 @@ class AjaxController {
     def refdata_config = [
     "ContentProvider" : [
       domain:'Org',
-      countQry:'select count(o) from Org as o where lower(o.name) like ?  or exists ( from o.variantNames vn where lower(vn.variantName) like ? )',
-      rowQry:'select o from Org as o where lower(o.name) like ? or exists ( from o.variantNames vn where lower(vn.variantName) like ? ) order by o.name asc',
+      countQry:'select count(o) from Org as o where lower(o.name) like :n  or exists ( from o.variantNames vn where lower(vn.variantName) like :n )',
+      rowQry:'select o from Org as o where lower(o.name) like :n or exists ( from o.variantNames vn where lower(vn.variantName) like :n ) order by o.name asc',
       qryParams:[
               [
                 param:'sSearch',
-                clos:{ value ->
-                    def result = '%'
-                    if ( value && ( value.length() > 0 ) )
-                        result = "%${value.trim().toLowerCase()}%"
-                    result
-                }
-              ],
-              [
-                param:'sSearch',
+                bv:'n',
                 clos:{ value ->
                     def result = '%'
                     if ( value && ( value.length() > 0 ) )
@@ -32,7 +24,6 @@ class AjaxController {
                     result
                 }
               ]
- 
       ],
       cols:['name'],
       format:'map'
@@ -372,20 +363,16 @@ class AjaxController {
 
       // result.config = config
 
-      def query_params = []
+      def query_params = [:]
       config.qryParams.each { qp ->
         log.debug("Processing query param ${qp} value will be ${params[qp.param]}");
         if ( qp.clos ) {
-          query_params.add(qp.clos(params[qp.param]?:''));
+          query_params[qp.bv] = (qp.clos(params[qp.param]?:''));
         }
         else {
-          query_params.add(params[qp.param]);
+          query_params[qp.bv] = params[qp.param];
         }
       }
-
-      // log.debug("Params: ${query_params}");
-      // log.debug("Count qry: ${config.countQry}");
-      // log.debug("Row qry: ${config.rowQry}");
 
       def cq = Org.executeQuery(config.countQry,query_params);    
 

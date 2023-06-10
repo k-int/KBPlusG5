@@ -12,7 +12,7 @@ class ApiController {
   public static String TITLE_LOOKUP_BASE_QRY = '''select distinct(t)
 from TitleInstance as t 
 join t.ids as io 
-where ''';  /// For each ID, add [OR] io.identifier.value = ? and lower(io.identifier.ns.ns) = ?
+where ''';
 
   public static String FIND_LICENSE_QRY = '''select l from License as l where l.reference = :ref
 and exists ( select orl from OrgRole as orl where orl.lic = l and orl.org = :o and orl.roleType.value = 'Licensee')
@@ -32,7 +32,7 @@ and exists ( select orl from OrgRole as orl where orl.lic = l and orl.org = :o a
 
     if ( title_citation ) {
       if ( title_citation.identifiers && title_citation.identifiers.size() > 0 ) {
-        List query_params = []
+        Map query_params = [:]
         StringWriter title_by_identifiers_sw = new StringWriter()
         title_by_identifiers_sw.write(TITLE_LOOKUP_BASE_QRY)
         int counter = 0;
@@ -46,15 +46,15 @@ and exists ( select orl from OrgRole as orl where orl.lic = l and orl.org = :o a
 
           // If it's an issn or an eissn, do cross-matching
           if ( idref.namespace.equalsIgnoreCase('issn') || idref.namespace.equalsIgnoreCase('issn') ) {
-            title_by_identifiers_sw.write(  '( io.identifier.value = ? and ( lower(io.identifier.ns.ns) = ? or lower(io.identifier.ns.ns) = ? ) )' )
-            query_params.add(idref.value)
-            query_params.add('issn');
-            query_params.add('eissn');
+            title_by_identifiers_sw.write(  '( io.identifier.value = :v and ( lower(io.identifier.ns.ns) = :ns1 or lower(io.identifier.ns.ns) = :ns2 ) )' )
+            query_params.v = (idref.value)
+            query_params.ns1 = ('issn');
+            query_params.ns2 = ('eissn');
           }
           else {
-            title_by_identifiers_sw.write(  '( io.identifier.value = ? and lower(io.identifier.ns.ns) = ? )' )
-            query_params.add(idref.value)
-            query_params.add(idref.namespace)
+            title_by_identifiers_sw.write(  '( io.identifier.value = :v and lower(io.identifier.ns.ns) = :ns )' )
+            query_params.v = (idref.value)
+            query_params.ns = (idref.namespace)
           }
         }
 
@@ -111,7 +111,7 @@ and exists ( select orl from OrgRole as orl where orl.lic = l and orl.org = :o a
       result.identifiers.add ( [namespace:dbid.identifier.ns.ns, value:dbid.identifier.value ] ) 
     }
 
-    def sorted_tipps = TitleInstance.executeQuery('select tipp from TitleInstancePackagePlatform as tipp where tipp.title.id = ? order by tipp.pkg.startDate desc',[ti.id]);
+    def sorted_tipps = TitleInstance.executeQuery('select tipp from TitleInstancePackagePlatform as tipp where tipp.title.id = :t order by tipp.pkg.startDate desc',[t:ti.id]);
 
     // ti.tipps.each { tipp ->
     sorted_tipps.each { tipp ->
@@ -747,17 +747,18 @@ where tipp.title = ? and orl.roleType.value=?''',[title,'Content Provider']);
     if ( params.orgid ) {
       def name_components = params.orgid.split(':')
       if ( name_components.length == 2 ) {
+
         // Lookup org by ID
-        def orghql = "select org from Org org where exists ( select io from IdentifierOccurrence io, Identifier id, IdentifierNamespace ns where io.org = org and id.ns = ns and io.identifier = id and ns.ns = ? and id.value like ? )"
-        def orgs = Org.executeQuery(orghql, [name_components[0],name_components[1]])
+        def orghql = "select org from Org org where exists ( select io from IdentifierOccurrence io, Identifier id, IdentifierNamespace ns where io.org = org and id.ns = ns and io.identifier = id and ns.ns = :ns and id.value like :v )"
+        def orgs = Org.executeQuery(orghql, [ns:name_components[0],v:name_components[1]])
         if ( orgs.size() == 1 ) {
           def org = orgs[0]
 
           def today = new Date()
 
           // Find all TitleInstitutionProvider where institution = org
-          def titles = TitleInstitutionProvider.executeQuery('select tip.title.title, tip.title.id, count(cd) from TitleInstitutionProvider as tip left join tip.coreDates as cd where tip.institution = ? and cd.startDate < ? and cd.endDate > ?',
-                                                             [org, today, today]);
+          def titles = TitleInstitutionProvider.executeQuery('select tip.title.title, tip.title.id, count(cd) from TitleInstitutionProvider as tip left join tip.coreDates as cd where tip.institution = :o and cd.startDate < :sd and cd.endDate > :ed',
+                                                             [o:org, sd:today, ed:today]);
           titles.each { tip ->
             result.titles.add([title:tip[0], tid:tip[1], isCore:tip[2]]);
           }
