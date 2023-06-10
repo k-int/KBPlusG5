@@ -29,7 +29,7 @@ apply plugin:"maven-publish"
 repositories {
     mavenCentral()
     maven { url "https://repo.grails.org/grails/core" }
-    maven { url "https://nexus.k-int.com/content/groups/public/" }
+    maven { url "https://maven.k-int.com/content/groups/public/" }
 }
 
 configurations {
