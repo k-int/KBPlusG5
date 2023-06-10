@@ -40,42 +40,34 @@ class PackageDetailsController {
       result.offset = params.offset ? Integer.parseInt(params.offset) : 0;
 
       def deleted_package_status =  RefdataCategory.lookupOrCreate( 'Package Status', 'Deleted' );
-      def qry_params = [deleted_package_status]
+      def qry_params = [ps:deleted_package_status]
 
-      def base_qry = " from Package as p where ( (p.packageStatus is null ) OR ( p.packageStatus = ? ) ) "
+      def base_qry = " from Package as p where ( (p.packageStatus is null ) OR ( p.packageStatus = :ps ) ) "
 
       if ( params.q?.length() > 0 ) {
-        base_qry += " and ( ( lower(p.name) like ? ) or ( lower(p.identifier) like ? ) )"
-        qry_params.add("%${params.q.trim().toLowerCase()}%");
-        qry_params.add("%${params.q.trim().toLowerCase()}%");
+        base_qry += " and ( ( lower(p.name) like :q ) or ( lower(p.identifier) like :q ) )"
+        qry_params.q = "%${params.q.trim().toLowerCase()}%";
       }
 
       if ( params.updateStartDate?.length() > 0 ) {
-        base_qry += " and ( p.lastUpdated > ? )"
-        qry_params.add(params.date('updateStartDate','yyyy-MM-dd'));
+        base_qry += " and ( p.lastUpdated > :usd )"
+        qry_params.usd = (params.date('updateStartDate','yyyy-MM-dd'));
       }
 
       if ( params.updateEndDate?.length() > 0 ) {
-        base_qry += " and ( p.lastUpdated < ? )"
-        qry_params.add(params.date('updateEndDate','yyyy-MM-dd'));
+        base_qry += " and ( p.lastUpdated < :ued )"
+        qry_params.eud = params.date('updateEndDate','yyyy-MM-dd');
       }
 
       if ( params.createStartDate?.length() > 0 ) {
-        base_qry += " and ( p.dateCreated > ? )"
-        qry_params.add(params.date('createStartDate','yyyy-MM-dd'));
+        base_qry += " and ( p.dateCreated > :dc )"
+        qry_params.dc = params.date('createStartDate','yyyy-MM-dd');
       }
 
       if ( params.createEndDate?.length() > 0 ) {
-        base_qry += " and ( p.dateCreated < ? )"
-        qry_params.add(params.date('createEndDate','yyyy-MM-dd'));
+        base_qry += " and ( p.dateCreated < :ced )"
+        qry_params.ced = params.date('createEndDate','yyyy-MM-dd');
       }
-    
-      /*if ( ( params.sort != null ) && ( params.sort.length() > 0 ) ) {
-        base_qry += " order by lower(p.${params.sort}) ${params.order}"
-      }
-      else {
-        base_qry += " order by lower(p.name) asc"
-      }*/
     
     if ((params.sort != null) && (params.sort.length() > 0)) {
       def sortOpts = params.sort.tokenize(':')
@@ -147,19 +139,19 @@ class PackageDetailsController {
 
       def type = RefdataCategory.lookupOrCreate('Combo Type', 'Consortium')
 
-      def institutions_in_consortia_hql = "select c.fromOrg from Combo as c where c.type = ? and c.toOrg in ( select org_role.org from Package as p join p.orgs as org_role where org_role.roleType.value = 'Package Consortia' and p = ?) order by c.fromOrg.name"
-      def consortiaInstitutions = Combo.executeQuery(institutions_in_consortia_hql, [type, packageInstance])
+      def institutions_in_consortia_hql = "select c.fromOrg from Combo as c where c.type = :t and c.toOrg in ( select org_role.org from Package as p join p.orgs as org_role where org_role.roleType.value = 'Package Consortia' and p = :p) order by c.fromOrg.name"
+      def consortiaInstitutions = Combo.executeQuery(institutions_in_consortia_hql, [t:type, p:packageInstance])
 
-      def package_consortia = "select org_role.org from Package as p join p.orgs as org_role where org_role.roleType.value = 'Package Consortia' and p = ?"
-      def consortia = Package.executeQuery(package_consortia, [packageInstance]);
+      def package_consortia = "select org_role.org from Package as p join p.orgs as org_role where org_role.roleType.value = 'Package Consortia' and p = :p"
+      def consortia = Package.executeQuery(package_consortia, [p:packageInstance]);
 
 
       def consortiaInstsWithStatus = [:]
 
-      def hql = "SELECT role.org FROM OrgRole as role WHERE role.org = ? AND (role.roleType.value = 'Subscriber') AND ( EXISTS ( select sp from role.sub.packages as sp where sp.pkg = ? ) AND ( role.sub.status.value != 'Deleted' ) )"
+      def hql = "SELECT role.org FROM OrgRole as role WHERE role.org = :o AND (role.roleType.value = 'Subscriber') AND ( EXISTS ( select sp from role.sub.packages as sp where sp.pkg = :p ) AND ( role.sub.status.value != 'Deleted' ) )"
       consortiaInstitutions.each{org ->
         log.debug("looking up all orgs based on consortia org ${org} and package ${packageInstance}");
-        def queryParams = [org,packageInstance]
+        def queryParams = [o:org,p:packageInstance]
         def hasPackage = OrgRole.executeQuery(hql,  queryParams)
         if(hasPackage){
           consortiaInstsWithStatus.put(org,RefdataCategory.lookupOrCreate("YNO","Yes"))
@@ -288,9 +280,9 @@ class PackageDetailsController {
             listA = createCompareList(params.pkgA, params.dateA, params, result)
             listB = createCompareList(params.pkgB, params.dateB, params, result)
             if(!params.countA){
-              def countHQL = "select count(elements(pkg.tipps)) from Package pkg where pkg.id = ?"
-              params.countA = Package.executeQuery(countHQL, [result.pkgInsts.get(0).id])
-              params.countB = Package.executeQuery(countHQL, [result.pkgInsts.get(1).id])
+              def countHQL = "select count(elements(pkg.tipps)) from Package pkg where pkg.id = :p"
+              params.countA = Package.executeQuery(countHQL, [p:result.pkgInsts.get(0).id])
+              params.countB = Package.executeQuery(countHQL, [p:result.pkgInsts.get(1).id])
             }
           }catch(IllegalArgumentException e){
             request.message = e.getMessage()
@@ -433,7 +425,7 @@ class PackageDetailsController {
 
       def pending_change_pending_status = RefdataCategory.lookupOrCreate("PendingChangeStatus", "Pending")
 
-      result.pendingChanges = PendingChange.executeQuery("select pc from PendingChange as pc where pc.pkg=? and ( pc.status is null or pc.status = ? ) order by ts desc", [packageInstance, pending_change_pending_status]);
+      result.pendingChanges = PendingChange.executeQuery("select pc from PendingChange as pc where pc.pkg=:pkg and ( pc.status is null or pc.status = :st ) order by ts desc", [pkg:packageInstance, st:pending_change_pending_status]);
 
       log.debug("Package has ${result.pendingChanges?.size()} pending changes");
 
@@ -449,8 +441,8 @@ class PackageDetailsController {
       def sub_status = RefdataCategory.lookupOrCreate('Subscription Status','Deleted')
       result.user?.getAuthorizedAffiliations().each { ua ->
         if ( ua.formalRole.authority == 'INST_ADM' ) {
-          def qry_params = [ua.org, sub_status, packageInstance, new Date()]
-          def q = "select s from Subscription as s where  ( ( exists ( select o from s.orgRelations as o where o.roleType.value = 'Subscriber' and o.org = ? ) ) ) AND ( s.status is null or s.status != ? ) AND ( not exists ( select sp from s.packages as sp where sp.pkg = ? ) ) AND s.endDate >= ?"
+          def qry_params = [o:ua.org, s:sub_status, p:packageInstance, d:new Date()]
+          def q = "select s from Subscription as s where  ( ( exists ( select o from s.orgRelations as o where o.roleType.value = 'Subscriber' and o.org = :o ) ) ) AND ( s.status is null or s.status != :s ) AND ( not exists ( select sp from s.packages as sp where sp.pkg = :p ) ) AND s.endDate >= :d"
           Subscription.executeQuery(q, qry_params).each { s ->
             if ( ! result.subscriptionList.contains(s) ) {
               // Need to make sure that this package is not already linked to this subscription
@@ -468,7 +460,7 @@ class PackageDetailsController {
       def limits = (!params.format||params.format.equals("html"))?[max:result.max, offset:result.offset]:[offset:0]
     
       // def base_qry = "from TitleInstancePackagePlatform as tipp where tipp.pkg = ? "
-      def qry_params = [packageInstance]
+      Map qry_params = [pkg:packageInstance]
       
       def sdf = new java.text.SimpleDateFormat('yyyy-MM-dd');
       def today = new Date()
@@ -497,14 +489,14 @@ class PackageDetailsController {
     result.historyLinesTotal = AuditLogEvent.executeQuery("select count(e) from AuditLogEvent as e where ( e.className=:pkgcls and e.persistedObjectId=:pkgid ) or ( e.className = :tippcls and e.persistedObjectId in ( select id from TitleInstancePackagePlatform as tipp where tipp.pkg = :pkgid ) )",history_qry_params)[0];
     
     //expected and previous counts for new displays on page
-    def exp_prev_qry_params = [packageInstance]
+    Map exp_prev_qry_params = [p:packageInstance]
     def exp_prev_date_filter = new Date();
-    exp_prev_qry_params.add(exp_prev_date_filter);
+    exp_prev_qry_params.dt = exp_prev_date_filter;
   
-    def exp_prev_base_qry = "from TitleInstancePackagePlatform as tipp where tipp.pkg = ? and tipp.status.value != 'Deleted' "
+    def exp_prev_base_qry = "from TitleInstancePackagePlatform as tipp where tipp.pkg = :p and tipp.status.value != 'Deleted' "
     
-    def exp_qry = exp_prev_base_qry + " and ( coalesce(tipp.accessStartDate, tipp.pkg.startDate) >= ? ) "
-    def prev_qry = exp_prev_base_qry + " and ( tipp.accessEndDate <= ? ) "
+    def exp_qry = exp_prev_base_qry + " and ( coalesce(tipp.accessStartDate, tipp.pkg.startDate) >= :dt ) "
+    def prev_qry = exp_prev_base_qry + " and ( tipp.accessEndDate <= :dt ) "
 	
 	result.expectedTitles = TitleInstancePackagePlatform.executeQuery("select tipp "+exp_qry, exp_prev_qry_params)
 	result.previousTitles = TitleInstancePackagePlatform.executeQuery("select tipp "+prev_qry, exp_prev_qry_params)
@@ -516,7 +508,7 @@ class PackageDetailsController {
       result.titlesList = TitleInstancePackagePlatform.executeQuery("select tipp "+base_qry, qry_params, limits);
       result.num_tipp_rows = TitleInstancePackagePlatform.executeQuery("select count(tipp) "+base_qry, qry_params )[0]
       result.unfiltered_num_tipp_rows = TitleInstancePackagePlatform.executeQuery(
-              "select count(tipp) from TitleInstancePackagePlatform as tipp where tipp.pkg = ?",[packageInstance])[0];
+              "select count(tipp) from TitleInstancePackagePlatform as tipp where tipp.pkg = :p",[p:packageInstance])[0];
 
       result.lasttipp = result.offset + result.max > result.num_tipp_rows ? result.num_tipp_rows : result.offset + result.max;
 
@@ -564,8 +556,8 @@ class PackageDetailsController {
     def provider = result.packageInstance.getContentProvider();
     if ( provider ) {
       def licensor_ref = RefdataCategory.lookupOrCreate('Organisational Role','Licensor');
-      def qry_params = [provider, licensor_ref]
-      def qry = "select l from License as l where exists ( select ol from OrgRole as ol where ol.lic = l AND ol.org = ? and ol.roleType = ? ) AND l.status.value != 'Deleted' order by l.reference"
+      def qry_params = [o:provider, rt:licensor_ref]
+      def qry = "select l from License as l where exists ( select ol from OrgRole as ol where ol.lic = l AND ol.org = :o and ol.roleType = :rt ) AND l.status.value != 'Deleted' order by l.reference"
       def license_list = License.executeQuery(qry, qry_params);
       result.licences = license_list
     }
@@ -854,41 +846,40 @@ class PackageDetailsController {
 
   def generateBasePackageQuery(params, qry_params, showDeletedTipps, asAt) {
 
-    def base_qry = "from TitleInstancePackagePlatform as tipp where tipp.pkg = ? "
+    def base_qry = "from TitleInstancePackagePlatform as tipp where tipp.pkg = :pkg "
 
      if ( showDeletedTipps != true ) {
          base_qry += "and tipp.status.value != 'Deleted' "
      }
 
     if ( asAt != null ) {
-      base_qry += " and ( ( ? >= coalesce(tipp.accessStartDate, tipp.pkg.startDate) ) and ( ( ? <= tipp.accessEndDate ) or ( tipp.accessEndDate is null ) ) ) "
-      qry_params.add(asAt);
-      qry_params.add(asAt);
+      base_qry += " and ( ( :start_date >= coalesce(tipp.accessStartDate, tipp.pkg.startDate) ) and ( ( :start_date <= tipp.accessEndDate ) or ( tipp.accessEndDate is null ) ) ) "
+      qry_params.start_date = asAt;
     }
 
     if ( params.filter ) {
-      base_qry += " and ( ( lower(tipp.title.title) like ? ) or ( exists ( from IdentifierOccurrence io where io.ti.id = tipp.title.id and io.identifier.value like ? ) ) )"
-      qry_params.add("%${params.filter.trim().toLowerCase()}%")
-      qry_params.add("%${params.filter}%")
+      base_qry += " and ( ( lower(tipp.title.title) like :t1 ) or ( exists ( from IdentifierOccurrence io where io.ti.id = tipp.title.id and io.identifier.value like :i1 ) ) )"
+      qry_params.t1 = ("%${params.filter.trim().toLowerCase()}%")
+      qry_params.i1 = ("%${params.filter}%")
     }
 
     if ( params.coverageNoteFilter ) {
-      base_qry += "and lower(tipp.coverageNote) like ?"
-      qry_params.add("%${params.coverageNoteFilter?.toLowerCase()}%")
+      base_qry += "and lower(tipp.coverageNote) like :coverage_note"
+      qry_params.coverage_note = ("%${params.coverageNoteFilter?.toLowerCase()}%")
     }
 
     if ( params.endsAfter && params.endsAfter.length() > 0 ) {
       def sdf = new java.text.SimpleDateFormat('yyyy-MM-dd');
       def d = sdf.parse(params.endsAfter)
-      base_qry += " and tipp.endDate >= ?"
-      qry_params.add(d)
+      base_qry += " and tipp.endDate >= :end_date"
+      qry_params.end_date = (d)
     }
 
     if ( params.startsBefore && params.startsBefore.length() > 0 ) {
       def sdf = new java.text.SimpleDateFormat('yyyy-MM-dd');
       def d = sdf.parse(params.startsBefore)
-      base_qry += " and tipp.startDate <= ?"
-      qry_params.add(d)
+      base_qry += " and tipp.startDate <= :start_date"
+      qry_params.start_date = (d)
     }
 
     if ( ( params.sort != null ) && ( params.sort.length() > 0 ) ) {
@@ -1128,8 +1119,8 @@ class PackageDetailsController {
 	  result.packageInstance = Package.get(params.id)
 	  result.productList=[]
 	  // TODO rewrite query to select relevant products for package
-	  def q = "select p from Product as p WHERE ( not exists ( select pp from p.packages as pp where pp.pkg = ? ) )"
-	  def qry_params = [result.packageInstance]
+	  def q = "select p from Product as p WHERE ( not exists ( select pp from p.packages as pp where pp.pkg = :p ) )"
+	  def qry_params = [p:result.packageInstance]
 	  Product.executeQuery(q, qry_params).each { p ->
 		if ( ! result.productList.contains(p) ) {
 		  // Need to make sure that this package is not already linked to this product
