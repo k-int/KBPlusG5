@@ -26,7 +26,7 @@ class BootStrap {
 
     println("Sys id: ${grailsApplication.config.kbplusSystemId}, cfg validation: ${grailsApplication.config.configValidation}, skin: ${grailsApplication.config.skin}...");
     println("Attempt connect: ${grailsApplication.config.dataSource.username} ${grailsApplication.config.dataSource.url}");
-    println("v1")
+    println("v2")
   
     if ( grailsApplication.config.kbplusSystemId != null ) {
       def system_object = SystemObject.findBySysId(grailsApplication.config.kbplusSystemId) ?: new SystemObject(sysId:grailsApplication.config.kbplusSystemId).save(flush:true);

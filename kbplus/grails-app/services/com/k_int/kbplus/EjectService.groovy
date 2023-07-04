@@ -72,6 +72,7 @@ and o.batchMonitorUUID is null
     boolean work_done = false;
     Org.withNewSession {
       List<Long> pending_requests = Org.executeQuery(PENDING_EXPORT_REQUESTS_QRY, [requested:'REQUESTED'])
+      log.debug("Export request queue size: ${pending_requests?.size()}");
       pending_requests.each { org_id ->
         log.debug("Check ${org_id}");
         boolean proceed=false;
