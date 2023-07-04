@@ -73,10 +73,10 @@ and o.batchMonitorUUID is null
     Org.withNewSession {
       List<Long> pending_requests = Org.executeQuery(PENDING_EXPORT_REQUESTS_QRY, [requested:'REQUESTED'])
       pending_requests.each { org_id ->
+        log.debug("Check ${org_id}");
         boolean proceed=false;
         Org.withNewTransaction {
           Org o = Org.lock(org_id);
-
           // Take this request from the queue by marking it with the instance ID
           if ( ( o.batchMonitorUUID == null ) && ( o.exportStatus == 'REQUESTED' ) ) {
             o.batchMonitorUUID = this.instanceId;
@@ -93,7 +93,9 @@ and o.batchMonitorUUID is null
         // If we have claimed the monitor for this instance - process it
         if ( proceed ) {
 
-          performExport(org_id);
+          Org.withNewTransaction {
+            performExport(org_id);
+          }
 
           Org.withNewTransaction {
             Org o = Org.lock(org_id);
@@ -107,6 +109,7 @@ and o.batchMonitorUUID is null
         }
       }
     }
+
     return work_done;
   }
 
