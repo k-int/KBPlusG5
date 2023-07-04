@@ -103,11 +103,11 @@
           <div class="card-panel clearfix">
             <p class="card-title" data-kb-message-code="dash.export.title"><g:message code="dash.export.title" /></p>
             <p class="" data-kb-message-code="dash.export.brief"><g:message code="dash.export.brief" />
-              status: ${institution?.exportStatus}<br/>
-              date: ${institution?.currentExportDate}<br/>
-              uuid: ${institution?.exportUUID}<br/>
-              monitor: ${institution?.batchMonitorUUID}<br/>
-              <g:if test="${( ( institution?.exportStatus == null ) ||( institution?.exportStatus=='' ) )}">
+              <g:if test="${( ( institution?.exportUUID != null ) )}">
+                Your last export was created on : ${institution?.currentExportDate}<br/>
+                download it here: ${institution?.exportUUID}<br/>
+              </g:if>
+              <g:if test="${( ( institution?.exportStatus == null ) ||( institution?.exportStatus=='COMPLETE' ) )}">
                 <g:link controller="myInstitutions" action="requestExport" params="${[defaultInstShortcode:params.defaultInstShortcode]}">
                   <Button>Create an export for your data</Button>
                 </g:link>
