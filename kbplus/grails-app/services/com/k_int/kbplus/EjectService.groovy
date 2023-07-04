@@ -60,9 +60,15 @@ and o.batchMonitorUUID is null
     catch ( Exception e ) {
       log.error("Error in watchExportRequests thread",e);
     }
+    finally {
+      log.info("watchExportRequests complete()")
+    }
   }
 
   private boolean processNextExportRequest() {
+
+    log.debug("processNextExportRequest()");
+
     boolean work_done = false;
     Org.withNewSession {
       List<Long> pending_requests = Org.executeQuery(PENDING_EXPORT_REQUESTS_QRY, [requested:'REQUESTED'])
@@ -123,6 +129,11 @@ and o.batchMonitorUUID is null
       if ( previous_export != null ) {
         // tidy up the old export
       }
+
+      o.save(flush:true, failOnError:true);
+    }
+    else {
+      log.warn("Unable to locate org ${org_id} for export");
     }
 
     // set org.exportUUID =
