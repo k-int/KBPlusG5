@@ -83,6 +83,10 @@ and o.batchMonitorUUID is null
             o.exportStatus = 'PROCESSING'
             o.save(flush:true, failOnError:true);
             proceed=true
+            log.debug("Proceed to export");
+          }
+          else {
+            log.warn("Unable to prepare export request");
           }
         }
 
@@ -97,6 +101,9 @@ and o.batchMonitorUUID is null
             o.exportStatus = 'COMPLETE'
             o.save(flush:true, failOnError:true);
           }
+        }
+        else {
+          log.info("Skip export request ${org_id} - proceed = false");
         }
       }
     }
@@ -124,7 +131,7 @@ and o.batchMonitorUUID is null
       // f.delete();
 
       o.exportUUID = new_uuid;
-      o. currentExportDate = new Date();
+      o.currentExportDate = new Date();
 
       if ( previous_export != null ) {
         // tidy up the old export
