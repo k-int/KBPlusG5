@@ -101,4 +101,7 @@ and o.batchMonitorUUID is null
     return result;
   }
 
+  public void requestEject(String org_id) {
+    log.debug("requestEject(${org_id})");
+  }
 }

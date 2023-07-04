@@ -163,42 +163,42 @@ body.live .jisc-left-sidebar {
 
 body.development{
     .navbar-fixed-top{
-        top:69px;
+        top:45px;
     }
     .jisc-left-sidebar {
         background-color: $development;
-        margin-top:149px;
+        margin-top:125px;
         height: calc(100% - 60px);
     }
     .navbar-logo{
-        top:69px;
+        top:45px;
     }
     .jisc-content{
-        top:69px;
+        top:45px;
     }
 }
 
 body.test{
     .navbar-fixed-top{
-        top:69px;
+        top:45px;
     }
     .jisc-left-sidebar {
         background-color: $test;
-        margin-top:149px;
+        margin-top:125px;
         height: calc(100% - 60px);
     }
     .navbar-logo{
-        top:69px;
+        top:45px;
     }
     .jisc-content{
-        top:69px;
+        top:45px;
     }
 }
 
 
 .levelbanner{
     position: fixed;
-    top:25px;
+    top:0px;
     width:100%;
     text-align: center;
     color:white;

@@ -16,21 +16,22 @@ import groovy.sql.Sql
 import au.com.bytecode.opencsv.CSVWriter
 
 class MyInstitutionsController {
-    def dataSource
-    def springSecurityService
-    def ESSearchService
-    def gazetteerService
-    def alertsService
-    def genericOIDService
-    def factService
-    def zenDeskSyncService
-    def exportService
-    def transformerService
-    def institutionsService
-    def docstoreService
-    def tsvSuperlifterService
-    def juspSyncService
+  def dataSource
+  def springSecurityService
+  def ESSearchService
+  def gazetteerService
+  def alertsService
+  def genericOIDService
+  def factService
+  def zenDeskSyncService
+  def exportService
+  def transformerService
+  def institutionsService
+  def docstoreService
+  def tsvSuperlifterService
+  def juspSyncService
   def dashboardService
+  def ejectService
 
     static String INSTITUTIONAL_LICENSES_QUERY = " from License as l where exists ( select ol from OrgRole as ol where ol.lic = l AND ol.org = :lic_org and ol.roleType = :org_role ) AND (l.status!=:lic_status or l.status=null ) "
     static String INSTITUTIONAL_TITLES_QUERY = """ 
@@ -2820,8 +2821,12 @@ AND EXISTS (
         result
     }
 
+    @Secured(['ROLE_USER', 'IS_AUTHENTICATED_FULLY'])
     private requestExport() {
       log.debug("requestExport()");
+      def current_inst = null
+      if(params.defaultInstShortcode) current_inst = request.getAttribute('institution')
+      ejectService.requestEject(current_inst);
       redirect(url: request.getHeader('referer'))
     }
 
