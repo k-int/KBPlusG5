@@ -2981,18 +2981,18 @@ AND EXISTS (
         if ( params.restrict == 'ALL' )
           params.restrict=null
 
-        def base_query = " from PendingChange as pc where owner = ?";
-        def qry_params = [result.institution]
+        def base_query = " from PendingChange as pc where owner = :o";
+        def qry_params = [o:result.institution]
         if ( ( params.restrict != null ) && ( params.restrict.trim().length() > 0 ) ) {
           def o =  genericOIDService.resolveOID(params.restrict)
           if ( o != null ) {
             if ( o instanceof License ) {
-              base_query += ' and license = ?'
+              base_query += ' and license = :o'
             }
             else {
-              base_query += ' and subscription = ?'
+              base_query += ' and subscription = :o'
             }
-            qry_params.add(o)
+            qry_params['o'] = o;
           }
         }
 
