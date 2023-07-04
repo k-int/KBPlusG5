@@ -2822,12 +2822,13 @@ AND EXISTS (
     }
 
     @Secured(['ROLE_USER', 'IS_AUTHENTICATED_FULLY'])
-    private requestExport() {
-      log.debug("requestExport()");
+    def requestExport() {
+      String referer = request.getHeader('referer');
+      log.debug("requestExport() referer=${referer}");
       def current_inst = null
       if(params.defaultInstShortcode) current_inst = request.getAttribute('institution')
       ejectService.requestEject(current_inst);
-      redirect(url: request.getHeader('referer'))
+      redirect(url: referer);
     }
 
     private def getUpcomingRenewals(inst) {

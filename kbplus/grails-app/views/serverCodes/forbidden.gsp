@@ -1,7 +1,6 @@
 <!doctype html>
 <html>
   <head>
-    <meta name="layout" content="mmbootstrap"/>
     <title>KB+ Forbidden</title>
   </head>
 

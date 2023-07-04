@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="en" class="no-js">
 <head>
-   <meta name="layout" content="base"/>
    <parameter name="actionrow" value="titlesdetail" />
 </head>
 <body class="home">
