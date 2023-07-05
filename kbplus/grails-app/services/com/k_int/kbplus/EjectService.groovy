@@ -224,8 +224,20 @@ class EjectService {
 
     Map qry_params = [o:inst]
     Subscription.executeQuery(INSTITUTIONAL_SUBSCRIPTIONS_QUERY, qry_params).each { sub ->
+
+      String sub_dir_path = "${base}/${sub.id}".toString();
+      File f = new File(sub_dir_path).
+      f.mkdirs();
+
       log.debug("output subscription ${sub}");
       index << "subscription ${sub}\tcol\tcol\tcol\tcol\n".toString();
+      Map model = [:]
+
+      model.expectedTitles = null; // IssueEntitlement.executeQuery("select ie "+exp_qry, exp_prev_qry_params)
+      model.previousTitles = null; // IssueEntitlement.executeQuery("select ie "+prev_qry, exp_prev_qry_params)
+      model.entitlements = null; // IssueEntitlement.executeQuery("select ie "+prev_qry, exp_prev_qry_params)
+  
+      templateOutput('subscriptionDetails/kbplus_csv', model, "${sub_dir_path}/subscription_${sub.id}_entitlements.csv", 'text/csv');
     }
   }
 
