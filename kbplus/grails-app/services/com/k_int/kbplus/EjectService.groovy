@@ -182,16 +182,17 @@ class EjectService {
       log.debug("license ${lic}");
 
       def license_reference_str = lic.reference?:'NO_LIC_REF_FOR_ID_'+lic.id;
-      def filename = "${base}/licence_${lic.id}_entitlements.csv"
 
-      index << "license\t${lic.id}\t${license_reference_str}\t${filename}\n".toString();
+      index << "license\t${lic.id}\t${license_reference_str}\t\n".toString();
 
       Map model = [:];
       model.onixplLicense = lic.onixplLicense;
       model.license = lic;
       model.transforms = grailsApplication.config.licenceTransforms
 
-      templateOutput('/licenseDetails/lic_ie_csv', model, filename, 'text/csv');
+      templateOutput('/licenseDetails/lic_ie_csv', model, "${base}/licence_${lic.id}_entitlements.csv", 'text/csv');
+      templateOutput('/licenseDetails/lic_pkg_csv', model, "${base}/license_${lic.id}_packages.csv", 'text/csv');
+      templateOutput('/licenseDetails/lic_csv', model, "${base}/license_${lic.id}.csv", 'text/csv');
     }
 
   }
