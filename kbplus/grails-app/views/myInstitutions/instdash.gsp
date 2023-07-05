@@ -107,14 +107,14 @@
                 Your last export was created on : ${institution?.currentExportDate}<br/>
                 download it here: ${institution?.exportUUID}<br/>
               </g:if>
-              <g:else>
-                Export pending.. please check back shortly.
-              </g:else>
               <g:if test="${( ( institution?.exportStatus == null ) ||( institution?.exportStatus=='COMPLETE' ) )}">
                 <g:link controller="myInstitutions" action="requestExport" params="${[defaultInstShortcode:params.defaultInstShortcode]}">
                   <Button>Create an export for your data</Button>
                 </g:link>
               </g:if>
+              <g:else>
+                New Export pending.. please check back shortly.
+              </g:else>
             </p>
           </div>
         </div>

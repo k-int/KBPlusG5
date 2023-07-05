@@ -14,17 +14,22 @@ import java.util.zip.*;
 class EjectService {
 
   def grailsApplication;
+  def groovyPageRenderer;
+  def groovyPageLocator;
 
   private String baseExportDir = null;
   private boolean running = true;
   private Object exportRequestMonitor = new Object();
   private UUID instanceId = null;
-  private static String PENDING_EXPORT_REQUESTS_QRY = '''
-select o.id
-from Org as o 
-where o.exportStatus = :requested
-and o.batchMonitorUUID is null
-'''
+  private static String PENDING_EXPORT_REQUESTS_QRY = 'select o.id from Org as o where o.exportStatus = :requested and o.batchMonitorUUID is null'
+  private static String PENDING_EXPORT_REQUESTS_QRY2 = 'select o from Org as o where o.exportStatus is not null'
+
+        
+  static String INSTITUTIONAL_LICENSES_QUERY = "select l from License as l where exists ( select ol from OrgRole as ol where ol.lic = l AND ol.org = :lic_org and ol.roleType = :org_role ) AND (l.status!=:lic_status or l.status=null ) "
+
+  static String INSTITUTIONAL_SUBSCRIPTIONS_QUERY = "select s from Subscription as s where ( ( exists ( select o from s.orgRelations as o where o.roleType.value = 'Subscriber' and o.org = :o ) ) )"
+
+
 
   @javax.annotation.PostConstruct
   def init () {
@@ -32,7 +37,7 @@ and o.batchMonitorUUID is null
     baseExportDir = grailsApplication.config.exportsDir ?: './exportFiles'
     File f = new File(baseExportDir);
     if (!f.isDirectory()) {
-      log.debug("Making root exort dir ${f}");
+      log.debug("Making root export dir ${f}");
       f.mkdirs()
     }
 
@@ -46,14 +51,19 @@ and o.batchMonitorUUID is null
     log.info("start watching export requests");
     try {
       while(running) {
-        log.info("watchExportRequests()");
+        log.info("watchExportRequests() - main loop");
         synchronized(exportRequestMonitor) {
           exportRequestMonitor.wait(120000); //  Sleep 2m or until woken up
         }
 
         // Whilst there is work to do, continue generating exports
-        while ( processNextExportRequest() ) {
-          log.info("Processing an export request");
+        try {
+          while ( processNextExportRequest() ) {
+            log.info("Processing an export request");
+          }
+        }
+        catch ( Exception e ) {
+          log.error("Problem",e);
         }
       }
     }
@@ -130,7 +140,7 @@ and o.batchMonitorUUID is null
         f.mkdirs()
       }
 
-      writeExportFiles(new_uuid, new_export_dir);
+      writeExportFiles(new_uuid, new_export_dir,o);
       createZipfile(new_uuid, new_export_dir);
       // f.delete();
 
@@ -151,9 +161,57 @@ and o.batchMonitorUUID is null
     return result;
   }
 
-  private writeExportFiles(String export_uuid, String base) {
-    File dummy = new File(base+'/index.html');
-    dummy << "This is an export with ID ${export_uuid}";
+  private writeExportFiles(String export_uuid, String base, Org inst) {
+    File index = new File(base+'/index.tsv');
+    index << "This is an export with ID ${export_uuid}\n";
+
+    exportLicenses(inst, index, base);
+    exportSubscriptions(inst, index, base);
+  }
+
+  private void exportLicenses(Org inst, File index, String base) {
+    def licensee_role = RefdataCategory.lookupOrCreate('Organisational Role', 'Licensee');
+    def template_license_type = RefdataCategory.lookupOrCreate('License Type', 'Template');
+    def licence_status = RefdataCategory.lookupOrCreate('License Status', 'Deleted')
+
+    Map qry_params = [lic_org:inst, 
+                      org_role:licensee_role,
+                      lic_status:licence_status]
+
+    License.executeQuery(INSTITUTIONAL_LICENSES_QUERY, qry_params).each { lic ->
+      log.debug("license ${lic}");
+
+      def license_reference_str = lic.reference?:'NO_LIC_REF_FOR_ID_'+lic.id;
+      def filename = "${base}/licence_${lic.id}_entitlements.csv"
+
+      index << "license\t${lic.id}\t${license_reference_str}\t${filename}\n".toString();
+
+      Map model = [:];
+      model.onixplLicense = lic.onixplLicense;
+      model.license = lic;
+      model.transforms = grailsApplication.config.licenceTransforms
+
+      templateOutput('/licenseDetails/_lic_ie_csv', model, filename, 'text/csv');
+    }
+
+  }
+
+  // https://stackoverflow.com/questions/47485529/grails-groovypagerenderer-injecting-in-file-inside-src-groovy
+  // https://sergiodelamo.com/blog/how-to-render-a-gsp-in-a-grails-service.html
+  private void templateOutput(String tname, Map m, String filename, String ct) {
+    def tmpl = groovyPageLocator.findTemplateByPath('/licenseDetails/_lic_ie_csv')
+    log.debug("Located template ${tmpl}");
+    File f = new File(filename);
+    groovyPageRenderer.renderTo(template: tname, model: m, contentType: ct, encoding: "UTF-8", new FileWriter(f));
+  }
+
+  private void exportSubscriptions(Org inst, File index, String base) {
+
+    Map qry_params = [o:inst]
+    Subscription.executeQuery(INSTITUTIONAL_SUBSCRIPTIONS_QUERY, qry_params).each { sub ->
+      log.debug("output subscription ${sub}");
+      index << "subscription ${sub}\tcol\tcol\tcol\tcol\n".toString();
+    }
   }
 
   private createZipfile(String export_uuid, String base) {
