@@ -191,15 +191,16 @@ class EjectService {
       model.license = lic;
       model.transforms = grailsApplication.config.licenceTransforms
 
-      templateOutput('/licenseDetails/_lic_ie_csv', model, filename, 'text/csv');
+      templateOutput('/licenseDetails/lic_ie_csv', model, filename, 'text/csv');
     }
 
   }
 
   // https://stackoverflow.com/questions/47485529/grails-groovypagerenderer-injecting-in-file-inside-src-groovy
   // https://sergiodelamo.com/blog/how-to-render-a-gsp-in-a-grails-service.html
+  // https://searchcode.com/file/115997997/grails-web-gsp/src/main/groovy/org/grails/web/gsp/io/CachingGrailsConventionGroovyPageLocator.java/
   private void templateOutput(String tname, Map m, String filename, String ct) {
-    def tmpl = groovyPageLocator.findTemplateByPath('/licenseDetails/_lic_ie_csv')
+    def tmpl = groovyPageLocator.findTemplateByPath(tname)
     log.debug("Located template ${tmpl}");
     File f = new File(filename);
     groovyPageRenderer.renderTo(template: tname, model: m, contentType: ct, encoding: "UTF-8", new FileWriter(f));
