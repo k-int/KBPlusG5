@@ -16,6 +16,7 @@ class EjectService {
   def grailsApplication;
   def groovyPageRenderer;
   def groovyPageLocator;
+  def docstoreService;
 
   private String baseExportDir = null;
   private boolean running = true;
@@ -180,6 +181,10 @@ class EjectService {
 
     License.executeQuery(INSTITUTIONAL_LICENSES_QUERY, qry_params).each { lic ->
       log.debug("license ${lic}");
+  
+      String lic_dir_path = "${base}/license_${lic.id}".toString();
+      File lic_dir = new File(lic_dir_path);
+      lic_dir.mkdirs();
 
       def license_reference_str = lic.reference?:'NO_LIC_REF_FOR_ID_'+lic.id;
 
@@ -190,9 +195,17 @@ class EjectService {
       model.license = lic;
       model.transforms = grailsApplication.config.licenceTransforms
 
-      templateOutput('/licenseDetails/lic_ie_csv', model, "${base}/licence_${lic.id}_entitlements.csv", 'text/csv');
-      templateOutput('/licenseDetails/lic_pkg_csv', model, "${base}/license_${lic.id}_packages.csv", 'text/csv');
-      templateOutput('/licenseDetails/lic_csv', model, "${base}/license_${lic.id}.csv", 'text/csv');
+      templateOutput('/licenseDetails/lic_ie_csv', model, "${lic_dir_path}/licence_${lic.id}_entitlements.csv", 'text/csv');
+      templateOutput('/licenseDetails/lic_pkg_csv', model, "${lic_dir_path}/license_${lic.id}_packages.csv", 'text/csv');
+      templateOutput('/licenseDetails/lic_csv', model, "${lic_dir_path}/license_${lic.id}.csv", 'text/csv');
+
+      lic.documents.each { ld ->
+        println("License doc: ${ld} ${ld.owner.title} ${ld.owner.filename}");
+        // Stream ld.blobContent to file 
+        InputStream is = docstoreService.getStreamFromUUID(ld.owner.uuid);
+        File docfile = new File("${lic_dir_path}/${ld.owner.filename}");
+        docfile << is
+      }
     }
 
   }
