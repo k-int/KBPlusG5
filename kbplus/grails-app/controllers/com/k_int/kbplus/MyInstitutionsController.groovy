@@ -3266,4 +3266,12 @@ AND EXISTS (
 
   }
 
+  @Secured(['ROLE_USER', 'IS_AUTHENTICATED_FULLY'])
+  def downloadMyData() {
+      def current_inst = null
+      if(params.defaultInstShortcode) current_inst = request.getAttribute('institution')
+      if ( current_inst ) {
+        ejectService.streamCurrentExport(current_inst);
+      }
+  }
 }

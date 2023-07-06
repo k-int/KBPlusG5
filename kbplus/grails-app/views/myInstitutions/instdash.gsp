@@ -105,7 +105,8 @@
             <p class="" data-kb-message-code="dash.export.brief"><g:message code="dash.export.brief" />
               <g:if test="${( ( institution?.exportUUID != null ) )}">
                 Your last export was created on : ${institution?.currentExportDate}<br/>
-                download it here: ${institution?.exportUUID}<br/>
+                download it here: <g:link controller="myInstitutions" action="downloadMyData" params="${[defaultInstShortcode:params.defaultInstShortcode]}">
+                                    ${institution?.exportUUID}</g:link><br/>
               </g:if>
               <g:if test="${( ( institution?.exportStatus == null ) ||( institution?.exportStatus=='COMPLETE' ) )}">
                 <g:link controller="myInstitutions" action="requestExport" params="${[defaultInstShortcode:params.defaultInstShortcode]}">

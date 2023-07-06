@@ -202,9 +202,29 @@ class EjectService {
       lic.documents.each { ld ->
         println("License doc: ${ld} ${ld.owner.title} ${ld.owner.filename}");
         // Stream ld.blobContent to file 
-        InputStream is = docstoreService.getStreamFromUUID(ld.owner.uuid);
-        File docfile = new File("${lic_dir_path}/${ld.owner.filename}");
-        docfile << is
+        if ( ld.owner.uuid != null ) {
+          InputStream is = docstoreService.getStreamFromUUID(ld.owner.uuid);
+
+          String just_filename = null;
+          if ( ld.owner.filename != null ) {
+            log.debug("extract file ${ld.owner.filename}");
+            just_filename = ld.owner.filename.contains("/") ? ld.owner.filename.substring(ld.owner.filename.lastIndexOf('/')+1, ld.owner.filename.length()) : ld.owner.filename;
+          }
+          else if ( ld.owner.title != null ) {
+            log.debug("Using title as filename - ${ld.owner.title}");
+            just_filename = ld.owner.title.contains("/") ? ld.owner.title.substring(ld.owner.title.lastIndexOf('/')+1, ld.owner.title.length()) : ld.owner.title;
+          }
+          else {
+            just_filename = "${ld.owner.uuid}"
+          }
+
+          log.debug("Add license file \"${lic_dir_path}\"/\"${just_filename}\"");
+          File docfile = new File("${lic_dir_path}/${just_filename}");
+          docfile << is
+        }
+        else {
+          log.warn("No UUID for doc ${ld.owner}");
+        }
       }
     }
 
@@ -226,17 +246,15 @@ class EjectService {
     Subscription.executeQuery(INSTITUTIONAL_SUBSCRIPTIONS_QUERY, qry_params).each { sub ->
 
       String sub_dir_path = "${base}/${sub.id}".toString();
-      File f = new File(sub_dir_path).
+      File f = new File(sub_dir_path)
       f.mkdirs();
 
       log.debug("output subscription ${sub}");
       index << "subscription ${sub}\tcol\tcol\tcol\tcol\n".toString();
       Map model = [:]
 
-      model.expectedTitles = null; // IssueEntitlement.executeQuery("select ie "+exp_qry, exp_prev_qry_params)
-      model.previousTitles = null; // IssueEntitlement.executeQuery("select ie "+prev_qry, exp_prev_qry_params)
-      model.entitlements = null; // IssueEntitlement.executeQuery("select ie "+prev_qry, exp_prev_qry_params)
-  
+      model.entitlements = IssueEntitlement.executeQuery("select ie from IssueEntitlement as ie where ie.subscription = :si and ie.status.value != 'Deleted'", [si:sub]);
+
       templateOutput('subscriptionDetails/kbplus_csv', model, "${sub_dir_path}/subscription_${sub.id}_entitlements.csv", 'text/csv');
     }
   }
@@ -289,4 +307,20 @@ class EjectService {
     inst.exportStatus = 'REQUESTED'
     inst.save(flush:true, failOnError:true);
   }
+
+  InputStream getStreamFromUUID(String uuid) {
+    String export_dir_name = grailsApplication.config.exportsDir ?: './exportFiles'
+    String export_file = export_dir_name+'/'+uuid+'.zip';
+    File f = new File(export_file);
+    return new java.io.FileInputStream(f);
+  }
+    
+  public streamCurrentExport(Org inst) {
+    if ( inst.exportUUIDinst.exportUUID != null ) {
+      response.setContentType('application/zip')
+      response.addHeader("content-disposition", "attachment; filename=\"${inst.name}-${inst.currentExportDate}-export.zip}\"")
+      response.outputStream << getStreamFromUUID(inst.exportUUID)
+    }
+  }
+
 }
