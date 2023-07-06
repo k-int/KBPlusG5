@@ -245,7 +245,7 @@ class EjectService {
     Map qry_params = [o:inst]
     Subscription.executeQuery(INSTITUTIONAL_SUBSCRIPTIONS_QUERY, qry_params).each { sub ->
 
-      String sub_dir_path = "${base}/${sub.id}".toString();
+      String sub_dir_path = "${base}/sub_${sub.id}".toString();
       File f = new File(sub_dir_path)
       f.mkdirs();
 
@@ -254,8 +254,10 @@ class EjectService {
       Map model = [:]
 
       model.entitlements = IssueEntitlement.executeQuery("select ie from IssueEntitlement as ie where ie.subscription = :si and ie.status.value != 'Deleted'", [si:sub]);
+      model.expectedTitles=[]
+      model.previousTitles=[]
 
-      templateOutput('subscriptionDetails/kbplus_csv', model, "${sub_dir_path}/subscription_${sub.id}_entitlements.csv", 'text/csv');
+      templateOutput('/subscriptionDetails/kbplus_csv', model, "${sub_dir_path}/subscription_${sub.id}_entitlements.csv", 'text/csv');
     }
   }
 
@@ -315,8 +317,8 @@ class EjectService {
     return new java.io.FileInputStream(f);
   }
     
-  public streamCurrentExport(Org inst) {
-    if ( inst.exportUUIDinst.exportUUID != null ) {
+  def streamCurrentExport(inst, response) {
+    if ( inst.exportUUID != null ) {
       response.setContentType('application/zip')
       response.addHeader("content-disposition", "attachment; filename=\"${inst.name}-${inst.currentExportDate}-export.zip}\"")
       response.outputStream << getStreamFromUUID(inst.exportUUID)

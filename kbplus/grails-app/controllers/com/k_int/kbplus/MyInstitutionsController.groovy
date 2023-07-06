@@ -3271,7 +3271,7 @@ AND EXISTS (
       def current_inst = null
       if(params.defaultInstShortcode) current_inst = request.getAttribute('institution')
       if ( current_inst ) {
-        ejectService.streamCurrentExport(current_inst);
+        ejectService.streamCurrentExport(current_inst, response);
       }
   }
 }
