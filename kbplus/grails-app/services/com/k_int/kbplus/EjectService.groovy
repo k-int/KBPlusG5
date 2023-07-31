@@ -130,9 +130,11 @@ class EjectService {
     log.debug("performExport(${org_id})");
     Org o = Org.get(org_id);
 
+    def sdf = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
     if ( o != null ){
       String previous_export = o.exportUUID;
-      String new_uuid = UUID.randomUUID().toString();
+      String new_uuid = "${org_id}-${sdf.format(new Date())}"
       String export_dir_name = grailsApplication.config.exportsDir ?: './exportFiles'
       String new_export_dir = export_dir_name+'/'+new_uuid;
       File f = new File(new_export_dir);
@@ -235,7 +237,7 @@ class EjectService {
   // https://searchcode.com/file/115997997/grails-web-gsp/src/main/groovy/org/grails/web/gsp/io/CachingGrailsConventionGroovyPageLocator.java/
   private void templateOutput(String tname, Map m, String filename, String ct) {
     def tmpl = groovyPageLocator.findTemplateByPath(tname)
-    log.debug("Located template ${tmpl}");
+    // log.debug("Located template ${tmpl}");
     File f = new File(filename);
     groovyPageRenderer.renderTo(template: tname, model: m, contentType: ct, encoding: "UTF-8", new FileWriter(f));
   }
@@ -249,7 +251,7 @@ class EjectService {
       File f = new File(sub_dir_path)
       f.mkdirs();
 
-      log.debug("output subscription ${sub}");
+      // log.debug("output subscription ${sub}");
       index << "subscription ${sub}\tcol\tcol\tcol\tcol\n".toString();
       Map model = [:]
 
@@ -262,11 +264,23 @@ class EjectService {
   }
 
   private createZipfile(String export_uuid, String base) {
+
+    log.debug("createZipfile(${export_uuid},${base})");
+
     try {
       File sourceDir = new File(base);
       FileOutputStream fos = new FileOutputStream(base+'.zip');
       ZipOutputStream zos = new ZipOutputStream(fos);
-      zipDir(sourceDir, sourceDir.getName(), zos);
+      // zipDir(sourceDir, sourceDir.getName(), zos);
+      // zipDir(sourceDir, '.', zos);
+
+      // Descend into first level dir so we don't duplicate the path
+      File[] files = sourceDir.listFiles();
+      if (files != null) {
+        for (File file : files) {
+          zipDir(file, '.', zos);
+        }
+      }
       zos.close();
       fos.close();
       System.out.println("Directory zipped successfully!");
@@ -277,8 +291,11 @@ class EjectService {
   }
 
   private void zipDir(File sourceFile, String parentDir, ZipOutputStream zos) throws IOException {
+
+
     if (sourceFile.isDirectory()) {
       String dirName = parentDir + File.separator + sourceFile.getName();
+      log.debug("Next zip entry -dir- ${dirName + File.separator}");
       zos.putNextEntry(new ZipEntry(dirName + File.separator));
 
       File[] files = sourceFile.listFiles();
@@ -287,9 +304,11 @@ class EjectService {
           zipDir(file, dirName, zos);
         }
       }
+
     } else {
       FileInputStream fis = new FileInputStream(sourceFile);
       String fileName = parentDir + File.separator + sourceFile.getName();
+      log.debug("Next zip entry -file- ${fileName}");
       zos.putNextEntry(new ZipEntry(fileName));
 
       byte[] buffer = new byte[1024];
@@ -320,7 +339,7 @@ class EjectService {
   def streamCurrentExport(inst, response) {
     if ( inst.exportUUID != null ) {
       response.setContentType('application/zip')
-      response.addHeader("content-disposition", "attachment; filename=\"${inst.name}-${inst.currentExportDate}-export.zip}\"")
+      response.addHeader("content-disposition", "attachment; filename=\"${inst.name}-${inst.currentExportDate}-export.zip\"")
       response.outputStream << getStreamFromUUID(inst.exportUUID)
     }
   }

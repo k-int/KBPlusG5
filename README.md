@@ -8,6 +8,13 @@ prerequisites:
 ## Build
 
     ./gradlew clean build -x integrationTest
+    scp ./build/libs/kbplus-8.0.0-SNAPSHOT.war IP:/tmp
+    ssh IP
+    cd /srv/kbplus/apache-tomcat-9.0.73/webapps#
+    ../bin/shutdown.sh
+    rm -Rf ./test2*
+    cp /tmp/kbplus-8.0.0-SNAPSHOT.war ./test2.war
+    ../bin/startup.sh
 
 
 # Testing notes

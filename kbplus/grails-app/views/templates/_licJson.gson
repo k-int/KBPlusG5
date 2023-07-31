@@ -1,0 +1,14 @@
+model {
+  com.k_int.kbplus.License license
+}
+json {
+  Licence {
+    LicenceReference license.reference
+    NoticePeriod license.noticePeriod
+    LicenceURL license.licenseUrl
+    LicensorRef license.licensorRef
+    LicenseeRef license.licenseeRef
+    RelatedOrg tmpl.relatedOrgs(license.orgLinks)
+    LicenceProperties tmpl.customProperties(license.customProperties)
+  }
+}
