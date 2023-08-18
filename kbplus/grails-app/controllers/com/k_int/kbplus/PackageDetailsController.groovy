@@ -82,8 +82,8 @@ class PackageDetailsController {
     }
 
       log.debug(base_qry)
-      result.packageInstanceTotal = Subscription.executeQuery("select count(p) "+base_qry, qry_params )[0]
-
+      result.packageInstanceTotal = Subscription.executeQuery("select count(p) ${base_qry}".toString(), qry_params )[0]
+      log.debug("Count of matching packages: ${result.packageInstanceTotal}");
 
       withFormat {
         html {
