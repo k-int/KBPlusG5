@@ -16,5 +16,6 @@ json {
     TitleList tmpl.entitlement(entitlements)
     ExpectedTitles tmpl.entitlement(expectedTitles)
     PreviousTitles tmpl.entitlement(previousTitles)
+    ids tmpl.identifierOccurrence(subscriptionInstance.ids)
   }
 }

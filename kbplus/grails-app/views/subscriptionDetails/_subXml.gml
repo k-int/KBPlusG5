@@ -8,6 +8,13 @@ model {
 
 Subscription(id:subscriptionInstance.id) {
     SubscriptionName subscriptionInstance.name
+    ids {
+      subscriptionInstance.ids.each { ido ->
+        Identifier( namespace:ido.ns.ns) {
+          Value ido.value
+        }
+      }
+    }
     if(subscriptionInstance.startDate){SubTermStartDate formatter.format(subscriptionInstance.startDate)}
     if(subscriptionInstance.endDate){SubTermEndDate formatter.format(subscriptionInstance.endDate)}
 	subscriptionInstance.orgRelations.each {orgRole->
