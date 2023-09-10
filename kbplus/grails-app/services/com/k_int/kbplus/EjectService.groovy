@@ -251,8 +251,24 @@ class EjectService {
       File f = new File(sub_dir_path)
       f.mkdirs();
 
+      List columns = []
+      columns.add("subscription ${sub.id}");
+      columns.add(sub.name);
+      columns.add(sub.identifier);
+      columns.add(sub.impId);
+      columns.add(sub.startDate);
+      columns.add(sub.endDate);
+      columns.add(sub.owner?.id);
+      columns.add(sub.owner?.name);
+      columns.add(sub.owner?.reference);
+      columns.add(sub.owner?.jiscLicenseId);
+
+      sub.ids.each { id ->
+        columns.add("${id.namespace.namespace}=${id.value}")
+      }
+
       // log.debug("output subscription ${sub}");
-      index << "subscription ${sub}\tcol\tcol\tcol\tcol\n".toString();
+      index << columns.join('\t').toString();
       Map model = [:]
 
       model.entitlements = IssueEntitlement.executeQuery("select ie from IssueEntitlement as ie where ie.subscription = :si and ie.status.value != 'Deleted'", [si:sub]);
