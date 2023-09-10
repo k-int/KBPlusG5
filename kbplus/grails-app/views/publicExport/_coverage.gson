@@ -1,11 +1,12 @@
 model {
   TitleInstancePackagePlatform tipp
+  java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat('yyyy-MM-dd')
 }
 json {
   startVolume tipp.startVolume
   startIssue tipp.startIssue
-  startDate tipp.startDate?.format('yyyy-MM-dd')
+  startDate tipp.startDate? formatter.format(tipp.startDate) : ''
   endVolume tipp.endVolume
   endIssue tipp.endIssue
-  endDate tipp.endDate?.format('yyyy-MM-dd')
+  endDate tipp.endDate ? formatter.format(tipp.endDate) : ''
 }

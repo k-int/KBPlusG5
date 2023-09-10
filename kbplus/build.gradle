@@ -11,20 +11,23 @@ buildscript {
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:4.3.0"
         classpath 'com.bertramlabs.plugins:sass-dart-asset-pipeline:4.3.0'
         classpath "org.ysb33r.gradle:grolifant50:2.0.0-alpha.6"
+        classpath "org.grails.plugins:views-json:3.0.0"
+        classpath "org.grails.plugins:views-gradle:3.0.0"
     }
 }
 
 version "8.0.0-SNAPSHOT"
 group "kbplus"
 
-apply plugin:"eclipse"
-apply plugin:"idea"
-apply plugin:"war"
-apply plugin:"org.grails.grails-web"
-apply plugin:"com.github.erdi.webdriver-binaries"
-apply plugin:"org.grails.grails-gsp"
+apply plugin: "eclipse"
+apply plugin: "idea"
+apply plugin: "war"
+apply plugin: "org.grails.grails-web"
+apply plugin: "com.github.erdi.webdriver-binaries"
+apply plugin: "org.grails.grails-gsp"
 apply plugin: 'com.bertramlabs.asset-pipeline'
-apply plugin:"maven-publish"
+apply plugin: "maven-publish"
+apply plugin: "org.grails.plugins.views-json"
 
 repositories {
     mavenCentral()
@@ -110,6 +113,9 @@ dependencies {
     implementation 'com.bertramlabs.plugins:sass-dart-asset-pipeline:4.3.0'
     implementation 'com.bertramlabs.plugins:asset-pipeline-grails:4.3.0'
     assets 'com.bertramlabs.plugins:sass-dart-asset-pipeline:4.3.0'
+
+
+    implementation "org.grails.plugins:views-json:3.0.0"
 }
 
 war {
