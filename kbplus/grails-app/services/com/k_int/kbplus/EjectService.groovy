@@ -259,7 +259,6 @@ class EjectService {
       columns.add(sub.startDate);
       columns.add(sub.endDate);
       columns.add(sub.owner?.id);
-      columns.add(sub.owner?.name);
       columns.add(sub.owner?.reference);
       columns.add(sub.owner?.jiscLicenseId);
 
