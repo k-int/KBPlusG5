@@ -119,6 +119,8 @@ class EjectService {
         else {
           log.info("Skip export request ${org_id} - proceed = false");
         }
+
+        log.debug("pending export request for ${org_id} complete");
       }
     }
 
@@ -160,6 +162,7 @@ class EjectService {
       log.warn("Unable to locate org ${org_id} for export");
     }
 
+    log.debug("performExport complete org=${org_id}");
     // set org.exportUUID =
     return result;
   }
@@ -235,8 +238,13 @@ class EjectService {
           File docfile = new File("${lic_dir_path}/licensefile_${ld.id}_error_note}");
           docfile << "Error attempting to export license file : ${e.message}";
         }
+        finally {
+          log.debug("Completed license file");
+        }
       }
     }
+
+    log.debug("Completed export licenses");
   }
 
   // https://stackoverflow.com/questions/47485529/grails-groovypagerenderer-injecting-in-file-inside-src-groovy
@@ -275,6 +283,7 @@ class EjectService {
 
       // log.debug("output subscription ${sub}");
       index << columns.join('\t').toString();
+      index << "\n"
       Map model = [:]
 
       model.entitlements = IssueEntitlement.executeQuery("select ie from IssueEntitlement as ie where ie.subscription = :si and ie.status.value != 'Deleted'", [si:sub]);
@@ -349,6 +358,9 @@ class EjectService {
     log.debug("requestEject(${inst})");
     inst.exportStatus = 'REQUESTED'
     inst.save(flush:true, failOnError:true);
+    synchronized(exportRequestMonitor) {
+      exportRequestMonitor.notifyAll();
+    }
   }
 
   InputStream getStreamFromUUID(String uuid) {
