@@ -203,33 +203,40 @@ class EjectService {
 
       lic.documents.each { ld ->
         println("License doc: ${ld} ${ld.owner.title} ${ld.owner.filename}");
-        // Stream ld.blobContent to file 
-        if ( ld.owner.uuid != null ) {
-          InputStream is = docstoreService.getStreamFromUUID(ld.owner.uuid);
 
-          String just_filename = null;
-          if ( ld.owner.filename != null ) {
-            log.debug("extract file ${ld.owner.filename}");
-            just_filename = ld.owner.filename.contains("/") ? ld.owner.filename.substring(ld.owner.filename.lastIndexOf('/')+1, ld.owner.filename.length()) : ld.owner.filename;
-          }
-          else if ( ld.owner.title != null ) {
-            log.debug("Using title as filename - ${ld.owner.title}");
-            just_filename = ld.owner.title.contains("/") ? ld.owner.title.substring(ld.owner.title.lastIndexOf('/')+1, ld.owner.title.length()) : ld.owner.title;
+        try {
+          // Stream ld.blobContent to file 
+          if ( ld.owner.uuid != null ) {
+            InputStream is = docstoreService.getStreamFromUUID(ld.owner.uuid);
+  
+            String just_filename = null;
+            if ( ld.owner.filename != null ) {
+              log.debug("extract file ${ld.owner.filename}");
+              just_filename = ld.owner.filename.contains("/") ? ld.owner.filename.substring(ld.owner.filename.lastIndexOf('/')+1, ld.owner.filename.length()) : ld.owner.filename;
+            }
+            else if ( ld.owner.title != null ) {
+              log.debug("Using title as filename - ${ld.owner.title}");
+              just_filename = ld.owner.title.contains("/") ? ld.owner.title.substring(ld.owner.title.lastIndexOf('/')+1, ld.owner.title.length()) : ld.owner.title;
+            }
+            else {
+              just_filename = "${ld.owner.uuid}"
+            }
+
+            log.debug("Add license file \"${lic_dir_path}\"/\"${just_filename}\"");
+            File docfile = new File("${lic_dir_path}/${just_filename}");
+            docfile << is
           }
           else {
-            just_filename = "${ld.owner.uuid}"
+            log.warn("No UUID for doc ${ld.owner}");
           }
-
-          log.debug("Add license file \"${lic_dir_path}\"/\"${just_filename}\"");
-          File docfile = new File("${lic_dir_path}/${just_filename}");
-          docfile << is
         }
-        else {
-          log.warn("No UUID for doc ${ld.owner}");
+        catch ( Exception e ) {
+          log.error("Exception trying to export license file");
+          File docfile = new File("${lic_dir_path}/licensefile_${ld.id}_error_note}");
+          docfile << "Error attempting to export license file : ${e.message}";
         }
       }
     }
-
   }
 
   // https://stackoverflow.com/questions/47485529/grails-groovypagerenderer-injecting-in-file-inside-src-groovy
@@ -262,8 +269,8 @@ class EjectService {
       columns.add(sub.owner?.reference);
       columns.add(sub.owner?.jiscLicenseId);
 
-      sub.ids.each { id ->
-        columns.add("${id.ns.ns}=${id.value}")
+      sub.ids.each { io ->
+        columns.add("${io.identifier.ns.ns}=${io.identifier.value}")
       }
 
       // log.debug("output subscription ${sub}");

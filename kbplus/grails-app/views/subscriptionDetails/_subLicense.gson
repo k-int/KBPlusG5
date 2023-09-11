@@ -3,13 +3,13 @@ model {
 }
 json {
   Licence {
-    LicenceId license.id
-    LicenceReference license.reference
-    NoticePeriod license.noticePeriod
-    LicenceURL license.licenseUrl
-    LicensorRef license.licensorRef
-    LicenseeRef license.licenseeRef
-    RelatedOrg tmpl.relatedOrgs(license.orgLinks)
-    CustomProperties tmpl.customProperties(license.customProperties)
+    LicenceId license?.id
+    LicenceReference license?.reference
+    NoticePeriod license?.noticePeriod
+    LicenceURL license?.licenseUrl
+    LicensorRef license?.licensorRef
+    LicenseeRef license?.licenseeRef
+    RelatedOrg tmpl.relatedOrgs(license?.orgLinks)
+    CustomProperties tmpl.customProperties(license?.customProperties)
   }
 }

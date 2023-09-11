@@ -11,7 +11,7 @@ json {
     SubscriptionName subscriptionInstance.name
     SubTermStartDate subscriptionInstance.startDate?formatter.format(subscriptionInstance.startDate):''
     SubTermEndDate subscriptionInstance.endDate?formatter.format(subscriptionInstance.endDate):''
-    Licence subscriptionInstance.owner?tmpl.subLicense(subscriptionInstance.owner):''
+    Licence subscriptionInstance.owner != null ? tmpl.subLicense(subscriptionInstance.owner) : ''
     RelatedOrg tmpl.relatedOrgs(subscriptionInstance.orgRelations)
     TitleList tmpl.entitlement(entitlements)
     ExpectedTitles tmpl.entitlement(expectedTitles)
