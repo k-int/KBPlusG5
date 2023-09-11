@@ -264,7 +264,7 @@ class EjectService {
       columns.add(sub.owner?.jiscLicenseId);
 
       sub.ids.each { id ->
-        columns.add("${id.namespace.namespace}=${id.value}")
+        columns.add("${id.ns.ns}=${id.value}")
       }
 
       // log.debug("output subscription ${sub}");
