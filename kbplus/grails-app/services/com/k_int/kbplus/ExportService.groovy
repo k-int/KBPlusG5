@@ -14,6 +14,7 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import groovy.util.logging.Slf4j
+import java.text.SimpleDateFormat;
 
 /**
  * This service should contain the methods required to build the different exported files.
@@ -28,8 +29,8 @@ import groovy.util.logging.Slf4j
 class ExportService {
   // def formatter = new java.text.SimpleDateFormat("yyyy-MM-dd")
 
-  public SimpleDateFormat getDateFormatter() {
-    return new java.text.SimpleDateFormat("yyyy-MM-dd");
+  public String internalFormatDate(java.sql.Timestamp ts) {
+    return new java.text.SimpleDateFormat("yyyy-MM-dd").format(ts).toString();
   }
   
   /* *************
@@ -177,8 +178,8 @@ class ExportService {
    
       entitlements.each { e ->
    
-        def start_date = e.startDate ? getDateFormatter(e.startDate) : '';
-        def end_date = e.endDate ? getDateFormatter(e.endDate) : '';
+        def start_date = e.startDate ? internalFormatDate(e.startDate) : '';
+        def end_date = e.endDate ? internalFormatDate(e.endDate) : '';
         def title_doi = (e.tipp?.title?.getIdentifierValue('DOI'))?:''
         def publisher = e.tipp?.title?.publisher
    
@@ -252,8 +253,8 @@ class ExportService {
         if(e.tipp.title.id != current_title_id){
           if(current_title_id != -1){
             //Write earliest and latest dates
-            writer.write("\"${earliest_date?getDateFormatter(earliest_date):''}\",");
-            writer.write("\"${latest_date?getDateFormatter(latest_date):''}\"");
+            writer.write("\"${earliest_date?internalFormatDate(earliest_date):''}\",");
+            writer.write("\"${latest_date?internalFormatDate(latest_date):''}\"");
             //Write entitlements
             writer.write("${entitlements_str}");
             writer.write("\n");
@@ -277,10 +278,10 @@ class ExportService {
         
 //                    grouped_ies[ti[0].id].each(){ ie ->
         entitlements_str += ",\"${e.subscription.name}\","
-        entitlements_str += "${e.startDate?getDateFormatter(e.startDate):''},"
+        entitlements_str += "${e.startDate?internalFormatDate(e.startDate):''},"
         entitlements_str += "\"${e.startVolume?:''}\","
         entitlements_str += "\"${e.startIssue?:''}\","
-        entitlements_str += "${e.endDate?getDateFormatter(e.endDate):''},"
+        entitlements_str += "${e.endDate?internalFormatDate(e.endDate):''},"
         entitlements_str += "\"${e.endVolume?:''}\","
         entitlements_str += "\"${e.endIssue?:''}\","
         entitlements_str += "\"${e.embargo?:''}\","
@@ -304,8 +305,8 @@ class ExportService {
       }
       
       //Write earliest and latest dates for last title
-      writer.write("\"${earliest_date?getDateFormatter(earliest_date):''}\",");
-      writer.write("\"${latest_date?getDateFormatter(latest_date):''}\"");
+      writer.write("\"${earliest_date?internalFormatDate(earliest_date):''}\",");
+      writer.write("\"${latest_date?internalFormatDate(latest_date):''}\"");
       //Write entitlements for last title
       writer.write("${entitlements_str}");
       writer.write("\n");
@@ -432,7 +433,7 @@ class ExportService {
     return coreDates
   }
   def formatCoreDates(dates){
-      return "${dates[0]?getDateFormatter(dates[0]):''} : ${dates[1]?getDateFormatter(dates[1]):''}"
+      return "${dates[0]?internalFormatDate(dates[0]):''} : ${dates[1]?internalFormatDate(dates[1]):''}"
   }
   /**
    * Add a list of titles from a given entitlement list into a given Element
@@ -496,10 +497,10 @@ class ExportService {
       
       addXMLElementInto(doc, coveragestatement, "SubscriptionID", sub?.id?:'')
       addXMLElementInto(doc, coveragestatement, "SubscriptionName", sub?.name?:'')
-      addXMLElementInto(doc, coveragestatement, "StartDate", e.startDate?getDateFormatter(e.startDate):'')
+      addXMLElementInto(doc, coveragestatement, "StartDate", e.startDate?internalFormatDate(e.startDate):'')
       addXMLElementInto(doc, coveragestatement, "StartVolume", e.startVolume?:'')
       addXMLElementInto(doc, coveragestatement, "StartIssue", e.startIssue?:'')
-      addXMLElementInto(doc, coveragestatement, "EndDate", e.endDate?getDateFormatter(e.endDate):'')
+      addXMLElementInto(doc, coveragestatement, "EndDate", e.endDate?internalFormatDate(e.endDate):'')
       addXMLElementInto(doc, coveragestatement, "EndVolume", e.endVolume?:'')
       addXMLElementInto(doc, coveragestatement, "EndIssue", e.endIssue?:'')
       addXMLElementInto(doc, coveragestatement, "Embargo", e.embargo?:'')
@@ -523,9 +524,9 @@ class ExportService {
         Element coreDateList = addXMLElementInto(doc,coveragestatement,"CoreDateList",null)
         getIECoreDates(e)?.each{
           Element coreDate = addXMLElementInto(doc,coreDateList,"CoreDate",null)
-          addXMLElementInto(doc,coreDate,"CoreStart",it[0]?getDateFormatter(it[0]):'')
+          addXMLElementInto(doc,coreDate,"CoreStart",it[0]?internalFormatDate(it[0]):'')
           if(it[1]){
-            addXMLElementInto(doc,coreDate,"CoreEnd",it[1]?getDateFormatter(it[1]):'')
+            addXMLElementInto(doc,coreDate,"CoreEnd",it[1]?internalFormatDate(it[1]):'')
           }
         }
       }
@@ -656,8 +657,8 @@ class ExportService {
     def subElem = addXMLElementInto(doc, into_elem, "Subscription", null)
     addXMLElementInto(doc, subElem, "SubscriptionID", sub.id.toString())
     addXMLElementInto(doc, subElem, "SubscriptionName", sub.name)
-    addXMLElementInto(doc, subElem, "SubTermStartDate", sub.startDate?getDateFormatter(sub.startDate):'')
-    addXMLElementInto(doc, subElem, "SubTermEndDate", sub.endDate?getDateFormatter(sub.endDate):'')
+    addXMLElementInto(doc, subElem, "SubTermStartDate", sub.startDate?internalFormatDate(sub.startDate):'')
+    addXMLElementInto(doc, subElem, "SubTermEndDate", sub.endDate?internalFormatDate(sub.endDate):'')
     
     addRelatedOrgsIntoXML(doc, subElem, sub.orgRelations)
     
@@ -680,8 +681,8 @@ class ExportService {
     def subElem = addXMLElementInto(doc, into_elem, "Package", null)
     addXMLElementInto(doc, subElem, "PackageID", pck.id.toString())
     addXMLElementInto(doc, subElem, "PackageName", pck.name)
-    addXMLElementInto(doc, subElem, "PackageTermStartDate", pck.startDate?getDateFormatter(pck.startDate):'')
-    addXMLElementInto(doc, subElem, "PackageTermEndDate", pck.endDate?getDateFormatter(pck.endDate):'')
+    addXMLElementInto(doc, subElem, "PackageTermStartDate", pck.startDate?internalFormatDate(pck.startDate):'')
+    addXMLElementInto(doc, subElem, "PackageTermEndDate", pck.endDate?internalFormatDate(pck.endDate):'')
     
     addRelatedOrgsIntoXML(doc, subElem, pck.orgs)
     
@@ -850,10 +851,10 @@ class ExportService {
       ie."CoverageStatementType" = type
       ie."SubscriptionID" = sub?.id
       ie."SubscriptionName" = sub?.name
-      ie."StartDate" = e.startDate?getDateFormatter(e.startDate):''
+      ie."StartDate" = e.startDate?internalFormatDate(e.startDate):''
       ie."StartVolume" = e.startVolume?:''
       ie."StartIssue" = e.startIssue?:''
-      ie."EndDate" = e.endDate?getDateFormatter(e.endDate):''
+      ie."EndDate" = e.endDate?internalFormatDate(e.endDate):''
       ie."EndVolume" = e.endVolume?:''
       ie."EndIssue" = e.endIssue?:''
       ie."Embargo" = e.embargo?:''
@@ -881,8 +882,8 @@ class ExportService {
         def dateList = []
         getIECoreDates(e)?.each{
           def dates = [:]
-          dates."startDate" = it[0] ? getDateFormatter(it[0]) :''
-          dates."endDate" = it[1] ? getDateFormatter(it[1]) : ''
+          dates."startDate" = it[0] ? internalFormatDate(it[0]) :''
+          dates."endDate" = it[1] ? internalFormatDate(it[1]) : ''
           dateList.add(dates)
         }
         ie."CoreDateList" = dateList
@@ -1079,8 +1080,8 @@ class ExportService {
     def subscription = [:]
     subscription."SubscriptionID" = sub.id
     subscription."SubscriptionName" = sub.name
-    subscription."SubTermStartDate" = sub.startDate?getDateFormatter(sub.startDate):''
-    subscription."SubTermEndDate" = sub.endDate?getDateFormatter(sub.endDate):''
+    subscription."SubTermStartDate" = sub.startDate?internalFormatDate(sub.startDate):''
+    subscription."SubTermEndDate" = sub.endDate?internalFormatDate(sub.endDate):''
     
     subscription."RelatedOrgs" = []
     
@@ -1111,8 +1112,8 @@ class ExportService {
     def pckage = [:]
     pckage."PackageID" = pck.id
     pckage."PackageName" = pck.name
-    pckage."PackageTermStartDate" = pck.startDate?getDateFormatter(pck.startDate):''
-    pckage."PackageTermEndDate" = pck.endDate?getDateFormatter(pck.endDate):''
+    pckage."PackageTermStartDate" = pck.startDate?internalFormatDate(pck.startDate):''
+    pckage."PackageTermEndDate" = pck.endDate?internalFormatDate(pck.endDate):''
         
     pckage."RelatedOrgs" = []
     
@@ -1163,7 +1164,7 @@ class ExportService {
   }
   def formatDate(date){
     if(date){
-      return getDateFormatter(date)
+      return internalFormatDate(date)
     }else
       return null
   }
@@ -1172,7 +1173,7 @@ class ExportService {
   **/
   def val(val){
     if(val instanceof java.sql.Timestamp || val instanceof Date){
-      return val?getDateFormatter(val):" "
+      return val?internalFormatDate(val):" "
     }else{
       val = val? val.replaceAll('"',"'") :" "
       return "\"${val}\""

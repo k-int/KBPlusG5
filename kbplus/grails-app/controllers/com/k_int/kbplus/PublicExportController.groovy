@@ -167,15 +167,15 @@ class PublicExportController {
 
     def base_qry = null;
 
-    def qry_params = [result.subscriptionInstance]
+    def qry_params = [si:result.subscriptionInstance]
 
     if ( params.filter ) {
-      base_qry = " from IssueEntitlement as ie where ie.subscription = ? and ( ie.status.value != 'Deleted' ) and ( ( lower(ie.tipp.title.title) like ? ) or ( exists ( from IdentifierOccurrence io where io.ti.id = ie.tipp.title.id and io.identifier.value like ? ) ) )"
-      qry_params.add("%${params.filter.trim().toLowerCase()}%")
-      qry_params.add("%${params.filter}%")
+      base_qry = " from IssueEntitlement as ie where ie.subscription = :si and ( ie.status.value != 'Deleted' ) and ( ( lower(ie.tipp.title.title) like :f1 ) or ( exists ( from IdentifierOccurrence io where io.ti.id = ie.tipp.title.id and io.identifier.value like :f2 ) ) )"
+      qry_params['f1'] = "%${params.filter.trim().toLowerCase()}%"
+      qry_params['f2'] = "%${params.filter}%"
     }
     else {
-      base_qry = " from IssueEntitlement as ie where ie.subscription = ? and ( ie.status.value != 'Deleted' ) "
+      base_qry = " from IssueEntitlement as ie where ie.subscription = :si and ( ie.status.value != 'Deleted' ) "
     }
 
     if ( ( params.sort != null ) && ( params.sort.length() > 0 ) ) {
@@ -299,29 +299,29 @@ class PublicExportController {
     def base_qry = null;
     def tipp_status_del = RefdataCategory.lookupOrCreate(RefdataCategory.TIPP_STATUS, "Deleted")
     def publisher_org = RefdataCategory.lookupOrCreate("Organisational Role","Publisher")
-    def qry_params = [ packageInstance]
+    def qry_params = [pi:packageInstance]
 
     def filename = "publicExport_${packageInstance.name}_asAt_${sdf.format(dateFilter)}"
     
     if ( params.filter ) {
       base_qry = " from TitleInstancePackagePlatform as tipp  "+
-                 " where tipp.pkg = ? "+
-                 " and ( tipp.status != ? ) "+
-                 " and ( ( lower(tipp.title.title) like ? ) or ( exists ( from IdentifierOccurrence io where io.ti.id = tipp.title.id and io.identifier.value like ? ) ) ) "+
+                 " where tipp.pkg = :pi "+
+                 " and ( tipp.status != :status ) "+
+                 " and ( ( lower(tipp.title.title) like :qt ) or ( exists ( from IdentifierOccurrence io where io.ti.id = tipp.title.id and io.identifier.value like :f ) ) ) "+
                  // " and ( ( ( ? >= tipp.accessStartDate ) or ( tipp.accessStartDate is null ) ) ) "+
-                 " and ( ( ( ? <= tipp.accessEndDate ) or ( tipp.accessEndDate is null ) ) )"
-      qry_params.add(tipp_status_del)
-      qry_params.add("%${params.filter.trim().toLowerCase()}%")
-      qry_params.add("%${params.filter}%")
-      // qry_params.add(dateFilter);
-      qry_params.add(dateFilter);
+                 " and ( ( ( :ed <= tipp.accessEndDate ) or ( tipp.accessEndDate is null ) ) )"
+      qry_params['status'] =  tipp_status_del
+
+      qry_params['qt'] = "%${params.filter.trim().toLowerCase()}%"
+      qry_params['f'] = "%${params.filter}%"
+      qry_params['ed'] = dateFilter
     }
     else {
       // base_qry = " from TitleInstancePackagePlatform as tipp where tipp.pkg = ?  and ( tipp.status != ? ) and ( ( ( ? <= tipp.accessEndDate ) or ( tipp.accessEndDate is null ) ) ) and ( ( ( ? >= tipp.accessStartDate ) or ( tipp.accessStartDate is null ) ) ) "
-      base_qry = " from TitleInstancePackagePlatform as tipp where tipp.pkg = ?  and ( tipp.status != ? ) and ( ( ( ? <= tipp.accessEndDate ) or ( tipp.accessEndDate is null ) ) )"
-      qry_params.add(tipp_status_del)
+      base_qry = " from TitleInstancePackagePlatform as tipp where tipp.pkg = :pi  and ( tipp.status != :status ) and ( ( ( :df <= tipp.accessEndDate ) or ( tipp.accessEndDate is null ) ) )"
+      qry_params['status'] = tipp_status_del
       // qry_params.add(dateFilter);
-      qry_params.add(dateFilter);
+      qry_params['df'] = dateFilter;
     }
 
     if ( ( params.sort != null ) && ( params.sort.length() > 0 ) ) {
