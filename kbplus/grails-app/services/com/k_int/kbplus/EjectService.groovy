@@ -193,7 +193,7 @@ class EjectService {
 
       def license_reference_str = lic.reference?:'NO_LIC_REF_FOR_ID_'+lic.id;
 
-      index << "license\t${lic.id}\t${license_reference_str}\t\n".toString();
+      index << "license ${lic.id}\t${license_reference_str}\t\n".toString();
 
       Map model = [:];
       model.onixplLicense = lic.onixplLicense;
@@ -276,9 +276,8 @@ class EjectService {
       columns.add(sub.owner?.id);
       columns.add(sub.owner?.reference);
       columns.add(sub.owner?.jiscLicenseId);
-
       sub.ids.each { io ->
-        columns.add("${io.identifier.ns.ns}=${io.identifier.value}")
+        columns.add("'${io.identifier.ns.ns}':'${io.identifier.value}'")
       }
 
       // log.debug("output subscription ${sub}");
