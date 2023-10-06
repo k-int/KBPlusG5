@@ -307,14 +307,14 @@ class PublicExportController {
       base_qry = " from TitleInstancePackagePlatform as tipp  "+
                  " where tipp.pkg = :pi "+
                  " and ( tipp.status != :status ) "+
-                 " and ( ( lower(tipp.title.title) like :qt ) or ( exists ( from IdentifierOccurrence io where io.ti.id = tipp.title.id and io.identifier.value like :f ) ) ) "+
+                 " and ( ( lower(tipp.title.title) like :qt ) or ( exists ( from IdentifierOccurrence io where io.ti.id = tipp.title.id and io.identifier.value like :f ) ) ) "
                  // " and ( ( ( ? >= tipp.accessStartDate ) or ( tipp.accessStartDate is null ) ) ) "+
-                 " and ( ( ( :ed <= tipp.accessEndDate ) or ( tipp.accessEndDate is null ) ) )"
+                 // " and ( ( ( :ed <= tipp.accessEndDate ) or ( tipp.accessEndDate is null ) ) )"
       qry_params['status'] =  tipp_status_del
 
       qry_params['qt'] = "%${params.filter.trim().toLowerCase()}%"
       qry_params['f'] = "%${params.filter}%"
-      qry_params['ed'] = dateFilter
+      // qry_params['ed'] = dateFilter
     }
     else {
       // base_qry = " from TitleInstancePackagePlatform as tipp where tipp.pkg = ?  and ( tipp.status != ? ) and ( ( ( ? <= tipp.accessEndDate ) or ( tipp.accessEndDate is null ) ) ) and ( ( ( ? >= tipp.accessStartDate ) or ( tipp.accessStartDate is null ) ) ) "
