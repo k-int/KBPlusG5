@@ -23,8 +23,8 @@
 						   [col:'access_end_date', value:{e, ctx -> e.accessEndDate?formatter.format(e.accessEndDate):'' }],
 						   [col:'access_status', value:{e, ctx -> e.tipp?.getAvailabilityStatusAsString() }],
 						   [col:'core.medium', value:{e, ctx -> e.medium }],
-						   [col:'core.date.list', value:{e, ctx -> e.getTIP().coreDates }],
-						   [col:'core.status', value:{e, ctx -> e.getTIP().coreStatus(null)?'Core':e.getTIP().coreStatus(null)==null?'Not Core':'Was/Will Be Core' }]
+						   [col:'core.date.list', value:{e, ctx -> e.getTIP()?.coreDates }],
+						   [col:'core.status', value:{e, ctx -> e.getTIP()?.coreStatus(null)?'Core':e.getTIP()?.coreStatus(null)==null?'Not Core':'Was/Will Be Core' }]
                            ]}"/><g:set var="tabchar" value=","
 /><g:set var="formatter" value="${new java.text.SimpleDateFormat('yyyy-MM-dd')}"
 /><g:encodeAs codec="Raw"><g:each in="${cfg}" var="r">"${r.col}"${tabchar}</g:each>
