@@ -318,10 +318,11 @@ class PublicExportController {
     }
     else {
       // base_qry = " from TitleInstancePackagePlatform as tipp where tipp.pkg = ?  and ( tipp.status != ? ) and ( ( ( ? <= tipp.accessEndDate ) or ( tipp.accessEndDate is null ) ) ) and ( ( ( ? >= tipp.accessStartDate ) or ( tipp.accessStartDate is null ) ) ) "
-      base_qry = " from TitleInstancePackagePlatform as tipp where tipp.pkg = :pi  and ( tipp.status != :status ) and ( ( ( :df <= tipp.accessEndDate ) or ( tipp.accessEndDate is null ) ) )"
+      // base_qry = " from TitleInstancePackagePlatform as tipp where tipp.pkg = :pi  and ( tipp.status != :status ) and ( ( ( :df <= tipp.accessEndDate ) or ( tipp.accessEndDate is null ) ) )"
+      base_qry = " from TitleInstancePackagePlatform as tipp where tipp.pkg = :pi  and ( tipp.status != :status )"
       qry_params['status'] = tipp_status_del
       // qry_params.add(dateFilter);
-      qry_params['df'] = dateFilter;
+      // qry_params['df'] = dateFilter;
     }
 
     if ( ( params.sort != null ) && ( params.sort.length() > 0 ) ) {
