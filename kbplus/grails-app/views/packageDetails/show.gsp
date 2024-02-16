@@ -272,7 +272,6 @@
                               </g:else>
                                            </td>
                                            <td>
-                                             ${t?.localPackageTitleId?:''}
                                            </td>
                                            <g:if test="${editable}">
                                              <td>
