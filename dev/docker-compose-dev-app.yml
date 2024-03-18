@@ -1,0 +1,29 @@
+version: "3.0"
+
+services:
+  kbplus:
+    build:
+      context: ../.
+      dockerfile: Dockerfile
+    image: kbplus:latest
+    environment:
+      CATALINA_OPTS: '-Dgrails.env=development'
+      DATASOURCE_URL: jdbc:mysql://jc_mysql/kbplus700dev?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8
+      DATASOURCE_USERNAME: k-int
+      DATASOURCE_PASSWORD: k-int
+      ELASTICSEARCH_SERVICE: jc_es6
+    ports:
+      - 8080:8080
+    depends_on:
+      jc_mysql:
+        condition:
+          service_healthy
+      jc_es6:
+        condition:
+          service_started
+    # healthcheck:
+    #   test: curl --fail http://localhost:8080/kbplus/ || exit 1
+    #   interval: 10s
+    #   retries: 5
+    #   start_period: 10s
+    #   timeout: 3s
