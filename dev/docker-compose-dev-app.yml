@@ -1,0 +1,69 @@
+version: "3.0"
+
+services:
+  kbplus:
+    build:
+      context: ../.
+      dockerfile: Dockerfile
+    image: kbplus:latest
+    environment:
+      CATALINA_OPTS: '-Dgrails.env=development'
+      DATASOURCE_URL: jdbc:mysql://jc_mysql/kbplus700dev?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8
+      DATASOURCE_USERNAME: k-int
+      DATASOURCE_PASSWORD: k-int
+      ELASTICSEARCH_SERVICE: jc_es6
+    ports:
+      - 8080:8080
+    depends_on:
+      jc_mysql:
+        condition:
+          service_healthy
+      jc_es6:
+        condition:
+          service_started
+    # healthcheck:
+    #   test: curl --fail http://localhost:8080/kbplus/ || exit 1
+    #   interval: 10s
+    #   retries: 5
+    #   start_period: 10s
+    #   timeout: 3s
+  es_index:
+    image: curlimages/curl
+    command: -X PUT 'jc_es6:9200/kbplus'
+    profiles:
+      - bootstrap
+    container_name: es_index
+    restart: 'no'
+    depends_on:
+      jc_es6:
+        condition:
+          service_started
+      jc_mysql:
+        condition:
+          service_started
+      kbplus:
+        condition:
+          service_started
+
+  es_mappings:
+    image: curlimages/curl
+    command: "--connect-timeout 5 --max-time 10 --retry 5 --retry-delay 0 --retry-max-time 20 \ -X PUT 'jc_es6:9200/kbplus/_mapping' --header 'Content-Type: application/json' -d @/mapping.json"
+    volumes:
+      - ./esinit/mapping.json:/mapping.json:ro
+    profiles:
+      - bootstrap
+    container_name: es_mappings
+    restart: on-failure:2
+    depends_on:
+      jc_es6:
+        condition:
+          service_started
+      jc_mysql:
+        condition:
+          service_started
+      kbplus:
+        condition:
+          service_started
+      es_index:
+        condition:
+          service_completed_successfully

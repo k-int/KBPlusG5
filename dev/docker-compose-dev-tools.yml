@@ -1,0 +1,32 @@
+version: "3.0"
+
+services:
+  kbplus:
+    environment:
+      CATALINA_OPTS: '-javaagent:elastic-apm-agent.jar -Delastic.apm.server_urls=http://apm-server:8200 -Dgrails.env=development'
+      DATASOURCE_URL: jdbc:mysql://jc_mysql/kbplus700dev?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8
+      DATASOURCE_USERNAME: k-int
+      DATASOURCE_PASSWORD: k-int
+      ELASTICSEARCH_SERVICE: jc_es6
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.17.18
+    environment:
+      - ELASTICSEARCH_HOSTS=http://jc_es6:9200
+    ports:
+      - 5601:5601
+    depends_on:
+      - jc_es6
+  apm-server:
+    image: docker.elastic.co/apm/apm-server:7.17.18
+    cap_add: ["CHOWN", "DAC_OVERRIDE", "SETGID", "SETUID"]
+    cap_drop: ["ALL"]
+    ports:
+    - 8200:8200
+    command: >
+       apm-server -e
+         -E apm-server.rum.enabled=true
+         -E setup.kibana.host=kibana:5601
+         -E setup.template.settings.index.number_of_replicas=0
+         -E apm-server.kibana.enabled=true
+         -E apm-server.kibana.host=kibana:5601
+         -E output.elasticsearch.hosts=["jc_es6:9200"]
