@@ -1,0 +1,40 @@
+version: "3.0"
+
+services:
+
+  es_index:
+    image: curlimages/curl
+    command: "--connect-timeout 5 --max-time 10 --retry 5 --retry-delay 0 --retry-max-time 20 -X PUT 'jc_es6:9200/kbplus'"
+    container_name: es_index
+    restart: 'no'
+    depends_on:
+      jc_es6:
+        condition:
+          service_started
+      jc_mysql:
+        condition:
+          service_started
+      kbplus:
+        condition:
+          service_started
+
+  es_mappings:
+    image: curlimages/curl
+    command: "--connect-timeout 5 --max-time 10 --retry 5 --retry-delay 0 --retry-max-time 20 -X PUT 'jc_es6:9200/kbplus/_mapping' --header 'Content-Type: application/json' -d @/mapping.json"
+    volumes:
+      - ./esinit/mapping.json:/mapping.json:ro
+    container_name: es_mappings
+    restart: on-failure:2
+    depends_on:
+      jc_es6:
+        condition:
+          service_started
+      jc_mysql:
+        condition:
+          service_started
+      kbplus:
+        condition:
+          service_started
+      es_index:
+        condition:
+          service_completed_successfully
