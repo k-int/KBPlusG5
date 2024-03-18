@@ -1,13 +1,31 @@
 # KBPlusG5
-Grails5 Port of KBPlus
 
-prerequisites:
+A Grails5 Port of [KBPlus](https://github.com/k-int/KBPlus)
 
-# Deploy
+## Documentation
 
-## Build
+See additional documentation from the original project wiki https://github.com/k-int/KBPlus/wiki
+
+## prerequisites:
+
+[opendk 17](https://openjdk.org/projects/jdk/17/)
+or
+[corretto 17](https://docs.aws.amazon.com/corretto/latest/corretto-17-ug/downloads-list.html)
+
+[docker and docker compose](https://www.docker.com/products/docker-desktop/)
+
+## Local Development
+
+See [`dev/README.md`](dev/README.md)
+
+## Deploy To apache tomcat
+
+### Build
 
     ./gradlew clean build -x integrationTest
+
+### Deploy
+
     scp ./build/libs/kbplus-8.0.0-SNAPSHOT.war IP:/tmp
     ssh IP
     cd /srv/kbplus/apache-tomcat-9.0.73/webapps#
@@ -17,14 +35,14 @@ prerequisites:
     ../bin/startup.sh
 
 
-# Testing notes
+## Testing notes
 
-## Grails command to run for the test env
+### Grails command to run for the test env
 
   grails -Dgrails.env=test run-app
 
 
-## Ubuntu 2204+
+### Ubuntu 2204+
 
 notes 
 
